@@ -13,7 +13,7 @@ namespace WebApplication.Web.Models
         /// The job's id.
         /// </summary>
         [Required]
-        public int JobId { get; set; }
+        public int? JobId { get; set; }
 
         /// <summary>
         /// The job's title.

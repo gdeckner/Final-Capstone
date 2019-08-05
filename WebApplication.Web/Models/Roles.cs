@@ -12,7 +12,7 @@ namespace WebApplication.Web.Models
         /// The role id.
         /// </summary>
         [Required]
-        public int RoleId { get; set; }
+        public int? RoleId { get; set; }
 
         /// <summary>
         /// 

@@ -12,7 +12,7 @@ namespace WebApplication.Web.Models
         /// The user's id.
         /// </summary>
         [Required]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         /// <summary>
         /// The user's start paydate.

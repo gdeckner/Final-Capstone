@@ -51,6 +51,11 @@ namespace WebApplication.Web
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAuthProvider, SessionAuthProvider>();
             services.AddTransient<IUserDAL>(m => new UserSqlDAL(connectionString));
+            services.AddTransient<IRolesDAL>(m => new RolesSqlDAL(connectionString));
+            services.AddTransient<IHoursDAL>(m => new HoursSqlDAL(connectionString));
+            services.AddTransient<IJobDAL>(m => new JobSqlDAL(connectionString));
+            services.AddTransient<IPayrollDAL>(m => new PayrollSqlDAL(connectionString));
+            services.AddTransient<IUserJobDAL>(m => new UserSqlDAL(connectionString));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

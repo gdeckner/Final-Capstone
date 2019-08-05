@@ -8,6 +8,7 @@ namespace WebApplication.Web.DAL
 {
     public interface ITaskDAL
     {
-      Tasks CreateTask(Task task);
+        bool CreateNewTask(Tasks task);
+
     }
 }
