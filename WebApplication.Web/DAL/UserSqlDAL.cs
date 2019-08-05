@@ -56,7 +56,7 @@ namespace WebApplication.Web.DAL
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand("DELETE FROM users WHERE id = @id;", conn);
-                    cmd.Parameters.AddWithValue("@id", user.Id);                    
+                    cmd.Parameters.AddWithValue("@id", user.UserId);                    
 
                     cmd.ExecuteNonQuery();
 
@@ -116,7 +116,7 @@ namespace WebApplication.Web.DAL
                     cmd.Parameters.AddWithValue("@password", user.Password);
                     cmd.Parameters.AddWithValue("@salt", user.Salt);
                     cmd.Parameters.AddWithValue("@role", user.Role);
-                    cmd.Parameters.AddWithValue("@id", user.Id);
+                    cmd.Parameters.AddWithValue("@id", user.UserId);
 
                     cmd.ExecuteNonQuery();
 
@@ -133,7 +133,7 @@ namespace WebApplication.Web.DAL
         {
             return new User()
             {
-                Id = Convert.ToInt32(reader["id"]),
+                UserId = Convert.ToInt32(reader["id"]),
                 Username = Convert.ToString(reader["username"]),
                 Password = Convert.ToString(reader["password"]),
                 Salt = Convert.ToString(reader["salt"]),
