@@ -59,7 +59,8 @@ namespace WebApplication.Web.Controllers
             // Redirect the user where you want them to go after logoff
             return RedirectToAction("Index", "Home");
         }
-        
+
+        [AuthorizationFilter("Admin", "Author", "Manager")]
         [HttpGet]
         public IActionResult Register()
         {
@@ -82,6 +83,31 @@ namespace WebApplication.Web.Controllers
             }
 
             return View(registerViewModel);
+        }
+
+        [AuthorizationFilter("Admin", "Author", "Manager", "User")]
+        [HttpGet]
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ChangePassword(ChangePasswordViewModel changePasswordViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                // Register them as a new user (and set default role)
+                // When a user registeres they need to be given a role. If you don't need anything special
+                // just give them "User".
+                //authProvider.Register(registerViewModel.Email, registerViewModel.Password, role: "User");
+
+                // Redirect the user where you want them to go after registering
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View(changePasswordViewModel);
         }
     }
 }
