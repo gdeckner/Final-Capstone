@@ -12,24 +12,24 @@ namespace WebApplication.Web.Models
         /// The user's id.
         /// </summary>
         [Required]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
         /// <summary>
         /// The user's assigned task id.
         /// </summary>
         [Required]
-        public int TaskId { get; set; }
+        public int? TaskId { get; set; }
 
         /// <summary>
         /// The user's time worked in hours.
         /// </summary>
         [Required]
-        public int TimeInHours { get; set; }
+        public int? TimeInHours { get; set; }
 
         /// <summary>
         /// The user's date of work.
         /// </summary>
         [Required]
-        public int Date { get; set; }
+        public int? Date { get; set; }
     }
 }

@@ -12,13 +12,13 @@ namespace WebApplication.Web.Models
         /// The task's id.
         /// </summary>
         [Required]
-        public int Id { get; set; }
+        public int? TaskId { get; set; }
 
         /// <summary>
         /// The task's job id.
         /// </summary>
         [Required]
-        public int JobId { get; set; }
+        public int? JobId { get; set; }
 
         /// <summary>
         /// The task's location.
