@@ -32,6 +32,8 @@ namespace WebApplication.Web.Providers.Auth
         /// </summary>
         void LogOff();
 
+        List<User> GetAllUsers();
+
         /// <summary>
         /// Changes the logged in user's existing password.
         /// </summary>

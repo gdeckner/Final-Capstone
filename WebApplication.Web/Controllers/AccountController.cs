@@ -7,7 +7,7 @@ using WebApplication.Web.Models.Account;
 using WebApplication.Web.Providers.Auth;
 
 namespace WebApplication.Web.Controllers
-{    
+{
     public class AccountController : Controller
     {
         private readonly IAuthProvider authProvider;
@@ -15,19 +15,27 @@ namespace WebApplication.Web.Controllers
         {
             this.authProvider = authProvider;
         }
-        
+
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
-        [AuthorizationFilter("Admin", "Author", "Manager", "User", "2")]  //<-- or filtered to only those that have a certain role
+        [AuthorizationFilter("Admin", "Author", "Manager", "User", "1", "2")]  //<-- or filtered to only those that have a certain role
         [HttpGet]
         public IActionResult Index()
         {
             var user = authProvider.GetCurrentUser();
-            return View(user);
+            if (user.Role == "1")
+            {
+                ViewBag.Users = authProvider.GetAllUsers();
+                return View("AdminIndex", user);
+            }
+            else
+            {
+                return View(user);
+            }
         }
 
         [HttpGet]
         public IActionResult Login()
-        {            
+        {
             return View();
         }
 
@@ -49,7 +57,7 @@ namespace WebApplication.Web.Controllers
 
             return View(loginViewModel);
         }
-        
+
         [HttpGet]
         public IActionResult LogOff()
         {
@@ -60,7 +68,7 @@ namespace WebApplication.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        //[AuthorizationFilter("Admin", "Author", "Manager")]
+        [AuthorizationFilter("Admin", "Author", "Manager", "1")]
         [HttpGet]
         public IActionResult Register()
         {
@@ -70,16 +78,16 @@ namespace WebApplication.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Register(RegisterViewModel registerViewModel)
-        {            
+        {
             if (ModelState.IsValid)
             {
                 // Register them as a new user (and set default role)
                 // When a user registeres they need to be given a role. If you don't need anything special
                 // just give them "User".
-                authProvider.Register(registerViewModel.FullName, registerViewModel.UserName, registerViewModel.Password, role: "2"); 
+                authProvider.Register(registerViewModel.FullName, registerViewModel.UserName, registerViewModel.Password, registerViewModel.Role);
 
                 // Redirect the user where you want them to go after registering
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Account");
             }
 
             return View(registerViewModel);
@@ -104,7 +112,7 @@ namespace WebApplication.Web.Controllers
                 // Register them as a new user (and set default role)
                 // When a user registeres they need to be given a role. If you don't need anything special
                 // just give them "User".
-                
+
 
                 // Redirect the user where you want them to go after registering
                 return RedirectToAction("Index", "Home");

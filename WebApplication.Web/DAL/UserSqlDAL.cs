@@ -103,6 +103,37 @@ namespace WebApplication.Web.DAL
         }
 
         /// <summary>
+        /// Gets the user from the database.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public List<User> GetAllUsers()
+        {
+            List<User> users = new List<User>();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM UserLogin;", conn);
+                    
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        users.Add(MapRowToUser(reader));
+                    }
+                }
+
+                return users;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// Updates the user in the database.
         /// </summary>
         /// <param name="user"></param>
@@ -135,6 +166,7 @@ namespace WebApplication.Web.DAL
             return new User()
             {
                 UserId = Convert.ToInt32(reader["userID"]),
+                Name = Convert.ToString(reader["first_Last_Name"]),
                 Username = Convert.ToString(reader["userName"]),
                 Password = Convert.ToString(reader["password"]),
                 Salt = Convert.ToString(reader["salt"]),

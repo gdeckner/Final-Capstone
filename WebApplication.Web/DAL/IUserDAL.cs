@@ -32,5 +32,7 @@ namespace WebApplication.Web.DAL
         /// </summary>
         /// <param name="user"></param>
         void DeleteUser(User user);
+
+        List<User> GetAllUsers();
     }
 }
