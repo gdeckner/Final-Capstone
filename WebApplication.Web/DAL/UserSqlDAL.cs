@@ -52,7 +52,8 @@ namespace WebApplication.Web.DAL
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand("INSERT INTO users VALUES (@username, @password, @salt, @role);", conn);
+                    SqlCommand cmd = new SqlCommand("INSERT INTO UserLogin (first_Last_Name, userName, password, salt, userRole) VALUES (@name, @username, @password, @salt, @role);", conn);
+                    cmd.Parameters.AddWithValue("@name", user.Name);
                     cmd.Parameters.AddWithValue("@username", user.Username);
                     cmd.Parameters.AddWithValue("@password", user.Password);
                     cmd.Parameters.AddWithValue("@salt", user.Salt);
@@ -107,7 +108,7 @@ namespace WebApplication.Web.DAL
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand("SELECT * FROM USERS WHERE username = @username;", conn);
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM UserLogin WHERE userName = @username;", conn);
                     cmd.Parameters.AddWithValue("@username", username);
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -143,6 +144,37 @@ namespace WebApplication.Web.DAL
         }
 
         /// <summary>
+        /// Gets the user from the database.
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public List<User> GetAllUsers()
+        {
+            List<User> users = new List<User>();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM UserLogin;", conn);
+                    
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        users.Add(MapRowToUser(reader));
+                    }
+                }
+
+                return users;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
+
+        /// <summary>
         /// Updates the user in the database.
         /// </summary>
         /// <param name="user"></param>
@@ -153,7 +185,7 @@ namespace WebApplication.Web.DAL
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
-                    SqlCommand cmd = new SqlCommand("UPDATE users SET password = @password, salt = @salt, role = @role WHERE id = @id;", conn);                    
+                    SqlCommand cmd = new SqlCommand("UPDATE UserLogin SET password = @password, salt = @salt, userRole = @role WHERE userID = @id;", conn);                    
                     cmd.Parameters.AddWithValue("@password", user.Password);
                     cmd.Parameters.AddWithValue("@salt", user.Salt);
                     cmd.Parameters.AddWithValue("@role", user.Role);
@@ -174,11 +206,12 @@ namespace WebApplication.Web.DAL
         {
             return new User()
             {
-                UserId = Convert.ToInt32(reader["id"]),
-                Username = Convert.ToString(reader["username"]),
+                UserId = Convert.ToInt32(reader["userID"]),
+                Name = Convert.ToString(reader["first_Last_Name"]),
+                Username = Convert.ToString(reader["userName"]),
                 Password = Convert.ToString(reader["password"]),
                 Salt = Convert.ToString(reader["salt"]),
-                Role = Convert.ToString(reader["role"])
+                Role = Convert.ToString(reader["userRole"])
             };
         }
         public bool CheckLogin(string userName, string password)

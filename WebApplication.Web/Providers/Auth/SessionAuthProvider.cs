@@ -112,13 +112,14 @@ namespace WebApplication.Web.Providers.Auth
         /// <param name="password"></param>
         /// <param name="role"></param>
         /// <returns></returns>
-        public void Register(string username, string password, string role)
+        public void Register(string name, string username, string password, string role)
         {
             var hashProvider = new HashProvider();
             var passwordHash = hashProvider.HashPassword(password);
 
             var user = new User
             {
+                Name = name,
                 Username = username,
                 Password = passwordHash.Password,
                 Salt = passwordHash.Salt,
@@ -126,7 +127,6 @@ namespace WebApplication.Web.Providers.Auth
             };
 
             userDAL.CreateUser(user);
-            Session.SetString(SessionKey, user.Username);            
         }
 
         /// <summary>
@@ -139,6 +139,11 @@ namespace WebApplication.Web.Providers.Auth
             var user = GetCurrentUser();
             return (user != null) && 
                 roles.Any(r => r.ToLower() == user.Role.ToLower());
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return userDAL.GetAllUsers();
         }
     }
 }
