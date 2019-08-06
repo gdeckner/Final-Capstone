@@ -17,7 +17,7 @@ namespace WebApplication.Web.Controllers
         }
         
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
-        [AuthorizationFilter("Admin", "Author", "Manager", "User")]  //<-- or filtered to only those that have a certain role
+        [AuthorizationFilter("Admin", "Author", "Manager", "User", "2")]  //<-- or filtered to only those that have a certain role
         [HttpGet]
         public IActionResult Index()
         {
@@ -39,7 +39,7 @@ namespace WebApplication.Web.Controllers
             if (ModelState.IsValid)
             {
                 // Check that they provided correct credentials
-                bool validLogin = authProvider.SignIn(loginViewModel.Email, loginViewModel.Password);
+                bool validLogin = authProvider.SignIn(loginViewModel.UserName, loginViewModel.Password);
                 if (validLogin)
                 {
                     // Redirect the user where you want them to go after successful login
@@ -60,7 +60,7 @@ namespace WebApplication.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [AuthorizationFilter("Admin", "Author", "Manager")]
+        //[AuthorizationFilter("Admin", "Author", "Manager")]
         [HttpGet]
         public IActionResult Register()
         {
@@ -76,7 +76,7 @@ namespace WebApplication.Web.Controllers
                 // Register them as a new user (and set default role)
                 // When a user registeres they need to be given a role. If you don't need anything special
                 // just give them "User".
-                authProvider.Register(registerViewModel.Email, registerViewModel.Password, role: "User"); 
+                authProvider.Register(registerViewModel.FullName, registerViewModel.UserName, registerViewModel.Password, role: "2"); 
 
                 // Redirect the user where you want them to go after registering
                 return RedirectToAction("Index", "Home");
