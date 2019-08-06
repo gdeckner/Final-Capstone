@@ -170,7 +170,7 @@ namespace WebApplication.Tests.Providers
             var provider = new SessionAuthProvider(mockAccessor.Object, mockUserDal.Object);
 
             // Act
-            provider.Register("test", "password123", "user");
+            //provider.Register("test", "password123", "user");
 
             // Assert
             mockUserDal.Verify(m => m.CreateUser(It.IsAny<User>()));
