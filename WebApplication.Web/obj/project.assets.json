@@ -12531,23 +12531,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\georgd\\.nuget\\packages\\": {},
+    "C:\\Users\\noahm\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\georgd\\Final Capstone\\final-capstone-team-lima\\WebApplication.Web\\WebApplication.Web.csproj",
+      "projectUniqueName": "C:\\Users\\noahm\\Desktop\\Capstone\\final-capstone-team-lima\\WebApplication.Web\\WebApplication.Web.csproj",
       "projectName": "WebApplication.Web",
-      "projectPath": "C:\\Users\\georgd\\Final Capstone\\final-capstone-team-lima\\WebApplication.Web\\WebApplication.Web.csproj",
-      "packagesPath": "C:\\Users\\georgd\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\georgd\\Final Capstone\\final-capstone-team-lima\\WebApplication.Web\\obj\\",
+      "projectPath": "C:\\Users\\noahm\\Desktop\\Capstone\\final-capstone-team-lima\\WebApplication.Web\\WebApplication.Web.csproj",
+      "packagesPath": "C:\\Users\\noahm\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\noahm\\Desktop\\Capstone\\final-capstone-team-lima\\WebApplication.Web\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\georgd\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\noahm\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
