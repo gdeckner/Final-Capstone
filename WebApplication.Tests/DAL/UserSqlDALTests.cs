@@ -1,11 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Text;
-using WebApplication.Web.Security;
 using WebApplication.Web.DAL;
-using WebApplication.Web.Models;
+using WebApplication.Web.Security;
 
 namespace WebApplication.Tests.DAL
 {
@@ -16,6 +13,7 @@ namespace WebApplication.Tests.DAL
         [TestInitialize]
         public override void Setup()
         {
+            int id = 0;
             base.Setup();
             PasswordHasher hash = new PasswordHasher();
             dao = new UserSqlDAL(ConnectionString, new PasswordHasher());
@@ -25,33 +23,43 @@ namespace WebApplication.Tests.DAL
                 connection.Open();
                 SqlCommand cmd = connection.CreateCommand();
                 cmd.CommandText = @"insert into Roles (roles_Title,role_Description) values ('Admin','Admin control' ),('Users','Generic User')";
+                cmd.ExecuteNonQuery();
                 cmd.CommandText = @"insert into UserLogin (first_Last_Name,userName,userRole,password,salt) values ('Gerg DinkleBerry','gdeckner','Admin',@password,@salt)";
                 cmd.Parameters.AddWithValue("@salt", "RrQlUO2CbmowsGDSpRhXZA==");
                 cmd.Parameters.AddWithValue("@password", "RrQlUO2CbmowsGDSpRhXZPGjRy1BEXkN3fdCrNs4xUJjxNcs");
+
                 cmd.ExecuteNonQuery();
+                
+
+                
             }
         }
         [TestMethod]
         public void CheckIfUserNameExistsTest()
         {
-            Assert.AreEqual(true, dao.CheckIfUserNameExists("testUser"));
-            Assert.AreEqual(true, dao.CheckIfUserNameExists("testuser"));
+            Assert.AreEqual(true, dao.CheckIfUserNameExists("GDECKNER"));
+            Assert.AreEqual(true, dao.CheckIfUserNameExists("gdeckner"));
             Assert.AreEqual(false, dao.CheckIfUserNameExists("ooga"));
 
         }
+        [TestMethod]
         public void PullUserRoleTest()
         {
-            Assert.AreEqual("Admin", dao.PullUserRole("gdeckner"));
+            Assert.AreEqual( "Admin", dao.PullUserRole("gdeckner"));
             Assert.AreNotEqual("User", dao.PullUserRole("gdeckner"));
         }
+        [TestMethod]
+        public void CheckLoginTest()
+        {
+            Assert.AreEqual(true, dao.CheckLogin("GDeckner", "Password"));
+            Assert.AreEqual(false, dao.CheckLogin("turtle", "password"));
+            Assert.AreEqual(true, dao.CheckLogin("GDeckner", "Password"));
+
+        }
+        [TestMethod]
         public void CreateUserTest()
         {
-            User testUser = new User
-            {
-               Username = "NewUser",
-               Password = 
-            }
-            dao.CreateUser()
+           
         }
     }
 }

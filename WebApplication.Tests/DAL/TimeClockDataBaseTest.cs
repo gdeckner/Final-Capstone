@@ -32,7 +32,7 @@ namespace WebApplication.Tests.DAL
         {
             get
             {
-                return Config.GetConnectionString("Test");
+                return Config.GetConnectionString("Database");
             }
         }
         [TestInitialize]
@@ -43,12 +43,12 @@ namespace WebApplication.Tests.DAL
             using (SqlConnection conn = new SqlConnection(ConnectionString))
             {
                 SqlCommand cmd = conn.CreateCommand();
-                cmd.CommandText = @"delete from Roles
-                                    delete from UserLogin
-                                    delete from Jobs
-                                    delete from Locations
+                cmd.CommandText = @"delete from userJob
                                     delete from Tasks
-                                    delete from userJob";
+                                    delete from Locations
+                                    delete from Jobs
+                                    delete from UserLogin
+                                    delete from Roles";
 
                 conn.Open();
                 cmd.ExecuteNonQuery();
