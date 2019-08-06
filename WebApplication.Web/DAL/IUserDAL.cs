@@ -15,6 +15,10 @@ namespace WebApplication.Web.DAL
         /// <returns></returns>
         User GetUser(string username);
 
+        bool CheckIfUserNameExists(string username);
+
+        string PullUserRole(string username);
+
         /// <summary>
         /// Creates a new user.
         /// </summary>

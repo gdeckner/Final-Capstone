@@ -7,62 +7,61 @@ using System.Transactions;
 
 namespace WebApplication.Tests.DAL
 {
-    public class TimeClockDataBaseTest
+
+    [TestClass]
+    public abstract class TimeClockDataBaseTest
     {
-        [TestClass]
-        public abstract class DatabaseTest
+        private IConfigurationRoot config;
+        private TransactionScope transaction;
+        protected IConfigurationRoot Config
         {
-            private IConfigurationRoot config;
-            private TransactionScope transaction;
-            protected IConfigurationRoot Config
+            get
             {
-                get
+                if (config == null)
                 {
-                    if (config == null)
-                    {
-                        var builder = new ConfigurationBuilder()
-                            .SetBasePath(Directory.GetCurrentDirectory())
-                            .AddJsonFile("appsettings.json");
+                    var builder = new ConfigurationBuilder()
+                        .SetBasePath(Directory.GetCurrentDirectory())
+                        .AddJsonFile("appsettings.json");
 
-                        config = builder.Build();
-                    }
-                    return config;
+                    config = builder.Build();
                 }
+                return config;
             }
-            protected string ConnectionString
+        }
+        protected string ConnectionString
+        {
+            get
             {
-                get
-                {
-                    return Config.GetConnectionString("Test");
-                }
+                return Config.GetConnectionString("Test");
             }
-            [TestInitialize]
-            public virtual void Setup()
-            {
+        }
+        [TestInitialize]
+        public virtual void Setup()
+        {
 
-                transaction = new TransactionScope();
-                using (SqlConnection conn = new SqlConnection(ConnectionString))
-                {
-                    SqlCommand cmd = conn.CreateCommand();
-                    cmd.CommandText = @"delete from Roles
+            transaction = new TransactionScope();
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = conn.CreateCommand();
+                cmd.CommandText = @"delete from Roles
                                     delete from UserLogin
                                     delete from Jobs
                                     delete from Locations
                                     delete from Tasks
                                     delete from userJob";
 
-                    conn.Open();
-                    cmd.ExecuteNonQuery();
-
-                }
-
+                conn.Open();
+                cmd.ExecuteNonQuery();
 
             }
-            [TestCleanup]
-            public void Cleanup()
-            {
-                transaction.Dispose();
-            }
+
+
+        }
+        [TestCleanup]
+        public void Cleanup()
+        {
+            transaction.Dispose();
         }
     }
+
 }

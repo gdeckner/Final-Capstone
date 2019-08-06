@@ -1,9 +1,11 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApplication.Web.Models;
+using WebApplication.Web.Security;
 
 namespace WebApplication.Web.DAL
 {
@@ -11,9 +13,14 @@ namespace WebApplication.Web.DAL
     {
         private readonly string connectionString;
 
-        public UserSqlDAL(string connectionString)
+        public UserSqlDAL(string connectionString, IPasswordHasher passwordHasher)
         {
             this.connectionString = connectionString;
+        }
+
+        public bool CheckIfUserNameExists(string username)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -99,6 +106,11 @@ namespace WebApplication.Web.DAL
             {
                 throw ex;
             }            
+        }
+
+        public string PullUserRole(string username)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>
