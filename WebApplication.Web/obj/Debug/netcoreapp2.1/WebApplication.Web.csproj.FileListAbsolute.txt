@@ -34,6 +34,44 @@ F:\OneDrive\TechElevator\C Sharp Cohort[8] CBUS\FinalCapstone\FinalCapstone\WebA
 F:\OneDrive\TechElevator\C Sharp Cohort[8] CBUS\FinalCapstone\FinalCapstone\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.dll
 F:\OneDrive\TechElevator\C Sharp Cohort[8] CBUS\FinalCapstone\FinalCapstone\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.pdb
 F:\OneDrive\TechElevator\C Sharp Cohort[8] CBUS\FinalCapstone\FinalCapstone\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.csproj.CopyComplete
+<<<<<<< HEAD
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\bin\Debug\netcoreapp2.1\WebApplication.Web.deps.json
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\bin\Debug\netcoreapp2.1\WebApplication.Web.runtimeconfig.json
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\bin\Debug\netcoreapp2.1\WebApplication.Web.runtimeconfig.dev.json
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\bin\Debug\netcoreapp2.1\WebApplication.Web.dll
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\bin\Debug\netcoreapp2.1\WebApplication.Web.pdb
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\bin\Debug\netcoreapp2.1\WebApplication.Web.Views.dll
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\bin\Debug\netcoreapp2.1\WebApplication.Web.Views.pdb
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.csprojAssemblyReference.cache
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.csproj.CoreCompileInputs.cache
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.RazorAssemblyInfo.cache
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.RazorAssemblyInfo.cs
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.AssemblyInfoInputs.cache
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.AssemblyInfo.cs
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.TagHelpers.input.cache
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.TagHelpers.output.cache
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.RazorCoreGenerate.cache
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\Razor\Views\Account\Index.g.cshtml.cs
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\Razor\Views\Account\Login.g.cshtml.cs
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\Razor\Views\Account\Register.g.cshtml.cs
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\Razor\Views\Home\About.g.cshtml.cs
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\Razor\Views\Home\Contact.g.cshtml.cs
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\Razor\Views\Home\Index.g.cshtml.cs
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\Razor\Views\Home\Privacy.g.cshtml.cs
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\Razor\Views\Shared\Components\NavBar\_NavBar.g.cshtml.cs
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\Razor\Views\Shared\Error.g.cshtml.cs
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_CookieConsentPartial.g.cshtml.cs
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_Layout.g.cshtml.cs
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\Razor\Views\Shared\_ValidationScriptsPartial.g.cshtml.cs
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\Razor\Views\_ViewImports.g.cshtml.cs
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\Razor\Views\_ViewStart.g.cshtml.cs
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.RazorTargetAssemblyInfo.cache
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.RazorTargetAssemblyInfo.cs
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.Views.pdb
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.dll
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.pdb
+C:\Users\georgd\Final Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.csproj.CopyComplete
+=======
 C:\Users\jackb\final-capstone-team-lima\WebApplication.Web\bin\Debug\netcoreapp2.1\WebApplication.Web.deps.json
 C:\Users\jackb\final-capstone-team-lima\WebApplication.Web\bin\Debug\netcoreapp2.1\WebApplication.Web.runtimeconfig.json
 C:\Users\jackb\final-capstone-team-lima\WebApplication.Web\bin\Debug\netcoreapp2.1\WebApplication.Web.runtimeconfig.dev.json
@@ -107,3 +145,4 @@ C:\Users\noahm\Desktop\Capstone\final-capstone-team-lima\WebApplication.Web\obj\
 C:\Users\noahm\Desktop\Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.Views.pdb
 C:\Users\noahm\Desktop\Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\WebApplication.Web.csproj.CopyComplete
 C:\Users\noahm\Desktop\Capstone\final-capstone-team-lima\WebApplication.Web\obj\Debug\netcoreapp2.1\Razor\Views\Account\ChangePassword.g.cshtml.cs
+>>>>>>> a8f5e64f0c465497e5dba774292fda972fce5713
