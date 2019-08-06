@@ -38,11 +38,9 @@ Create table Jobs
 Create table Locations
 (
 	location_Id int identity(1,1) primary key,
-	country varchar(50) not null,
-	country_State varchar (50),
-	city varchar (50),
-	zipcode int,
-	street_Address varchar (100)
+	location_Title varchar (50),
+	location_Description varchar (max)
+
 
 )
 Create table Tasks
