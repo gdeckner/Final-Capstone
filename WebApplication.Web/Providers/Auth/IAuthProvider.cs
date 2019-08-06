@@ -32,6 +32,8 @@ namespace WebApplication.Web.Providers.Auth
         /// </summary>
         void LogOff();
 
+        List<User> GetAllUsers();
+
         /// <summary>
         /// Changes the logged in user's existing password.
         /// </summary>
@@ -55,5 +57,7 @@ namespace WebApplication.Web.Providers.Auth
         /// <param name="roles">One of the roles that the user can belong to.</param>
         /// <returns></returns>
         bool UserHasRole(string[] roles);
+
+        void DeleteUser(int id);
     }
 }

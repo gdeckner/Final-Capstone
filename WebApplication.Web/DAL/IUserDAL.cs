@@ -15,6 +15,10 @@ namespace WebApplication.Web.DAL
         /// <returns></returns>
         User GetUser(string username);
 
+        bool CheckIfUserNameExists(string username);
+
+        string PullUserRole(string username);
+
         /// <summary>
         /// Creates a new user.
         /// </summary>
@@ -31,6 +35,8 @@ namespace WebApplication.Web.DAL
         /// Deletes a user from the system.
         /// </summary>
         /// <param name="user"></param>
-        void DeleteUser(User user);
+        void DeleteUser(int id);
+
+        List<User> GetAllUsers();
     }
 }

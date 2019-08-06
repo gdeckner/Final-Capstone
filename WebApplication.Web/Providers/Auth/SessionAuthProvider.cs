@@ -127,7 +127,6 @@ namespace WebApplication.Web.Providers.Auth
             };
 
             userDAL.CreateUser(user);
-            Session.SetString(SessionKey, user.Username);            
         }
 
         /// <summary>
@@ -140,6 +139,16 @@ namespace WebApplication.Web.Providers.Auth
             var user = GetCurrentUser();
             return (user != null) && 
                 roles.Any(r => r.ToLower() == user.Role.ToLower());
+        }
+
+        public List<User> GetAllUsers()
+        {
+            return userDAL.GetAllUsers();
+        }
+
+        public void DeleteUser(int id)
+        {
+            userDAL.DeleteUser(id);
         }
     }
 }
