@@ -98,9 +98,8 @@ namespace WebApplication.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                //changePasswordViewModel.
 
-                //authProvider.ChangePassword(<existingPassword>, changePasswordViewModel.Password);
+                authProvider.ChangePassword(changePasswordViewModel.CurrentPassword, changePasswordViewModel.NewPassword);
 
                 // Register them as a new user (and set default role)
                 // When a user registeres they need to be given a role. If you don't need anything special
