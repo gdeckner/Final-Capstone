@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WebApplication.Web.DAL;
 using WebApplication.Web.Providers.Auth;
+using WebApplication.Web.Security;
 
 namespace WebApplication.Web
 {
@@ -50,7 +52,7 @@ namespace WebApplication.Web
             // For Authentication
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddScoped<IAuthProvider, SessionAuthProvider>();
-            services.AddTransient<IUserDAL>(m => new UserSqlDAL(connectionString));
+            services.AddTransient<IUserDAL>(m => new UserSqlDAL(connectionString, new PasswordHasher()));
             services.AddTransient<IRolesDAL>(m => new RolesSqlDAL(connectionString));
             services.AddTransient<IHoursDAL>(m => new HoursSqlDAL(connectionString));
             services.AddTransient<IJobDAL>(m => new JobSqlDAL(connectionString));
