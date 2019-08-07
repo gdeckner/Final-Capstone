@@ -2,10 +2,7 @@
 using System;
 using System.Data.SqlClient;
 using WebApplication.Web.DAL;
-<<<<<<< HEAD
-=======
 using WebApplication.Web.Models;
->>>>>>> 558bc5054205df5ca447adcd7f84bdf88bd41853
 using WebApplication.Web.Security;
 
 namespace WebApplication.Tests.DAL
@@ -17,27 +14,6 @@ namespace WebApplication.Tests.DAL
         [TestInitialize]
         public override void Setup()
         {
-<<<<<<< HEAD
-            int id = 0;
-            base.Setup();
-            PasswordHasher hash = new PasswordHasher();
-            dao = new UserSqlDAL(ConnectionString, new PasswordHasher());
-            string salt = Convert.ToBase64String(hash.GenerateRandomSalt());
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
-            {
-                connection.Open();
-                SqlCommand cmd = connection.CreateCommand();
-                cmd.CommandText = @"insert into Roles (roles_Title,role_Description) values ('Admin','Admin control' ),('Users','Generic User')";
-                cmd.ExecuteNonQuery();
-                cmd.CommandText = @"insert into UserLogin (first_Last_Name,userName,userRole,password,salt) values ('Gerg DinkleBerry','gdeckner','Admin',@password,@salt)";
-                cmd.Parameters.AddWithValue("@salt", "RrQlUO2CbmowsGDSpRhXZA==");
-                cmd.Parameters.AddWithValue("@password", "RrQlUO2CbmowsGDSpRhXZPGjRy1BEXkN3fdCrNs4xUJjxNcs");
-
-                cmd.ExecuteNonQuery();
-                
-
-                
-=======
 
             base.Setup();
             PasswordHasher hash = new PasswordHasher();
@@ -55,9 +31,6 @@ namespace WebApplication.Tests.DAL
 
                 cmd.ExecuteNonQuery();
 
-
-
->>>>>>> 558bc5054205df5ca447adcd7f84bdf88bd41853
             }
         }
         [TestMethod]
@@ -71,11 +44,7 @@ namespace WebApplication.Tests.DAL
         [TestMethod]
         public void PullUserRoleTest()
         {
-<<<<<<< HEAD
-            Assert.AreEqual( "Admin", dao.PullUserRole("gdeckner"));
-=======
             Assert.AreEqual("Admin", dao.PullUserRole("gdeckner"));
->>>>>>> 558bc5054205df5ca447adcd7f84bdf88bd41853
             Assert.AreNotEqual("User", dao.PullUserRole("gdeckner"));
         }
         [TestMethod]
@@ -89,9 +58,7 @@ namespace WebApplication.Tests.DAL
         [TestMethod]
         public void CreateUserTest()
         {
-<<<<<<< HEAD
-           
-=======
+
             User testUser = new User
             {
                 Name = "Merkle Chowbuster",
@@ -175,7 +142,6 @@ namespace WebApplication.Tests.DAL
 
 
 
->>>>>>> 558bc5054205df5ca447adcd7f84bdf88bd41853
         }
     }
 }
