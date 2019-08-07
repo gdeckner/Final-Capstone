@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -7,17 +8,17 @@ using WebApplication.Web.Models;
 
 namespace WebApplication.Web.DAL
 {
-    public class PayrollSqlDAL : IPayrollDAL
+    public class LocationSqlDAL
     {
         private readonly string connectionString;
 
-        public PayrollSqlDAL(string connectionString)
+        public LocationSqlDAL(string connectionString)
         {
             this.connectionString = connectionString;
         }
 
 
-        public bool CreatePayReport(PayrollTable report)
+        public bool CreateLocation(Models.Location location)
         {
             try
             {
@@ -25,18 +26,17 @@ namespace WebApplication.Web.DAL
                 {
                     connection.Open();
 
-                    SqlCommand command = new SqlCommand(@"INSERT INTO PayrollTable (UserId, StartDate, EndDate, IsApproved) VALUES(@UserId, @startdate, @enddate, @isapproved);", connection);
+                    SqlCommand command = new SqlCommand(@"INSERT INTO Locations (location_Title, location_Description) VALUES(@title, @description);", connection);
 
 
-                    command.Parameters.AddWithValue("@UserId", report.UserId);
-                    command.Parameters.AddWithValue("@startdate", report.StartDate);
-                    command.Parameters.AddWithValue("@enddate", report.EndDate);
-                    command.Parameters.AddWithValue("@isapproved", report.Approved);
+                    command.Parameters.AddWithValue("@title", location.Title);
+                    command.Parameters.AddWithValue("@description", location.Description);
+
 
 
                     command.ExecuteNonQuery();
 
-                    if (report.UserId == null || report.StartDate == null || report.EndDate == null || report.Approved == false)
+                    if (location.Title == null || location.Description == null)
                     {
                         return false;
                     }
@@ -54,7 +54,7 @@ namespace WebApplication.Web.DAL
 
         }
 
-        public bool DeleteReport(PayrollTable report)
+        public bool DeleteLocation(Models.Location location)
         {
             try
             {
@@ -62,13 +62,13 @@ namespace WebApplication.Web.DAL
                 {
                     connection.Open();
 
-                    SqlCommand cmd = new SqlCommand("DELETE FROM Tasks WHERE payroll_Id = @Id;", connection);
+                    SqlCommand cmd = new SqlCommand("DELETE FROM Locations WHERE location_Title = @title;", connection);
 
-                    cmd.Parameters.AddWithValue("@Id", report.UserId);
+                    cmd.Parameters.AddWithValue("@title", location.Title);
 
                     cmd.ExecuteNonQuery();
 
-                    if (report.UserId == null)
+                    if (location.Title == null)
                     {
                         return false;
                     }

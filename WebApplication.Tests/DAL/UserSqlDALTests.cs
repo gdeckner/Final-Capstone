@@ -13,7 +13,7 @@ namespace WebApplication.Tests.DAL
         [TestInitialize]
         public override void Setup()
         {
-            int id = 0;
+           
             base.Setup();
             PasswordHasher hash = new PasswordHasher();
             dao = new UserSqlDAL(ConnectionString, new PasswordHasher());
