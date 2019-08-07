@@ -57,5 +57,7 @@ namespace WebApplication.Web.Providers.Auth
         /// <param name="roles">One of the roles that the user can belong to.</param>
         /// <returns></returns>
         bool UserHasRole(string[] roles);
+
+        void DeleteUser(User user, string currentUser);
     }
 }

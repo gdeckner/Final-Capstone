@@ -14,7 +14,7 @@ namespace WebApplication.Tests.DAL
         [TestInitialize]
         public override void Setup()
         {
-           
+
             base.Setup();
             PasswordHasher hash = new PasswordHasher();
             dao = new UserSqlDAL(ConnectionString, new PasswordHasher());
@@ -30,9 +30,7 @@ namespace WebApplication.Tests.DAL
                 cmd.Parameters.AddWithValue("@password", "RrQlUO2CbmowsGDSpRhXZPGjRy1BEXkN3fdCrNs4xUJjxNcs");
 
                 cmd.ExecuteNonQuery();
-                
 
-                
             }
         }
         [TestMethod]
@@ -46,7 +44,7 @@ namespace WebApplication.Tests.DAL
         [TestMethod]
         public void PullUserRoleTest()
         {
-            Assert.AreEqual( "Admin", dao.PullUserRole("gdeckner"));
+            Assert.AreEqual("Admin", dao.PullUserRole("gdeckner"));
             Assert.AreNotEqual("User", dao.PullUserRole("gdeckner"));
         }
         [TestMethod]
@@ -60,6 +58,7 @@ namespace WebApplication.Tests.DAL
         [TestMethod]
         public void CreateUserTest()
         {
+
             User testUser = new User
             {
                 Name = "Merkle Chowbuster",
@@ -67,7 +66,7 @@ namespace WebApplication.Tests.DAL
                 Salt = "RrQlUO2CbmowsGDSpRhXZA==",
                 Role = "Users",
                 Username = "MChowbuster"
-                
+
             };
 
             dao.CreateUser(testUser);
@@ -78,7 +77,7 @@ namespace WebApplication.Tests.DAL
                 SqlCommand cmd = connection.CreateCommand();
                 cmd.CommandText = @"select * from UserLogin where userName = 'MChowbuster'";
                 SqlDataReader reader = cmd.ExecuteReader();
-                while(reader.Read())
+                while (reader.Read())
                 {
                     testUser.Name = (string)reader["first_Last_Name"];
                     testUser.Role = (string)reader["userRole"];
@@ -92,7 +91,57 @@ namespace WebApplication.Tests.DAL
         [TestMethod]
         public void DeleteUserTest()
         {
-            
+
+            int result;
+
+            User testUser = new User();
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                SqlCommand cmd = connection.CreateCommand();
+                cmd.CommandText = @"select * from UserLogin where userName = 'gdeckner'";
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    testUser.Name = (string)reader["first_Last_Name"];
+                    testUser.Role = (string)reader["userRole"];
+                    testUser.Password = (string)reader["password"];
+                    testUser.UserId = (int)reader["userId"];
+                    testUser.Username = (string)reader["userName"];
+                }
+            }
+
+
+            dao.DeleteUser(testUser, "gdeckner");
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                SqlCommand cmd = connection.CreateCommand();
+                cmd.CommandText = @"select * from UserLogin where userName = 'gdeckner'";
+                result = Convert.ToInt32(cmd.ExecuteScalar());
+
+            }
+
+            Assert.AreNotEqual(0, result);
+
+            dao.DeleteUser(testUser, "mcgyver");
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                SqlCommand cmd = connection.CreateCommand();
+                cmd.CommandText = @"select * from UserLogin where userName = 'gdeckner'";
+                result = Convert.ToInt32(cmd.ExecuteScalar());
+
+            }
+            Assert.AreEqual(0, result);
+
+
+
+
+
+
         }
     }
 }
