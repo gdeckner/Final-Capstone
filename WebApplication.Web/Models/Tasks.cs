@@ -21,10 +21,16 @@ namespace WebApplication.Web.Models
         public int? JobId { get; set; }
 
         /// <summary>
+        /// The task's title.
+        /// </summary>
+        [Required]
+        public string Title { get; set; }
+
+        /// <summary>
         /// The task's location.
         /// </summary>
         [Required]
-        public string Location { get; set; }
+        public int? LocationId { get; set; }
 
         /// <summary>
         /// 

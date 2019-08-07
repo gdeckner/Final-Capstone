@@ -53,5 +53,37 @@ namespace WebApplication.Web.DAL
             }
 
         }
+
+        public bool DeleteReport(PayrollTable report)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand cmd = new SqlCommand("DELETE FROM Tasks WHERE payroll_Id = @Id;", connection);
+
+                    cmd.Parameters.AddWithValue("@Id", report.UserId);
+
+                    cmd.ExecuteNonQuery();
+
+                    if (report.UserId == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (SqlException E)
+            {
+                Console.Write(E);
+                throw;
+            }
+
+        }
     }
 }

@@ -25,10 +25,8 @@ namespace WebApplication.Web.DAL
                 {
                     connection.Open();
 
-                    SqlCommand command = new SqlCommand(@"INSERT INTO Jobtable (Id, title) VALUES(@id, @title);", connection);
+                    SqlCommand command = new SqlCommand(@"INSERT INTO Jobs (job_title) VALUES(@title);", connection);
 
-
-                    command.Parameters.AddWithValue("@Id", job.JobId);
                     command.Parameters.AddWithValue("@title", job.Title);
 
                     command.ExecuteNonQuery();
@@ -59,7 +57,73 @@ namespace WebApplication.Web.DAL
                 {
                     connection.Open();
 
-                    SqlCommand command = new SqlCommand(@"INSERT INTO UserJobTable (Id, title) VALUES(@id, @title);", connection);
+                    SqlCommand command = new SqlCommand(@"INSERT INTO userJob (Id, title) VALUES(@id, @title);", connection);
+
+
+                    command.Parameters.AddWithValue("@JobId", assigned.JobId);
+                    command.Parameters.AddWithValue("@UserId", assigned.UserId);
+
+                    command.ExecuteNonQuery();
+
+                    if (assigned.JobId == null || assigned.UserId == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (SqlException E)
+            {
+                Console.WriteLine(E.Message);
+                return false;
+            }
+
+        }
+
+        public bool DeleteJob(Job job)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand cmd = new SqlCommand("DELETE FROM Jobs WHERE job_title = @title;", connection);
+
+                    cmd.Parameters.AddWithValue("@title", job.Title);
+
+                    cmd.ExecuteNonQuery();
+
+                    if (job.Title == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (SqlException E)
+            {
+                Console.Write(E);
+                throw;
+            }
+
+        }
+
+        public bool DeleteUserFromJob(UserJob assigned)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(@"DELETE FROM  (Id, title) VALUES(@id, @title);", connection);
 
 
                     command.Parameters.AddWithValue("@JobId", assigned.JobId);

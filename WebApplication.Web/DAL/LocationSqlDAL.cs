@@ -53,5 +53,37 @@ namespace WebApplication.Web.DAL
             }
 
         }
+
+        public bool DeleteLocation(Models.Location location)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand cmd = new SqlCommand("DELETE FROM Locations WHERE location_Title = @title;", connection);
+
+                    cmd.Parameters.AddWithValue("@title", location.Title);
+
+                    cmd.ExecuteNonQuery();
+
+                    if (location.Title == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (SqlException E)
+            {
+                Console.Write(E);
+                throw;
+            }
+
+        }
     }
 }
