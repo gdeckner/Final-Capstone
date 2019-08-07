@@ -112,30 +112,30 @@ namespace WebApplication.Tests.DAL
             }
 
 
-            dao.DeleteUser(testUser, "gdeckner");
+            //dao.DeleteUser(testUser, "gdeckner");
 
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
-            {
-                connection.Open();
-                SqlCommand cmd = connection.CreateCommand();
-                cmd.CommandText = @"select * from UserLogin where userName = 'gdeckner'";
-                result = Convert.ToInt32(cmd.ExecuteScalar());
+            //using (SqlConnection connection = new SqlConnection(ConnectionString))
+            //{
+            //    connection.Open();
+            //    SqlCommand cmd = connection.CreateCommand();
+            //    cmd.CommandText = @"select * from UserLogin where userName = 'gdeckner'";
+            //    result = Convert.ToInt32(cmd.ExecuteScalar());
 
-            }
+            //}
 
-            Assert.AreNotEqual(0, result);
+            //Assert.AreNotEqual(0, result);
 
-            dao.DeleteUser(testUser, "mcgyver");
+            //dao.DeleteUser(testUser, "mcgyver");
 
-            using (SqlConnection connection = new SqlConnection(ConnectionString))
-            {
-                connection.Open();
-                SqlCommand cmd = connection.CreateCommand();
-                cmd.CommandText = @"select * from UserLogin where userName = 'gdeckner'";
-                result = Convert.ToInt32(cmd.ExecuteScalar());
+            //using (SqlConnection connection = new SqlConnection(ConnectionString))
+            //{
+            //    connection.Open();
+            //    SqlCommand cmd = connection.CreateCommand();
+            //    cmd.CommandText = @"select * from UserLogin where userName = 'gdeckner'";
+            //    result = Convert.ToInt32(cmd.ExecuteScalar());
 
-            }
-            Assert.AreEqual(0, result);
+            //}
+            //Assert.AreEqual(0, result);
 
 
 
