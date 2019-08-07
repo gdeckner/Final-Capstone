@@ -21,12 +21,12 @@ namespace WebApplication.Web.Controllers
         }
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
-        [AuthorizationFilter("Admin", "Author", "Manager", "User", "1", "2")]  //<-- or filtered to only those that have a certain role
+        [AuthorizationFilter("Admin", "Author", "Manager", "User")]  //<-- or filtered to only those that have a certain role
         [HttpGet]
         public IActionResult Index()
         {
             var user = authProvider.GetCurrentUser();
-            if (user.Role == "1")
+            if (user.Role == "Admin")
             {
                 ViewBag.Users = authProvider.GetAllUsers();
                 return View("AdminIndex", user);
@@ -72,7 +72,7 @@ namespace WebApplication.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [AuthorizationFilter("Admin", "Author", "Manager", "1")]
+        [AuthorizationFilter("Admin", "Author", "Manager")]
         [HttpGet]
         public IActionResult Register()
         {
@@ -98,7 +98,7 @@ namespace WebApplication.Web.Controllers
         }
 
 
-        [AuthorizationFilter("Admin", "Author", "Manager", "User", "2", "1")]
+        [AuthorizationFilter("Admin", "Author", "Manager", "User")]
         [HttpGet]
         public IActionResult ChangePassword()
         {
