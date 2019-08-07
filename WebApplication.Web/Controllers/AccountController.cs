@@ -129,8 +129,9 @@ namespace WebApplication.Web.Controllers
         public IActionResult Delete(int id)
         {
             // todo fix delete user route
+            User currentUser = authProvider.GetCurrentUser();
 
-            //authProvider.DeleteUser(id);
+            authProvider.DeleteUser(id, currentUser.UserId);
 
             return RedirectToAction("Index", "Account");
         }
