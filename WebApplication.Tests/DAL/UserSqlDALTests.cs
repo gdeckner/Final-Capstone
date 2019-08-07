@@ -92,7 +92,41 @@ namespace WebApplication.Tests.DAL
         [TestMethod]
         public void DeleteUserTest()
         {
-            
+
+            int result;
+
+            User testUser = new User();
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                SqlCommand cmd = connection.CreateCommand();
+                cmd.CommandText = @"select * from UserLogin where userName = 'MChowbuster'";
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    testUser.Name = (string)reader["first_Last_Name"];
+                    testUser.Role = (string)reader["userRole"];
+                    testUser.Password = (string)reader["password"];
+                    testUser.UserId = (int)reader["userId"];
+                }
+            }
+
+            dao.DeleteUser(testUser);
+
+            using (SqlConnection connection = new SqlConnection(ConnectionString))
+            {
+                connection.Open();
+                SqlCommand cmd = connection.CreateCommand();
+                cmd.CommandText = @"select * from UserLogin where userName = 'MChowbuster'";
+                result = Convert.ToInt32(cmd.ExecuteScalar());
+                
+            }
+
+            Assert.AreEqual(0, result);
+
+
+
+
         }
     }
 }
