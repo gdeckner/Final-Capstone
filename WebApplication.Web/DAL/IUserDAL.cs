@@ -35,7 +35,8 @@ namespace WebApplication.Web.DAL
         /// Deletes a user from the system.
         /// </summary>
         /// <param name="user"></param>
-        void DeleteUser(int id);
+
+        void DeleteUser(User user, string currentUser);
 
         List<User> GetAllUsers();
     }

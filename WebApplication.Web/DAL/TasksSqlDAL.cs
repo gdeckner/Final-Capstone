@@ -25,13 +25,12 @@ namespace WebApplication.Web.DAL
                 {
                     connection.Open();
 
-                    SqlCommand command = new SqlCommand(@"INSERT INTO Jobtable (Id, title) VALUES(@id, @title);", connection);
+                    SqlCommand command = new SqlCommand(@"INSERT INTO Tasks (project_Task_Title, project_Task_Description, job_Id, location_Id) VALUES(@Title, @Description, @JobId, @Location);", connection);
 
-
-                    command.Parameters.AddWithValue("@TaskId", task.TaskId);
-                    command.Parameters.AddWithValue("@JobId", task.JobId);
-                    command.Parameters.AddWithValue("@Location", task.Location);
+                    command.Parameters.AddWithValue("@Title", task.Title);
                     command.Parameters.AddWithValue("@Description", task.Description);
+                    command.Parameters.AddWithValue("@JobId", task.JobId);
+                    command.Parameters.AddWithValue("@Location", task.LocationId);
 
                     command.ExecuteNonQuery();
 
@@ -53,6 +52,38 @@ namespace WebApplication.Web.DAL
             {
                 Console.WriteLine(e.Message);
                 return false;
+            }
+
+        }
+
+        public bool DeleteTask(Tasks task)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand cmd = new SqlCommand("DELETE FROM Tasks WHERE project_Task_Title = @title;", connection);
+
+                    cmd.Parameters.AddWithValue("@title", task.Title);
+
+                    cmd.ExecuteNonQuery();
+
+                    if (task.Title == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (SqlException E)
+            {
+                Console.Write(E);
+                throw;
             }
 
         }

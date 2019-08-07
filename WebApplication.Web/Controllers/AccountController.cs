@@ -20,8 +20,6 @@ namespace WebApplication.Web.Controllers
             this.jobDAL = jobDAL;
         }
 
-        
-
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
         [AuthorizationFilter("Admin", "Author", "Manager", "User", "1", "2")]  //<-- or filtered to only those that have a certain role
         [HttpGet]
@@ -99,7 +97,8 @@ namespace WebApplication.Web.Controllers
             return View(registerViewModel);
         }
 
-        [AuthorizationFilter("Admin", "Author", "Manager", "User", "2")]
+
+        [AuthorizationFilter("Admin", "Author", "Manager", "User", "2", "1")]
         [HttpGet]
         public IActionResult ChangePassword()
         {
@@ -129,7 +128,9 @@ namespace WebApplication.Web.Controllers
 
         public IActionResult Delete(int id)
         {
-            authProvider.DeleteUser(id);
+            // todo fix delete user route
+
+            //authProvider.DeleteUser(id);
 
             return RedirectToAction("Index", "Account");
         }

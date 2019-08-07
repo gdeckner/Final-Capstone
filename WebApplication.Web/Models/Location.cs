@@ -6,35 +6,22 @@ using System.Threading.Tasks;
 
 namespace WebApplication.Web.Models
 {
-    public class Tasks
+    public class Location
     {
         /// <summary>
-        /// The task's id.
-        /// </summary>
-        [Required]
-        public int? TaskId { get; set; }
-
-        /// <summary>
-        /// The task's job id.
-        /// </summary>
-        [Required]
-        public int? JobId { get; set; }
-
-        /// <summary>
-        /// The task's title.
-        /// </summary>
-        [Required]
-        public string Title { get; set; }
-
-        /// <summary>
-        /// The task's location.
+        /// The Location's id.
         /// </summary>
         [Required]
         public int? LocationId { get; set; }
 
         /// <summary>
-        /// 
-        /// The task's description.
+        /// The job's title.
+        /// </summary>
+        [Required]
+        public string Title { get; set; }
+
+        /// <summary>
+        /// The job's title.
         /// </summary>
         [Required]
         public string Description { get; set; }
