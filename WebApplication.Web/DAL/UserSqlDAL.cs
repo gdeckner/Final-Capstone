@@ -74,25 +74,38 @@ namespace WebApplication.Web.DAL
         /// Deletes the user from the database.
         /// </summary>
         /// <param name="user"></param>
-        public void DeleteUser(User user)
+
+        //public void DeleteUser(int id)
+
+        public void DeleteUser(User user,string currentUser)
+
         {
-            try
+
+            if(user.Username.ToLower() == currentUser.ToLower())
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+              //do nothing   
+            }
+            else
+            {
+                try
                 {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand("DELETE FROM users WHERE id = @id;", conn);
-                    cmd.Parameters.AddWithValue("@id", user.UserId);                    
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        SqlCommand cmd = new SqlCommand("DELETE FROM userLogin WHERE userId = @id;", conn);
+                        cmd.Parameters.AddWithValue("@id", user.UserId);
 
-                    cmd.ExecuteNonQuery();
+                        cmd.ExecuteNonQuery();
 
-                    return;
+                        return;
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    throw ex;
                 }
             }
-            catch (SqlException ex)
-            {
-                throw ex;
-            }
+           
         }
 
         /// <summary>

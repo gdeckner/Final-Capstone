@@ -145,5 +145,11 @@ namespace WebApplication.Web.Providers.Auth
         {
             return userDAL.GetAllUsers();
         }
+
+        public void DeleteUser(User user, string currentUser)
+        {
+            userDAL.DeleteUser(user, currentUser);
+        }
+
     }
 }
