@@ -136,6 +136,14 @@ namespace WebApplication.Web.Controllers
             return RedirectToAction("Index", "Account");
         }
 
+        [HttpGet]
+        public IActionResult CreateJob()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult CreateJob(Job job)
         {
             jobDAL.CreateNewJob(job);
