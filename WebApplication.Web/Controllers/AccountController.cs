@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using WebApplication.Web.DAL;
+using WebApplication.Web.Models;
 using WebApplication.Web.Models.Account;
 using WebApplication.Web.Providers.Auth;
 
@@ -11,10 +13,14 @@ namespace WebApplication.Web.Controllers
     public class AccountController : Controller
     {
         private readonly IAuthProvider authProvider;
-        public AccountController(IAuthProvider authProvider)
+        private readonly IJobDAL jobDAL;
+        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL)
         {
             this.authProvider = authProvider;
+            this.jobDAL = jobDAL;
         }
+
+        
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
         [AuthorizationFilter("Admin", "Author", "Manager", "User", "1", "2")]  //<-- or filtered to only those that have a certain role
@@ -124,6 +130,13 @@ namespace WebApplication.Web.Controllers
         public IActionResult Delete(int id)
         {
             authProvider.DeleteUser(id);
+
+            return RedirectToAction("Index", "Account");
+        }
+
+        public IActionResult CreateJob(Job job)
+        {
+            jobDAL.CreateNewJob(job);
 
             return RedirectToAction("Index", "Account");
         }
