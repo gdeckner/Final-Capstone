@@ -26,7 +26,7 @@ namespace WebApplication.Web.Controllers
         public IActionResult Index()
         {
             var user = authProvider.GetCurrentUser();
-            if (user.Role == "1")
+            if (user.Role == "Admin")
             {
                 ViewBag.Users = authProvider.GetAllUsers();
                 return View("AdminIndex", user);
