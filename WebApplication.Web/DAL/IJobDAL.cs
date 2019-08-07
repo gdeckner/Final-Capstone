@@ -11,6 +11,7 @@ namespace WebApplication.Web.DAL
         bool AssignUserToJob(UserJob assigned);
 
         bool CreateNewJob(Job job);
+        
  
     }
 }
