@@ -93,7 +93,7 @@ namespace WebApplication.Web.Controllers
             return View(registerViewModel);
         }
 
-        [AuthorizationFilter("Admin", "Author", "Manager", "User", "2")]
+        [AuthorizationFilter("Admin", "Author", "Manager", "User", "2", "1")]
         [HttpGet]
         public IActionResult ChangePassword()
         {
