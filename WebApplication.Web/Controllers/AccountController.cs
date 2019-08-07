@@ -55,7 +55,7 @@ namespace WebApplication.Web.Controllers
                 if (validLogin)
                 {
                     // Redirect the user where you want them to go after successful login
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Account");
                 }
             }
 
@@ -69,7 +69,7 @@ namespace WebApplication.Web.Controllers
             authProvider.LogOff();
 
             // Redirect the user where you want them to go after logoff
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Account");
         }
 
         [AuthorizationFilter("Admin", "Author", "Manager")]
@@ -120,7 +120,7 @@ namespace WebApplication.Web.Controllers
 
 
                 // Redirect the user where you want them to go after registering
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Account");
             }
 
             return View(changePasswordViewModel);
