@@ -58,6 +58,6 @@ namespace WebApplication.Web.Providers.Auth
         /// <returns></returns>
         bool UserHasRole(string[] roles);
 
-        void DeleteUser(User user, string currentUser);
+        void DeleteUser(int userToDeleteId, int currentUserId);
     }
 }

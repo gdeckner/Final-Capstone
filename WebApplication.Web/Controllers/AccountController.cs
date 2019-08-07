@@ -21,7 +21,7 @@ namespace WebApplication.Web.Controllers
         }
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
-        [AuthorizationFilter("Admin", "Author", "Manager", "User")]  //<-- or filtered to only those that have a certain role
+        [AuthorizationFilter("Admin", "Author", "Manager", "Users")]  //<-- or filtered to only those that have a certain role
         [HttpGet]
         public IActionResult Index()
         {
@@ -55,7 +55,7 @@ namespace WebApplication.Web.Controllers
                 if (validLogin)
                 {
                     // Redirect the user where you want them to go after successful login
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Account");
                 }
             }
 
@@ -69,7 +69,7 @@ namespace WebApplication.Web.Controllers
             authProvider.LogOff();
 
             // Redirect the user where you want them to go after logoff
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Account");
         }
 
         [AuthorizationFilter("Admin", "Author", "Manager")]
@@ -98,7 +98,7 @@ namespace WebApplication.Web.Controllers
         }
 
 
-        [AuthorizationFilter("Admin", "Author", "Manager", "User")]
+        [AuthorizationFilter("Admin", "Author", "Manager", "Users")]
         [HttpGet]
         public IActionResult ChangePassword()
         {
@@ -120,7 +120,7 @@ namespace WebApplication.Web.Controllers
 
 
                 // Redirect the user where you want them to go after registering
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Account");
             }
 
             return View(changePasswordViewModel);
@@ -129,8 +129,9 @@ namespace WebApplication.Web.Controllers
         public IActionResult Delete(int id)
         {
             // todo fix delete user route
+            User currentUser = authProvider.GetCurrentUser();
 
-            //authProvider.DeleteUser(id);
+            authProvider.DeleteUser(id, currentUser.UserId);
 
             return RedirectToAction("Index", "Account");
         }

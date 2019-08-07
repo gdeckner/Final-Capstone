@@ -112,7 +112,7 @@ namespace WebApplication.Tests.DAL
             }
 
 
-            dao.DeleteUser(testUser, "gdeckner");
+            dao.DeleteUser(testUser.UserId, testUser.UserId);
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {
@@ -125,7 +125,7 @@ namespace WebApplication.Tests.DAL
 
             Assert.AreNotEqual(0, result);
 
-            dao.DeleteUser(testUser, "mcgyver");
+            dao.DeleteUser(testUser.UserId, 999999);
 
             using (SqlConnection connection = new SqlConnection(ConnectionString))
             {

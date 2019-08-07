@@ -77,11 +77,10 @@ namespace WebApplication.Web.DAL
 
         //public void DeleteUser(int id)
 
-        public void DeleteUser(User user,string currentUser)
-
+        public void DeleteUser(int userToDeleteId, int currentUserId)
         {
 
-            if(user.Username.ToLower() == currentUser.ToLower())
+            if(userToDeleteId == currentUserId)
             {
               //do nothing   
             }
@@ -93,7 +92,7 @@ namespace WebApplication.Web.DAL
                     {
                         conn.Open();
                         SqlCommand cmd = new SqlCommand("DELETE FROM userLogin WHERE userId = @id;", conn);
-                        cmd.Parameters.AddWithValue("@id", user.UserId);
+                        cmd.Parameters.AddWithValue("@id", userToDeleteId);
 
                         cmd.ExecuteNonQuery();
 
