@@ -21,7 +21,7 @@ namespace WebApplication.Web.Controllers
         }
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
-        [AuthorizationFilter("Admin", "Author", "Manager", "User")]  //<-- or filtered to only those that have a certain role
+        [AuthorizationFilter("Admin", "Author", "Manager", "Users")]  //<-- or filtered to only those that have a certain role
         [HttpGet]
         public IActionResult Index()
         {
@@ -98,7 +98,7 @@ namespace WebApplication.Web.Controllers
         }
 
 
-        [AuthorizationFilter("Admin", "Author", "Manager", "User")]
+        [AuthorizationFilter("Admin", "Author", "Manager", "Users")]
         [HttpGet]
         public IActionResult ChangePassword()
         {
