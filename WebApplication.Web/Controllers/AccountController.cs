@@ -21,7 +21,7 @@ namespace WebApplication.Web.Controllers
         }
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
-        [AuthorizationFilter("Admin", "Author", "Manager", "Users")]  //<-- or filtered to only those that have a certain role
+        [AuthorizationFilter("Admin", "Users")]  //<-- or filtered to only those that have a certain role
         [HttpGet]
         public IActionResult Index()
         {
@@ -72,7 +72,7 @@ namespace WebApplication.Web.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [AuthorizationFilter("Admin", "Author", "Manager")]
+        [AuthorizationFilter("Admin")]
         [HttpGet]
         public IActionResult Register()
         {
@@ -98,7 +98,7 @@ namespace WebApplication.Web.Controllers
         }
 
 
-        [AuthorizationFilter("Admin", "Author", "Manager", "Users")]
+        [AuthorizationFilter("Admin", "Users")]
         [HttpGet]
         public IActionResult ChangePassword()
         {
@@ -136,7 +136,7 @@ namespace WebApplication.Web.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [AuthorizationFilter("Admin", "Author", "Manager")]
+        [AuthorizationFilter("Admin")]
         [HttpGet]
         public IActionResult CreateJob()
         {
@@ -150,6 +150,55 @@ namespace WebApplication.Web.Controllers
             jobDAL.CreateNewJob(job);
 
             return RedirectToAction("Index", "Account");
+        }
+
+        [AuthorizationFilter("Admin", "Author", "Manager")]
+        [HttpGet]
+        public IActionResult CreateProjectTasks()
+        {
+            // dao get job list
+            List<Job> jobs = new List<Job>();
+
+            jobs = jobDAL.GetJobList();
+
+            ViewBag.Jobs = jobs;
+            // pass job list to view
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateProjectTasks(Tasks task)
+        {
+            bool isSuccessful = jobDAL.CreateNewTask(task);
+
+            return RedirectToAction("Index", "Account");
+        }
+
+        [AuthorizationFilter("Admin", "Users")]
+        [HttpGet]
+        public IActionResult LogTime()
+        {
+            //TODO ViewBag.AvailableTasks = ???.GetAllTasks(authProvider.GetCurrentUser().UserId);
+
+            //TODO ViewBag.Locations = ???.GetAllLocations()
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult LogTime(LogTimeViewModel logTimeViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+
+                //authProvider.CreateNewHours(logTimeViewModel.CurrentPassword, logTimeViewModel.NewPassword);
+
+                return RedirectToAction("Index", "Account");
+            }
+
+            return View(logTimeViewModel);
         }
     }
 }

@@ -149,6 +149,76 @@ namespace WebApplication.Web.DAL
 
         }
 
-      
+        public List<Job> GetJobList()
+        {
+
+            List<Job> jobs = new List<Job>();
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(@"SELECT * FROM Jobs", connection);
+
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        jobs.Add(MapRowToJob(reader));
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+
+            return jobs;
+        }
+
+        public bool CreateNewTask(Tasks task)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(@"INSERT INTO Tasks (project_Task_Title, job_Id) VALUES (@title, @id);", connection);
+
+                    command.Parameters.AddWithValue("@title", task.Title);
+                    command.Parameters.AddWithValue("@id", task.JobId);
+
+                    command.ExecuteNonQuery();
+
+                    if (task.Title == null || task.JobId == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public Job MapRowToJob(SqlDataReader reader)
+        {
+            Job job = new Job();
+            job.JobId = Convert.ToInt32(reader["job_Id"]);
+            job.Title = Convert.ToString(reader["job_Title"]);
+
+            return job;
+        }
+
     }
 }

@@ -19,10 +19,5 @@ namespace WebApplication.Web.Models
         /// </summary>
         [Required]
         public int? JobId { get; set; }
-
-
-
-
-
     }
 }
