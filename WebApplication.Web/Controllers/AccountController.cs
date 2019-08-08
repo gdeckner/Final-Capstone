@@ -14,10 +14,12 @@ namespace WebApplication.Web.Controllers
     {
         private readonly IAuthProvider authProvider;
         private readonly IJobDAL jobDAL;
-        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL)
+        //private readonly ILocationDAL locationDAL;
+        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL/*, /*ILocationDAL locationDAL*/)
         {
             this.authProvider = authProvider;
             this.jobDAL = jobDAL;
+            //this.locationDAL = locationDAL;
         }
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
@@ -202,6 +204,27 @@ namespace WebApplication.Web.Controllers
 
             return View(changePasswordViewModel);
 
+        }
+
+        [HttpGet]
+        [AuthorizationFilter("Admin")]
+        public IActionResult AddJobLocation()
+        {
+            // change make new task in job sql dal move to task dal
+            // dao get all locations
+
+            //ViewBag.Locations = locationDAL.error
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddJobLocation(Location location)
+        {
+            //bool isSuccessful = locationDAL.CreateLocation(location);
+
+            return RedirectToAction("Index", "Account");
         }
     }
 }

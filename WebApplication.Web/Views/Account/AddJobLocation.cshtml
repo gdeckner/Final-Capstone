@@ -1,0 +1,19 @@
+﻿@model Location
+
+@{
+    ViewData["Title"] = "AddJobLocation";
+}
+
+<h2>AddJobLocation</h2>
+
+<form asp-action="AddJobLocation" method="get">
+    <label>New Location Title: </label>
+    <input type="text" asp-for="Title" />
+</form>
+
+@foreach(Location location in ViewBag.Locations)
+{
+    <ol>
+        <li>@location.Title</li>
+    </ol>
+}
