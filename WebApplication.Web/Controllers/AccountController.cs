@@ -186,7 +186,7 @@ namespace WebApplication.Web.Controllers
             User currentUser = authProvider.GetCurrentUser();
             ViewBag.AvailableTasks = taskDAL.GetAllTasks(currentUser.UserId);
 
-            ViewBag.Locations = loactionDAL.GetAllLocations();
+            ViewBag.Locations = locationDAL.GetAllLocations();
 
             return View();
         }
