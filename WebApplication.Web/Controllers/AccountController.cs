@@ -14,12 +14,12 @@ namespace WebApplication.Web.Controllers
     {
         private readonly IAuthProvider authProvider;
         private readonly IJobDAL jobDAL;
-        //private readonly ILocationDAL locationDAL;
-        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL/*, /*ILocationDAL locationDAL*/)
+        private readonly ILocationDAL locationDAL;
+        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL, ILocationDAL locationDAL)
         {
             this.authProvider = authProvider;
             this.jobDAL = jobDAL;
-            //this.locationDAL = locationDAL;
+            this.locationDAL = locationDAL;
         }
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
@@ -130,7 +130,6 @@ namespace WebApplication.Web.Controllers
 
         public IActionResult Delete(int id)
         {
-            // todo fix delete user route
             User currentUser = authProvider.GetCurrentUser();
 
             authProvider.DeleteUser(id, currentUser.UserId);
@@ -172,7 +171,8 @@ namespace WebApplication.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateProjectTasks(Tasks task)
         {
-            bool isSuccessful = jobDAL.CreateNewTask(task);
+            //bool isSuccessful = jobDAL.CreateNewTask(task);
+            //bool isSuccessful = 
 
             return RedirectToAction("Index", "Account");
         }
@@ -210,7 +210,7 @@ namespace WebApplication.Web.Controllers
             // change make new task in job sql dal move to task dal
             // dao get all locations
 
-            //ViewBag.Locations = locationDAL.error
+            ViewBag.Locations = locationDAL.GetAllLocations();
 
             return View();
         }
@@ -219,7 +219,7 @@ namespace WebApplication.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult AddJobLocation(Location location)
         {
-            //bool isSuccessful = locationDAL.CreateLocation(location);
+            bool isSuccessful = locationDAL.CreateLocation(location);
 
             return RedirectToAction("Index", "Account");
         }
