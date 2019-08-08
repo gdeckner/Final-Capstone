@@ -77,4 +77,6 @@ INSERT INTO Locations(location_Title, location_Description) VALUES('NANO_LAB', '
 INSERT INTO Locations(location_Title, location_Description) VALUES('ARC', 'ARC Industries Office');
 INSERT INTO Locations(location_Title, location_Description) VALUES('FCBDD', 'Franklin County Board of Developmental Disabilities');
 INSERT INTO Locations(location_Title, location_Description) VALUES('REM', 'Remote telework from other location');
+Insert into Jobs (job_Title) Values ('Holiday')
+
 
