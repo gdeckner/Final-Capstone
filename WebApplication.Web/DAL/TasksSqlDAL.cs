@@ -17,6 +17,27 @@ namespace WebApplication.Web.DAL
             this.connectionString = connectionString;
         }
 
+        public IList<Tasks> GetAllTasks(int userid)
+        {
+            IList<Tasks> taskList = new List<Tasks>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                connection.Open();
+                SqlCommand command = new SqlCommand(@"SELECT project_Task_ID, job_Id FROM tasks
+                                                    INNER JOIN userJob
+                                                    ON tasks.job_Id = userJob.job_Id
+                                                    WHERE userJob.job_id = @userId;", connection);
+                command.Parameters.AddWithValue("@userid", userid);
+                SqlDataReader reader = command.ExecuteReader();
+
+                taskList = MapTaskReader(reader);
+            }
+            return taskList;
+        }
+
+
         public bool CreateNewTask(Tasks task)
         {
             try
@@ -86,6 +107,23 @@ namespace WebApplication.Web.DAL
                 throw;
             }
 
+        }
+
+        private List<Tasks> MapTaskReader(SqlDataReader reader)
+        {
+            List<Tasks> tasks = new List<Tasks>();
+
+            while (reader.Read())
+            {
+                Tasks task = new Tasks
+                {
+                    TaskId = Convert.ToInt32(reader["taskId"]),
+                    JobId = Convert.ToInt32(reader["jobId"]),
+                };
+
+                tasks.Add(task);
+            }
+            return tasks;
         }
     }
 }
