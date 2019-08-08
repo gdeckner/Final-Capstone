@@ -24,14 +24,14 @@ namespace WebApplication.Web.DAL
                 {
                     connection.Open();
 
-                    SqlCommand command = new SqlCommand(@"INSERT INTO Hours (UserId, TaskID, TimeInHours, dateLogged) VALUES(@UserId, @TaskId, @TimeInHours, @Date);", connection);
+                    SqlCommand command = new SqlCommand(@"INSERT INTO Hours (UserId, TaskID, TimeInHours, dateLogged, location) VALUES(@UserId, @TaskId, @TimeInHours, @Date, @Location);", connection);
 
 
                     command.Parameters.AddWithValue("@UserId", hour.UserId);
                     command.Parameters.AddWithValue("@TaskId", hour.TaskId);
                     command.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
                     command.Parameters.AddWithValue("@Date", hour.Date);
-
+                    command.Parameters.AddWithValue("@Location", hour.Location);
 
                     command.ExecuteNonQuery();
 
