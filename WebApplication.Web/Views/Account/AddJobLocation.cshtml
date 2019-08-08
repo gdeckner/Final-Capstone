@@ -20,9 +20,11 @@
     </div>
 </form>
 
-@foreach(Location location in ViewBag.Locations)
-{
-    <ol>
-        <li>@location.Title</li>
-    </ol>
-}
+<ul>
+    @foreach (Location location in ViewBag.Locations)
+    {
+
+        <li>@location.Title - @location.Description</li>
+
+    }
+</ul>
