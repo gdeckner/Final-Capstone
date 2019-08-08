@@ -184,24 +184,19 @@ namespace WebApplication.Web.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        public IActionResult LogTime(ChangePasswordViewModel changePasswordViewModel)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult LogTime(LogTimeViewModel logTimeViewModel)
         {
             if (ModelState.IsValid)
             {
 
-                authProvider.ChangePassword(changePasswordViewModel.CurrentPassword, changePasswordViewModel.NewPassword);
+                //authProvider.CreateNewHours(logTimeViewModel.CurrentPassword, logTimeViewModel.NewPassword);
 
-                // Register them as a new user (and set default role)
-                // When a user registeres they need to be given a role. If you don't need anything special
-                // just give them "User".
-
-
-                // Redirect the user where you want them to go after registering
                 return RedirectToAction("Index", "Account");
             }
 
-            return View(changePasswordViewModel);
-
+            return View(logTimeViewModel);
         }
     }
 }

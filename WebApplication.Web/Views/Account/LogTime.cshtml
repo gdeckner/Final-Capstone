@@ -14,15 +14,30 @@
         <span asp-validation-for="Date"></span>
     </div>
     @*<div class="form-group">
-        <label asp-for="TaskId"></label>
-        <select>
-            @foreach (Tasks task in ViewBag.AvailableTasks)
-            {
-                <option value="@task.TaskId">@task.Title</option>
-            }
-        </select>
-        <span asp-validation-for="TaskId"></span>
-    </div>*@
+            <label asp-for="TaskId"></label>
+            <select>
+                @foreach (Tasks task in ViewBag.AvailableTasks)
+                {
+                    <option value="@task.TaskId">@task.Title</option>
+                }
+            </select>
+            <span asp-validation-for="TaskId"></span>
+        </div>*@
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <input type="text" asp-for="Description" />
+        <span asp-validation-for="Description"></span>
+    </div>
+    @*<div class="form-group">
+            <label asp-for="LocationId"></label>
+            <select>
+                @foreach (Location location in ViewBag.Locations)
+                {
+                    <option value="@location.LocationId">@location.Title</option>
+                }
+            </select>
+            <span asp-validation-for="LocationId"></span>
+        </div>*@
     <div class="form-group">
         <label asp-for="TimeInHours"></label>
         <input type="time" asp-for="TimeInHours" />
