@@ -21,7 +21,7 @@ namespace WebApplication.Web.Controllers
         }
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
-        [AuthorizationFilter("Admin", "Author", "Manager", "Users")]  //<-- or filtered to only those that have a certain role
+        [AuthorizationFilter("Admin", "Users")]  //<-- or filtered to only those that have a certain role
         [HttpGet]
         public IActionResult Index()
         {
@@ -72,7 +72,7 @@ namespace WebApplication.Web.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [AuthorizationFilter("Admin", "Author", "Manager")]
+        [AuthorizationFilter("Admin")]
         [HttpGet]
         public IActionResult Register()
         {
@@ -98,7 +98,7 @@ namespace WebApplication.Web.Controllers
         }
 
 
-        [AuthorizationFilter("Admin", "Author", "Manager", "Users")]
+        [AuthorizationFilter("Admin", "Users")]
         [HttpGet]
         public IActionResult ChangePassword()
         {
@@ -136,7 +136,7 @@ namespace WebApplication.Web.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [AuthorizationFilter("Admin", "Author", "Manager")]
+        [AuthorizationFilter("Admin")]
         [HttpGet]
         public IActionResult CreateJob()
         {
@@ -166,6 +166,15 @@ namespace WebApplication.Web.Controllers
             return View();
         }
 
+        [AuthorizationFilter("Admin", "Users")]
+        [HttpGet]
+        public IActionResult LogTime()
+        {
+            //TODO ViewBag.AvailableTasks = ???.GetAllTasks(authProvider.GetCurrentUser().UserId);
+
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreateProjectTasks(Tasks task)
@@ -173,6 +182,26 @@ namespace WebApplication.Web.Controllers
             bool isSuccessful = jobDAL.CreateNewTask(task);
 
             return RedirectToAction("Index", "Account");
+        }
+
+        public IActionResult LogTime(ChangePasswordViewModel changePasswordViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+
+                authProvider.ChangePassword(changePasswordViewModel.CurrentPassword, changePasswordViewModel.NewPassword);
+
+                // Register them as a new user (and set default role)
+                // When a user registeres they need to be given a role. If you don't need anything special
+                // just give them "User".
+
+
+                // Redirect the user where you want them to go after registering
+                return RedirectToAction("Index", "Account");
+            }
+
+            return View(changePasswordViewModel);
+
         }
     }
 }
