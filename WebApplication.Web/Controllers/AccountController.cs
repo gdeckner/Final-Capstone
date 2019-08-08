@@ -14,10 +14,14 @@ namespace WebApplication.Web.Controllers
     {
         private readonly IAuthProvider authProvider;
         private readonly IJobDAL jobDAL;
-        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL)
+        private readonly ITaskDAL taskDAL;
+        private readonly ILocationDAL locationDAL;
+        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL, ITaskDAL taskDAL, ILocationDAL locationDAL)
         {
             this.authProvider = authProvider;
             this.jobDAL = jobDAL;
+            this.taskDAL = taskDAL;
+            this.locationDAL = locationDAL;
         }
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
@@ -179,9 +183,10 @@ namespace WebApplication.Web.Controllers
         [HttpGet]
         public IActionResult LogTime()
         {
-            //TODO ViewBag.AvailableTasks = ???.GetAllTasks(authProvider.GetCurrentUser().UserId);
+            User currentUser = authProvider.GetCurrentUser();
+            ViewBag.AvailableTasks = taskDAL.GetAllTasks(currentUser.UserId);
 
-            //TODO ViewBag.Locations = ???.GetAllLocations()
+            ViewBag.Locations = loactionDAL.GetAllLocations();
 
             return View();
         }
