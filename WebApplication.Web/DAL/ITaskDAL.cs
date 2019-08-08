@@ -10,5 +10,7 @@ namespace WebApplication.Web.DAL
     {
         bool CreateNewTask(Tasks task);
 
+        IList<Tasks> GetAllTasks(int userid);
+
     }
 }
