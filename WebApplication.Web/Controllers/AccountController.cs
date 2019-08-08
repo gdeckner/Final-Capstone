@@ -14,11 +14,14 @@ namespace WebApplication.Web.Controllers
     {
         private readonly IAuthProvider authProvider;
         private readonly IJobDAL jobDAL;
-
-        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL)
+        private readonly ITaskDAL taskDAL;
+        private readonly ILocationDAL locationDAL;
+        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL, ITaskDAL taskDAL, ILocationDAL locationDAL)
         {
             this.authProvider = authProvider;
             this.jobDAL = jobDAL;
+            this.taskDAL = taskDAL;
+            this.locationDAL = locationDAL;
         }
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
@@ -167,15 +170,6 @@ namespace WebApplication.Web.Controllers
             return View();
         }
 
-        [AuthorizationFilter("Admin", "Users")]
-        [HttpGet]
-        public IActionResult LogTime()
-        {
-            //TODO ViewBag.AvailableTasks = ???.GetAllTasks(authProvider.GetCurrentUser().UserId);
-
-            return View();
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreateProjectTasks(Tasks task)
@@ -183,6 +177,18 @@ namespace WebApplication.Web.Controllers
             bool isSuccessful = jobDAL.CreateNewTask(task);
 
             return RedirectToAction("Index", "Account");
+        }
+
+        [AuthorizationFilter("Admin", "Users")]
+        [HttpGet]
+        public IActionResult LogTime()
+        {
+            User currentUser = authProvider.GetCurrentUser();
+            ViewBag.AvailableTasks = taskDAL.GetAllTasks(currentUser.UserId);
+
+            ViewBag.Locations = locationDAL.GetAllLocations();
+
+            return View();
         }
 
         [HttpPost]
