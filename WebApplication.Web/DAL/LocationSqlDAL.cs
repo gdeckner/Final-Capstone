@@ -83,7 +83,6 @@ namespace WebApplication.Web.DAL
                 Console.Write(E);
                 throw;
             }
-
         }
     }
 }
