@@ -24,7 +24,7 @@ namespace WebApplication.Web.DAL
                 {
                     connection.Open();
 
-                    SqlCommand command = new SqlCommand(@"INSERT INTO Jobtable (UserId, TaskID, TimeInHours, Date) VALUES(@UserId, @TaskId, @TimeInHours, @Date);", connection);
+                    SqlCommand command = new SqlCommand(@"INSERT INTO Hours (UserId, TaskID, TimeInHours, dateLogged) VALUES(@UserId, @TaskId, @TimeInHours, @Date);", connection);
 
 
                     command.Parameters.AddWithValue("@UserId", hour.UserId);

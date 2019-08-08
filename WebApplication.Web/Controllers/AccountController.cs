@@ -136,6 +136,7 @@ namespace WebApplication.Web.Controllers
             return RedirectToAction("Index", "Account");
         }
 
+        [AuthorizationFilter("Admin", "Author", "Manager")]
         [HttpGet]
         public IActionResult CreateJob()
         {
