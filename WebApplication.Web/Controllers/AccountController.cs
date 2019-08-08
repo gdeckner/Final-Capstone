@@ -166,15 +166,6 @@ namespace WebApplication.Web.Controllers
             return View();
         }
 
-        [AuthorizationFilter("Admin", "Users")]
-        [HttpGet]
-        public IActionResult LogTime()
-        {
-            //TODO ViewBag.AvailableTasks = ???.GetAllTasks(authProvider.GetCurrentUser().UserId);
-
-            return View();
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult CreateProjectTasks(Tasks task)
@@ -182,6 +173,17 @@ namespace WebApplication.Web.Controllers
             bool isSuccessful = jobDAL.CreateNewTask(task);
 
             return RedirectToAction("Index", "Account");
+        }
+
+        [AuthorizationFilter("Admin", "Users")]
+        [HttpGet]
+        public IActionResult LogTime()
+        {
+            //TODO ViewBag.AvailableTasks = ???.GetAllTasks(authProvider.GetCurrentUser().UserId);
+
+            //TODO ViewBag.Locations = ???.GetAllLocations()
+
+            return View();
         }
 
         [HttpPost]
