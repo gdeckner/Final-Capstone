@@ -82,7 +82,6 @@ namespace WebApplication.Web.DAL
                 Console.Write(E);
                 throw;
             }
-
         }
 
         public IList<Models.Location> GetAllLocations()

@@ -14,6 +14,7 @@ namespace WebApplication.Web.Controllers
     {
         private readonly IAuthProvider authProvider;
         private readonly IJobDAL jobDAL;
+
         public AccountController(IAuthProvider authProvider, IJobDAL jobDAL)
         {
             this.authProvider = authProvider;

@@ -24,7 +24,7 @@ namespace WebApplication.Web.Models
         /// The user's time worked in hours.
         /// </summary>
         [Required]
-        public decimal TimeInHours { get; set; }
+        public decimal? TimeInHours { get; set; }
 
         /// <summary>
         /// The user's date of work.
