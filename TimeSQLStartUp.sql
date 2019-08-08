@@ -58,6 +58,13 @@ Create table userJob
 userID int foreign key references UserLogin(userId),
 job_Id int foreign key references Jobs(job_Id)
 )
+create table Hours
+(
+	userID int foreign key references UserLogin(userId),
+	taskId int foreign key references Tasks(project_Task_ID),
+	timeInHours decimal (4,2),
+	dateLogged date 
+)
 insert into Roles (roles_Title,role_Description) values ('Admin','Admin control' ),('Users','Generic User')
 insert into UserLogin (first_Last_Name, userName,userRole,password,salt) 
 values('Default Admin', 'Admin','Admin','qmtnGXtPXRXBLwrAJDC7wvz3msY=','nhyQHUYxoa0=')
