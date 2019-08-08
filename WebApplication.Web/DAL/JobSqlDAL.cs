@@ -149,6 +149,38 @@ namespace WebApplication.Web.DAL
 
         }
 
-      
+        public List<Job> GetJobList()
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(@"INSERT INTO Jobs (job_title) VALUES(@title);", connection);
+
+                    command.Parameters.AddWithValue("@title", job.Title);
+
+                    command.ExecuteNonQuery();
+
+                    if (job.JobId == null || job.Title == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+
+        }
+
+
     }
 }

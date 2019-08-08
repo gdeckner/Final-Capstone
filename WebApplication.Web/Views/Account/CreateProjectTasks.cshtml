@@ -1,0 +1,19 @@
+﻿@model Tasks
+
+@{
+    ViewData["Title"] = "CreateProjectTasks";
+}
+
+<h2>CreateProjectTasks</h2>
+
+<form asp-action="CreateProjectTasks" method="post">
+    <select>
+        @foreach (Job job in JobList)
+        {
+
+        }
+        <option></option>
+    </select>
+    <input type="text" asp-for="Title" />
+</form>
+

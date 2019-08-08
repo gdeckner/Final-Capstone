@@ -150,5 +150,15 @@ namespace WebApplication.Web.Controllers
 
             return RedirectToAction("Index", "Account");
         }
+
+        [HttpGet]
+        public IActionResult CreateProjectTasks()
+        {
+            // dao get job list
+
+
+            // pass job list to view
+            return View();
+        }
     }
 }
