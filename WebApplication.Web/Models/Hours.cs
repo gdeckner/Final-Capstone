@@ -33,7 +33,13 @@ namespace WebApplication.Web.Models
         public DateTime Date { get; set; }
 
         /// <summary>
-        /// The user's date of work.
+        /// The user's description of work.
+        /// </summary>
+        [Required]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// The user's location of work.
         /// </summary>
         [Required]
         public string Location { get; set; }
