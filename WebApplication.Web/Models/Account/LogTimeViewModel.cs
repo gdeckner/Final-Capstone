@@ -26,5 +26,13 @@ namespace WebApplication.Web.Models.Account
         [Required]
         [Display(Name = "Date")]
         public DateTime Date { get; set; }
+
+        [Required]
+        [Display(Name = "Description")]
+        public string Description { get; set; }
+
+        [Required]
+        [Display(Name = "Location")]
+        public int LocationId { get; set; }
     }
 }
