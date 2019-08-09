@@ -68,7 +68,7 @@ namespace WebApplication.Web.DAL
                 {
 
                     connection.Open();
-                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location, isSubmitted,isApproved FROM Hours
                                                     WHERE userID = @userId;", connection);
 
                     command.Parameters.AddWithValue("@userid", userId);
@@ -84,7 +84,7 @@ namespace WebApplication.Web.DAL
                 {
 
                     connection.Open();
-                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location, isSubmitted,isApproved FROM Hours
                                                     WHERE userID = @userId
                                                     AND dateLogged BETWEEN CONVERT(datetime, @thirtyDays) AND CONVERT(datetime, @currentDays);", connection);
 
@@ -120,6 +120,8 @@ namespace WebApplication.Web.DAL
                     Date = Convert.ToDateTime(reader["dateLogged"]),
                     Description = Convert.ToString(reader["description"]),
                     Location = Convert.ToString(reader["location"]),
+                    IsApproved = Convert.ToBoolean(reader["isApproved"]),
+                    IsSubmitted = Convert.ToBoolean(reader["isApproved"])
                 };
 
                 hours.Add(hour);

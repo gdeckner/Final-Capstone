@@ -85,9 +85,12 @@ INSERT INTO Locations(location_Title, location_Description) VALUES('ARC', 'ARC I
 INSERT INTO Locations(location_Title, location_Description) VALUES('FCBDD', 'Franklin County Board of Developmental Disabilities');
 INSERT INTO Locations(location_Title, location_Description) VALUES('REM', 'Remote telework from other location');
 Insert into Jobs (job_Title) Values ('Holiday'),('QA Tester'),('President')
-insert into userJob (userID,job_Id) values (02,02)
-Insert into Tasks (job_Id,location_Id,project_Task_Title) Values (02,02,'Database Tester'),(03,01,'Watching Coder Monkey')
+insert into userJob (userID,job_Id) values (03,03)
+Insert into Tasks (job_Id,location_Id,project_Task_Title) Values (03,03,'Database Tester'),(03,01,'Watching Coder Monkey')
 insert into Hours (userID,taskId,dateLogged,location,timeInHours) Values (03,01,'08/02/2019','NANO_LAB',7.8),
 (03,01,'08/03/2019','NANO_LAB',8),(02,02,'08/09/2019','NANO_LAB',13)
 
-
+SELECT project_Task_ID, tasks.job_Id, project_Task_Title, userJob.userid FROM tasks
+                                                    INNER JOIN userJob
+                                                    ON tasks.job_Id = userJob.job_Id
+                                                    WHERE userJob.userid = 3
