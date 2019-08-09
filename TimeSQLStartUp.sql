@@ -47,7 +47,6 @@ Create table Tasks
 (
 	project_Task_ID int identity (1,1) primary key,
 	project_Task_Title varchar (100),
-	project_Task_Description varchar(max),
 	job_Id int foreign key references Jobs(job_Id),
 	location_Id int foreign key references Locations(location_Id)
 	
@@ -62,6 +61,8 @@ create table Hours
 (
 	userID int foreign key references UserLogin(userId),
 	taskId int foreign key references Tasks(project_Task_ID),
+	description varchar(max),
+	location varchar(100),
 	timeInHours decimal (4,2),
 	dateLogged date 
 )

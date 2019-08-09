@@ -57,6 +57,11 @@ namespace WebApplication.Tests.DAL
             Assert.AreNotEqual("President", testJob.Title);
 
         }
+        [TestMethod]
+        public void PullJobTests()
+        {
+            dao.GetJobList();
+        }
         
     }
 }
