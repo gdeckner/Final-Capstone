@@ -55,12 +55,12 @@ namespace WebApplication.Web.DAL
             }
         }
 
-        public IList<Hours> GetAllHours(int userId, DateTime startvalue, DateTime endvalue, DateTime current)
+        public IList<Hours> GetAllHours(int userId)
         {
             IList<Hours> defaultHoursList = new List<Hours>();
             IList<Hours> specificHoursList = new List<Hours>();
 
-            if (startvalue != null && endvalue != null)
+            if (false)
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
