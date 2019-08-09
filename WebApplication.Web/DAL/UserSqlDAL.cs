@@ -94,7 +94,7 @@ namespace WebApplication.Web.DAL
                         SqlCommand cmd = new SqlCommand(@"
                         Delete from Payroll WHERE userId = @id 
                         Delete from Hours WHERE userId = @id
-                        Delete from UserJobs WHERE userId = @id
+                        Delete from UserJob WHERE userId = @id
                         DELETE FROM userLogin WHERE userId = @id;", conn);
                         cmd.Parameters.AddWithValue("@id", userToDeleteId);
 
