@@ -123,8 +123,7 @@ namespace WebApplication.Tests.DAL
             DateTime start = Convert.ToDateTime("08-08-2019");
             DateTime end = Convert.ToDateTime("08-12-2019");
             DateTime current = DateTime.Now;
-            pulledHours = dao.GetAllHours(testhours.UserId,start,end,current);
-
+   
             Assert.AreEqual(testhours, pulledHours[0]); //Need to fix time comparison
 
 

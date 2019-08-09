@@ -26,7 +26,7 @@ namespace WebApplication.Web.DAL
                 {
                     connection.Open();
 
-                    SqlCommand command = new SqlCommand(@"INSERT INTO Hours (UserId, TaskID, TimeInHours, dateLogged, description, location) VALUES(@UserId, @TaskId, @TimeInHours, @Date, @Description, @Location);", connection);
+                    SqlCommand command = new SqlCommand(@"INSERT INTO Hours (UserId, TaskID, TimeInHours, dateLogged, description, location, isSubmitted,isApproved) VALUES(@UserId, @TaskId, @TimeInHours, @Date, @Description, @Location,@isSubbmited,@isApproved);", connection);
 
 
                     command.Parameters.AddWithValue("@UserId", hour.UserId);
@@ -35,6 +35,8 @@ namespace WebApplication.Web.DAL
                     command.Parameters.AddWithValue("@Date", hour.Date);
                     command.Parameters.AddWithValue("@Description", hour.Description);
                     command.Parameters.AddWithValue("@Location", hour.Location);
+                    command.Parameters.AddWithValue("@isSubmitted", hour.IsSubmitted);
+                    command.Parameters.AddWithValue("@isApproved", hour.IsApproved);
 
                     command.ExecuteNonQuery();
 
@@ -66,7 +68,7 @@ namespace WebApplication.Web.DAL
                 {
 
                     connection.Open();
-                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location, isSubmitted,isApproved FROM Hours
                                                     WHERE userID = @userId;", connection);
 
                     command.Parameters.AddWithValue("@userid", userId);
@@ -82,7 +84,7 @@ namespace WebApplication.Web.DAL
                 {
 
                     connection.Open();
-                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location, isSubmitted,isApproved FROM Hours
                                                     WHERE userID = @userId
                                                     AND dateLogged BETWEEN CONVERT(datetime, @thirtyDays) AND CONVERT(datetime, @currentDays);", connection);
 
@@ -118,6 +120,8 @@ namespace WebApplication.Web.DAL
                     Date = Convert.ToDateTime(reader["dateLogged"]),
                     Description = Convert.ToString(reader["description"]),
                     Location = Convert.ToString(reader["location"]),
+                    IsApproved = Convert.ToBoolean(reader["isApproved"]),
+                    IsSubmitted = Convert.ToBoolean(reader["isApproved"])
                 };
 
                 hours.Add(hour);
