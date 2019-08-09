@@ -27,12 +27,20 @@ namespace WebApplication.Web.Models
         [Display(Name = "Date")]
         public DateTime Date { get; set; }
 
+        /// <summary>
+        /// The user's description of work.
+        /// </summary>
         [Required]
         [Display(Name = "Description")]
         public string Description { get; set; }
 
+        /// <summary>
+        /// The user's location of work.
+        /// </summary>
         [Required]
         [Display(Name = "Location")]
-        public int LocationId { get; set; }
+        public string Location { get; set; }
+
+
     }
 }

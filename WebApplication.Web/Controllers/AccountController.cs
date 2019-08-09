@@ -134,7 +134,6 @@ namespace WebApplication.Web.Controllers
 
         public IActionResult Delete(int id)
         {
-            // todo fix delete user route
             User currentUser = authProvider.GetCurrentUser();
 
             authProvider.DeleteUser(id, currentUser.UserId);
@@ -162,13 +161,13 @@ namespace WebApplication.Web.Controllers
         [HttpGet]
         public IActionResult CreateProjectTasks()
         {
-            // dao get job list
+
             List<Job> jobs = new List<Job>();
 
             jobs = jobDAL.GetJobList();
 
             ViewBag.Jobs = jobs;
-            // pass job list to view
+
             return View();
         }
 
@@ -176,7 +175,7 @@ namespace WebApplication.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateProjectTasks(Tasks task)
         {
-            bool isSuccessful = jobDAL.CreateNewTask(task);
+            bool isSuccessful = taskDAL.CreateNewTask(task);
 
             return RedirectToAction("Index", "Account");
         }
@@ -207,6 +206,27 @@ namespace WebApplication.Web.Controllers
             }
 
             return View(hours);
+        }
+
+        [HttpGet]
+        [AuthorizationFilter("Admin")]
+        public IActionResult AddJobLocation()
+        {
+            // change make new task in job sql dal move to task dal
+            // dao get all locations
+
+            ViewBag.Locations = locationDAL.GetAllLocations();
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddJobLocation(Location location)
+        {
+            bool isSuccessful = locationDAL.CreateLocation(location);
+
+            return RedirectToAction("Index", "Account");
         }
     }
 }
