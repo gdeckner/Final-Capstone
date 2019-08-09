@@ -10,8 +10,11 @@ namespace WebApplication.Web.DAL
     public class HoursSqlDAL : IHoursDAL
     {
         private readonly string connectionString;
-        private DateTime current = DateTime.Today;
-        private DateTime thirtyDaysAgo = DateTime.Now.AddDays(-30);
+        private readonly DateTime current = DateTime.Today;
+        private readonly DateTime lastMonth = DateTime.Now.AddDays(-30);
+        private readonly DateTime lastWeek = DateTime.Now.AddDays(-7);
+        private readonly DateTime lastQuarter = DateTime.Now.AddDays(-120);
+
 
         public HoursSqlDAL(string connectionString)
         {
@@ -26,7 +29,7 @@ namespace WebApplication.Web.DAL
                 {
                     connection.Open();
 
-                    SqlCommand command = new SqlCommand(@"INSERT INTO Hours (UserId, TaskID, TimeInHours, dateLogged, description, location, isSubmitted,isApproved) VALUES(@UserId, @TaskId, @TimeInHours, @Date, @Description, @Location,@isSubbmited,@isApproved);", connection);
+                    SqlCommand command = new SqlCommand(@"INSERT INTO Hours (UserId, TaskID, TimeInHours, dateLogged, description, location) VALUES(@UserId, @TaskId, @TimeInHours, @Date, @Description, @Location);", connection);
 
 
                     command.Parameters.AddWithValue("@UserId", hour.UserId);
@@ -35,8 +38,6 @@ namespace WebApplication.Web.DAL
                     command.Parameters.AddWithValue("@Date", hour.Date);
                     command.Parameters.AddWithValue("@Description", hour.Description);
                     command.Parameters.AddWithValue("@Location", hour.Location);
-                    command.Parameters.AddWithValue("@isSubmitted", hour.IsSubmitted);
-                    command.Parameters.AddWithValue("@isApproved", hour.IsApproved);
 
                     command.ExecuteNonQuery();
 
@@ -84,13 +85,13 @@ namespace WebApplication.Web.DAL
                 {
 
                     connection.Open();
-                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location, isSubmitted,isApproved FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location FROM Hours
                                                     WHERE userID = @userId
-                                                    AND dateLogged BETWEEN CONVERT(datetime, @thirtyDays) AND CONVERT(datetime, @currentDays);", connection);
+                                                    AND dateLogged BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays);", connection);
 
                     command.Parameters.AddWithValue("@userid", userId);
                     command.Parameters.AddWithValue("@currentDays", current);
-                    command.Parameters.AddWithValue("@thirtyDays", thirtyDaysAgo);
+                    command.Parameters.AddWithValue("@lastMonth", lastMonth);
 
 
                     SqlDataReader reader = command.ExecuteReader();
@@ -120,8 +121,6 @@ namespace WebApplication.Web.DAL
                     Date = Convert.ToDateTime(reader["dateLogged"]),
                     Description = Convert.ToString(reader["description"]),
                     Location = Convert.ToString(reader["location"]),
-                    IsApproved = Convert.ToBoolean(reader["isApproved"]),
-                    IsSubmitted = Convert.ToBoolean(reader["isApproved"])
                 };
 
                 hours.Add(hour);
@@ -129,6 +128,54 @@ namespace WebApplication.Web.DAL
             return hours;
         }
 
-       
+        public IList<Hours> GetTimeReport(int userid, string duration)
+        {
+
+            IList<Hours> payrollLog = new List<Hours>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                connection.Open();
+                if (duration == "1W")
+                {
+                    SqlCommand command = new SqlCommand(@"SELECT Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateLogged, Hours.description, Hours.location FROM Hours
+                                                    WHERE userID = @userId
+                                                    AND dateLogged BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays);", connection);
+                    command.Parameters.AddWithValue("@userid", userid);
+                    command.Parameters.AddWithValue("@currentDays", current);
+                    command.Parameters.AddWithValue("@lastMonth", lastMonth);
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    payrollLog = MapHoursToReader(reader);
+                }
+                if (duration == "1M")
+                {
+                    SqlCommand command = new SqlCommand(@"SELECT Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateLogged, Hours.description, Hours.location FROM Hours
+                                                    WHERE userID = @userId
+                                                    AND dateLogged BETWEEN CONVERT(datetime, @lastWeek) AND CONVERT(datetime, @currentDays);", connection);
+                    command.Parameters.AddWithValue("@userid", userid);
+                    command.Parameters.AddWithValue("@currentDays", current);
+                    command.Parameters.AddWithValue("@lastWeek", lastWeek);
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    payrollLog = MapHoursToReader(reader);
+                }
+                if (duration == "1Q")
+                {
+                    SqlCommand command = new SqlCommand(@"SELECT Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateLogged, Hours.description, Hours.location FROM Hours
+                                                    WHERE userID = @userId
+                                                    AND dateLogged BETWEEN CONVERT(datetime, @lastQuarter) AND CONVERT(datetime, @currentDays);", connection);
+                    command.Parameters.AddWithValue("@userid", userid);
+                    command.Parameters.AddWithValue("@currentDays", current);
+                    command.Parameters.AddWithValue("@lastQuarter", lastQuarter);
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    payrollLog = MapHoursToReader(reader);
+                }
+            }
+
+            return payrollLog;
+        }
     }
 }

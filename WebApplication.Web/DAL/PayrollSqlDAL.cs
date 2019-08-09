@@ -85,5 +85,47 @@ namespace WebApplication.Web.DAL
             }
 
         }
+
+        public IList<PayrollTable> GetTimeReport(int userid)
+        {
+            
+            IList<PayrollTable> payrollLog = new List<PayrollTable>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                connection.Open();
+                SqlCommand command = new SqlCommand(@"SELECT payroll.user_Id, payroll.startDate, payroll.endDate, payroll.isSub FROM payroll
+                                                    INNER JOIN userJob
+                                                    ON payroll.user_Id = hours.user_Id
+                                                    WHERE payroll.userid = @userId;", connection);
+                command.Parameters.AddWithValue("@userid", userid);
+                SqlDataReader reader = command.ExecuteReader();
+
+                payrollLog = MapPayrollReader(reader);
+            }
+
+            return payrollLog;
+        }
+
+        private List<PayrollTable> MapPayrollReader(SqlDataReader reader)
+        {
+            List<PayrollTable> reports = new List<PayrollTable>();
+
+            while (reader.Read())
+            {
+                PayrollTable report = new PayrollTable
+                {
+                    UserId = Convert.ToInt32(reader["userId"]),
+                    StartDate = Convert.ToDateTime(reader["startDate"]),
+                    EndDate = Convert.ToDateTime(reader["endDate"]),
+                    Approved = Convert.ToBoolean(reader["isApproved"]),
+                    Submitted = Convert.ToBoolean(reader["isSubmitted"]),
+                };
+
+                reports.Add(report);
+            }
+            return reports;
+        }
     }
 }
