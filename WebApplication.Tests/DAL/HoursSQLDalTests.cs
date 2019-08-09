@@ -91,5 +91,25 @@ namespace WebApplication.Tests.DAL
             Assert.AreEqual(testhours.TaskId, pulledHours.TaskId);
             Assert.AreEqual(testhours.TimeInHours, pulledHours.TimeInHours);
         }
+        [TestMethod]
+        public void PulledHoursTest()
+        {
+            Hours testhours = new Hours
+            {
+                Date = DateTime.Today,
+                TaskId = TaskId,
+                TimeInHours = 7.60M,
+                UserId = UserId
+
+
+            };
+            dao.CreateNewHours(testhours);
+            Hours pulledHours = new Hours();
+            pulledHours = dao.PullLoggedHours(testhours.UserId);
+
+            Assert.AreEqual(testhours, pulledHours);
+        }
+
+        
     }
 }

@@ -9,5 +9,7 @@ namespace WebApplication.Web.DAL
     public interface IHoursDAL
     {
         bool CreateNewHours(Hours hour);
+
+        Hours PullLoggedHours(int? userId);
     }
 }

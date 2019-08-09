@@ -52,5 +52,28 @@ namespace WebApplication.Web.DAL
             }
 
         }
+
+        public Hours PullLoggedHours(int? userId)
+        {
+            Hours pulledHours = new Hours();
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+                SqlCommand cmd = connection.CreateCommand();
+                cmd.CommandText = @"select * from Hours where userId = @userId";
+                cmd.Parameters.AddWithValue("@userId", userId);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    pulledHours.Date = (DateTime)reader["dateLogged"];
+                    pulledHours.TaskId = (int)reader["taskId"];
+                    pulledHours.UserId = (int)reader["userId"];
+                    pulledHours.TimeInHours = (decimal)reader["timeInHours"];
+                }
+            }
+
+            return pulledHours;
+        }
     }
 }
