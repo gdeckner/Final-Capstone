@@ -25,7 +25,7 @@ namespace WebApplication.Web.DAL
             {
 
                 connection.Open();
-                SqlCommand command = new SqlCommand(@"SELECT project_Task_ID, job_Id FROM tasks
+                SqlCommand command = new SqlCommand(@"SELECT project_Task_ID, tasks.job_Id FROM tasks
                                                     INNER JOIN userJob
                                                     ON tasks.job_Id = userJob.job_Id
                                                     WHERE userJob.job_id = @userId;", connection);

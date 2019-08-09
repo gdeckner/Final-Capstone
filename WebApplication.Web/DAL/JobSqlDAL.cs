@@ -57,11 +57,10 @@ namespace WebApplication.Web.DAL
                 {
                     connection.Open();
 
-                    SqlCommand command = new SqlCommand(@"INSERT INTO userJob (Id, title) VALUES(@id, @title);", connection);
+                    SqlCommand command = new SqlCommand(@"INSERT INTO userJob (userID, job_Id) VALUES(@userId, @jobId);", connection);
 
-
-                    command.Parameters.AddWithValue("@JobId", assigned.JobId);
-                    command.Parameters.AddWithValue("@UserId", assigned.UserId);
+                    command.Parameters.AddWithValue("@userId", assigned.UserId);
+                    command.Parameters.AddWithValue("@jobId", assigned.JobId);
 
                     command.ExecuteNonQuery();
 

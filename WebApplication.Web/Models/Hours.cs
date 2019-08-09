@@ -24,12 +24,26 @@ namespace WebApplication.Web.Models
         /// The user's time worked in hours.
         /// </summary>
         [Required]
-        public decimal TimeInHours { get; set; }
+        public decimal? TimeInHours { get; set; }
 
         /// <summary>
         /// The user's date of work.
         /// </summary>
         [Required]
         public DateTime Date { get; set; }
+
+        /// <summary>
+        /// The user's description of work.
+        /// </summary>
+        [Required]
+        public string Description { get; set; }
+
+        /// <summary>
+        /// The user's location of work.
+        /// </summary>
+        [Required]
+        public string Location { get; set; }
+
+
     }
 }
