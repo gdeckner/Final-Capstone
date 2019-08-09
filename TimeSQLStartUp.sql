@@ -69,5 +69,14 @@ create table Hours
 	isApproved  bit default 0
 )
 
+create table Payroll
+(
+	userId int foreign key references UserLogin(userId),
+	startDate date,
+	endDate date,
+	isApproved bit default 0
+
+)
+
 
 

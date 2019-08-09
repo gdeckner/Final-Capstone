@@ -91,7 +91,11 @@ namespace WebApplication.Web.DAL
                     using (SqlConnection conn = new SqlConnection(connectionString))
                     {
                         conn.Open();
-                        SqlCommand cmd = new SqlCommand("DELETE FROM userLogin WHERE userId = @id;", conn);
+                        SqlCommand cmd = new SqlCommand(@"
+                        Delete from Payroll WHERE userId = @id 
+                        Delete from Hours WHERE userId = @id
+                        Delete from UserJob WHERE userId = @id
+                        DELETE FROM userLogin WHERE userId = @id;", conn);
                         cmd.Parameters.AddWithValue("@id", userToDeleteId);
 
                         cmd.ExecuteNonQuery();
