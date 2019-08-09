@@ -6,6 +6,14 @@
 }
 
 <h2>Admin Index</h2>
+@if (ViewBag.IsSuccessful == "true")
+{
+    <h5>Success</h5>
+}
+@if (ViewBag.IsSuccessful == "false")
+{
+    <h5>Failed</h5>
+}
 
 <p>Welcome @Model.Name</p>
 
@@ -20,6 +28,9 @@
 </p>
 <p>
     <a asp-action="AddJobLocation">Add Job Location</a>
+</p>
+<p>
+    <a asp-action="AuthorizeUser">Authorize User To Job</a>
 </p>
 <table class="table">
     <thead>
