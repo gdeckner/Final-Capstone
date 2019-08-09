@@ -64,7 +64,9 @@ create table Hours
 	description varchar(max),
 	location varchar(100),
 	timeInHours decimal (4,2),
-	dateLogged date 
+	dateLogged date,
+	isSubmitted bit default 0,
+	isApproved  bit default 0
 )
 insert into Roles (roles_Title,role_Description) values ('Admin','Admin control' ),('Users','Generic User')
 insert into UserLogin (first_Last_Name, userName,userRole,password,salt) 
@@ -87,6 +89,5 @@ insert into userJob (userID,job_Id) values (02,02)
 Insert into Tasks (job_Id,location_Id,project_Task_Title) Values (02,02,'Database Tester'),(03,01,'Watching Coder Monkey')
 insert into Hours (userID,taskId,dateLogged,location,timeInHours) Values (03,01,'08/02/2019','NANO_LAB',7.8),
 (03,01,'08/03/2019','NANO_LAB',8),(02,02,'08/09/2019','NANO_LAB',13)
-
 
 
