@@ -41,10 +41,7 @@ namespace WebApplication.Web.Models
         [Display(Name = "Location")]
         public string Location { get; set; }
 
-        public bool IsSubmitted { get; set; }
-
-        public bool IsApproved { get; set; }
-
+       
 
     }
 }

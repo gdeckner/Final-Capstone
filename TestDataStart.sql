@@ -65,8 +65,7 @@ create table Hours
 	location varchar(100),
 	timeInHours decimal (4,2),
 	dateLogged date,
-	isSubmitted bit default 0 not null,
-	isApproved  bit default 0 not null
+	
 
 )
 
@@ -75,7 +74,8 @@ create table Payroll
 	userId int foreign key references UserLogin(userId),
 	startDate date,
 	endDate date,
-	isApproved bit default 0
+	isApproved bit default 0,
+	isSubmitted bit default 0 not null
 
 )
 
