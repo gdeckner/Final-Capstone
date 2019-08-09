@@ -83,7 +83,7 @@ namespace WebApplication.Web.DAL
 
                     connection.Open();
                     SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location FROM Hours
-                                                    WHERE userJob.userID = @userId
+                                                    WHERE userID = @userId
                                                     AND dateLogged BETWEEN CONVERT(datetime, @thirtyDays) AND CONVERT(datetime, @currentDays);", connection);
 
                     command.Parameters.AddWithValue("@userid", userId);
