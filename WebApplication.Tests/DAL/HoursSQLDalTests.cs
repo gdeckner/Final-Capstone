@@ -14,6 +14,7 @@ namespace WebApplication.Tests.DAL
         private HoursSqlDAL dao;
         public int JobId;
         public int LocationId;
+        public string LocationTitle;
         public int TaskId;
         public int UserId;
 
@@ -37,17 +38,21 @@ namespace WebApplication.Tests.DAL
 
                 cmd.CommandText = @"insert into Locations (location_Title,location_Description) Values ('Tech Elevator','tech Space')
                     select Scope_Identity()";
+
+                
                 LocationId = Convert.ToInt32(cmd.ExecuteScalar());
+                cmd.CommandText = @"select location_Title from Locations";
+                LocationTitle = Convert.ToString(cmd.ExecuteScalar());
+                
 
                 cmd.CommandText = @"insert into Jobs (job_Title) values('Student')
                     select Scope_Identity()";
                 JobId = Convert.ToInt32(cmd.ExecuteScalar());
 
-                cmd.CommandText = @"INSERT INTO Tasks (project_Task_Title, project_Task_Description, job_Id, location_Id) VALUES('PennyWiser', 'Collecting Turtles', @JobId, @Location)
+                cmd.CommandText = @"INSERT INTO Tasks (project_Task_Title,job_Id) VALUES('PennyWiser',@JobId)
                     select Scope_Identity()";
                 cmd.Parameters.AddWithValue("@JobId", JobId);
-                cmd.Parameters.AddWithValue("@Location", LocationId);
-
+     
                 TaskId = Convert.ToInt32(cmd.ExecuteScalar());
 
                 cmd.CommandText = @"select userID from userLogin where userName = 'gdeckner'";
@@ -65,8 +70,11 @@ namespace WebApplication.Tests.DAL
                 Date = DateTime.Today,
                 TaskId = TaskId,
                 TimeInHours = 7.60M,
-                UserId = UserId
-                
+                UserId = UserId,
+                Location = LocationTitle,
+                Description = "I did stuff I swear"
+               
+
 
             };
             dao.CreateNewHours(testhours);
@@ -79,10 +87,12 @@ namespace WebApplication.Tests.DAL
                 cmd.CommandText = @"select * from Hours";
                 SqlDataReader reader = cmd.ExecuteReader();
 
-                while(reader.Read())
+                while (reader.Read())
                 {
                     pulledHours.Date = (DateTime)reader["dateLogged"];
                     pulledHours.TaskId = (int)reader["taskId"];
+                    pulledHours.Description = (string)reader["description"];
+                    pulledHours.Location = (string)reader["location"];
                     pulledHours.UserId = (int)reader["userId"];
                     pulledHours.TimeInHours = (decimal)reader["timeInHours"];
                 }
@@ -90,6 +100,38 @@ namespace WebApplication.Tests.DAL
 
             Assert.AreEqual(testhours.TaskId, pulledHours.TaskId);
             Assert.AreEqual(testhours.TimeInHours, pulledHours.TimeInHours);
+            Assert.AreEqual(testhours.Description, pulledHours.Description);
+
+        }
+        [TestMethod]
+        public void PulledHoursTest()
+        {
+            Hours testhours = new Hours
+            {
+                Date = DateTime.Today,
+                TaskId = TaskId,
+                Location = LocationTitle,
+                Description = "Woot",
+                TimeInHours = 7.60M,
+                UserId = UserId
+
+
+            };
+            dao.CreateNewHours(testhours);
+
+            IList<Hours> pulledHours = new List<Hours>();
+            DateTime start = Convert.ToDateTime("08-08-2019");
+            DateTime end = Convert.ToDateTime("08-12-2019");
+            DateTime current = DateTime.Now;
+            pulledHours = dao.GetAllHours(testhours.UserId,start,end,current);
+
+            Assert.AreEqual(testhours, pulledHours[0]); //Need to fix time comparison
+
+
+
+
+
+
         }
     }
 }

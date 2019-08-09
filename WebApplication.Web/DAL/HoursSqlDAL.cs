@@ -55,7 +55,7 @@ namespace WebApplication.Web.DAL
             }
         }
 
-        public IList<Hours> GetAllHours(int userId, DateTime startvalue, DateTime endvalue, DateTime current)
+        public IList<Hours> GetAllHours(int? userId, DateTime startvalue, DateTime endvalue, DateTime current)
         {
             IList<Hours> defaultHoursList = new List<Hours>();
             IList<Hours> specificHoursList = new List<Hours>();
@@ -67,7 +67,7 @@ namespace WebApplication.Web.DAL
 
                     connection.Open();
                     SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location FROM Hours
-                                                    WHERE userJob.userID = @userId;", connection);
+                                                    WHERE userID = @userId;", connection);
 
                     command.Parameters.AddWithValue("@userid", userId);
                     SqlDataReader reader = command.ExecuteReader();
@@ -119,5 +119,7 @@ namespace WebApplication.Web.DAL
             }
             return hours;
         }
+
+       
     }
 }

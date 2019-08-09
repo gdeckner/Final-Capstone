@@ -186,6 +186,33 @@ namespace WebApplication.Web.DAL
             }
         }
 
+        public List<User> GetAllNonAdmin()
+        {
+            List<User> users = new List<User>();
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(@"SELECT * FROM UserLogin
+                    where userRole = 'Users'", conn);
+
+                    SqlDataReader reader = cmd.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        users.Add(MapRowToUser(reader));
+                    }
+                }
+
+                return users;
+            }
+            catch (SqlException ex)
+            {
+                throw ex;
+            }
+        }
+
         /// <summary>
         /// Updates the user in the database.
         /// </summary>
