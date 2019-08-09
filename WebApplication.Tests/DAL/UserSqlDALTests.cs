@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Data.SqlClient;
 using WebApplication.Web.DAL;
 using WebApplication.Web.Models;
@@ -87,6 +88,25 @@ namespace WebApplication.Tests.DAL
 
             Assert.AreEqual("Users", testUser.Role);
 
+        }
+        [TestMethod]
+        public void GetAllNonAdminsTest()
+        {
+            User testUser = new User
+            {
+                Name = "Merkle Chowbuster",
+                Password = "RrQlUO2CbmowsGDSpRhXZPGjRy1BEXkN3fdCrNs4xUJjxNcs",
+                Salt = "RrQlUO2CbmowsGDSpRhXZA==",
+                Role = "Users",
+                Username = "MChowbuster"
+
+            };
+
+            dao.CreateUser(testUser);
+
+            IList<User> pulledUsers = new List<User>();
+            pulledUsers = dao.GetAllNonAdmin();
+            Assert.AreEqual("Users", pulledUsers[0].Role);
         }
         [TestMethod]
         public void DeleteUserTest()

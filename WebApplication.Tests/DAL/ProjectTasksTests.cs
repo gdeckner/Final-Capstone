@@ -60,16 +60,12 @@ namespace WebApplication.Tests.DAL
                 {
                     
                     testTask.Title = (string) reader["project_Task_Title"];
-                    testTask.LocationId = (int) reader["location_Id"];
-                    testTask.Description = (string) reader["project_Task_Description"];
                     testTask.JobId = (int) reader["job_Id"];
                     testTask.TaskId = (int) reader["project_Task_ID"];
                 }
             }
 
-            Assert.AreEqual(JobId, testTask.JobId);
-            Assert.AreEqual("New Test Description", testTask.Description);
-            Assert.AreEqual(LocationId, testTask.LocationId);
+            Assert.AreEqual(JobId, testTask.JobId);;
             Assert.AreEqual(".Net Student", testTask.Title);
         }
     }
