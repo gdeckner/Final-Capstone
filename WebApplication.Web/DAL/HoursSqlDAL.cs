@@ -35,8 +35,7 @@ namespace WebApplication.Web.DAL
                     command.Parameters.AddWithValue("@Date", hour.Date);
                     command.Parameters.AddWithValue("@Description", hour.Description);
                     command.Parameters.AddWithValue("@Location", hour.Location);
-                    command.Parameters.AddWithValue("@isSubmitted", hour.IsSubmitted);
-                    command.Parameters.AddWithValue("@isApproved", hour.IsApproved);
+                    
 
                     command.ExecuteNonQuery();
 
@@ -119,9 +118,7 @@ namespace WebApplication.Web.DAL
                     TimeInHours = Convert.ToDecimal(reader["timeInHours"]),
                     Date = Convert.ToDateTime(reader["dateLogged"]),
                     Description = Convert.ToString(reader["description"]),
-                    Location = Convert.ToString(reader["location"]),
-                    IsApproved = Convert.ToBoolean(reader["isApproved"]),
-                    IsSubmitted = Convert.ToBoolean(reader["isApproved"])
+                    Location = Convert.ToString(reader["location"])
                 };
 
                 hours.Add(hour);

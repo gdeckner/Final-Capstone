@@ -25,18 +25,19 @@ namespace WebApplication.Web.DAL
                 {
                     connection.Open();
 
-                    SqlCommand command = new SqlCommand(@"INSERT INTO PayrollTable (UserId, StartDate, EndDate, IsApproved) VALUES(@UserId, @startdate, @enddate, @isapproved);", connection);
+                    SqlCommand command = new SqlCommand(@"INSERT INTO PayrollTable (UserId, StartDate, EndDate, IsApproved,isSubmitted) VALUES(@UserId, @startdate, @enddate, @isapproved,@isSubmitted);", connection);
 
 
                     command.Parameters.AddWithValue("@UserId", report.UserId);
                     command.Parameters.AddWithValue("@startdate", report.StartDate);
                     command.Parameters.AddWithValue("@enddate", report.EndDate);
-                    command.Parameters.AddWithValue("@isapproved", report.Approved);
+                    command.Parameters.AddWithValue("@isapproved", report.IsApproved);
+                    command.Parameters.AddWithValue("@isSubmitted", report.IsSubmitted);
 
 
                     command.ExecuteNonQuery();
 
-                    if (report.UserId == null || report.StartDate == null || report.EndDate == null || report.Approved == false)
+                    if (report.UserId == null || report.StartDate == null || report.EndDate == null || report.IsApproved == false)
                     {
                         return false;
                     }
