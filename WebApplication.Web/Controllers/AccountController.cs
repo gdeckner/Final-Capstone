@@ -17,12 +17,14 @@ namespace WebApplication.Web.Controllers
         private readonly ITaskDAL taskDAL;
         private readonly ILocationDAL locationDAL;
         private readonly IHoursDAL hoursDAL;
-        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL, ITaskDAL taskDAL, ILocationDAL locationDAL, IHoursDAL hoursDAL)
+        private readonly IUserDAL userDAL;
+        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL, ITaskDAL taskDAL, ILocationDAL locationDAL, IUserDAL userDAL, IHoursDAL hoursDAL)
         {
             this.authProvider = authProvider;
             this.jobDAL = jobDAL;
             this.taskDAL = taskDAL;
             this.locationDAL = locationDAL;
+            this.userDAL = userDAL;
             this.hoursDAL = hoursDAL;
         }
 
@@ -31,6 +33,7 @@ namespace WebApplication.Web.Controllers
         [HttpGet]
         public IActionResult Index()
         {
+
             var user = authProvider.GetCurrentUser();
             if (user.Role == "Admin")
             {
@@ -227,6 +230,26 @@ namespace WebApplication.Web.Controllers
         public IActionResult AddJobLocation(Location location)
         {
             bool isSuccessful = locationDAL.CreateLocation(location);
+
+            return RedirectToAction("Index", "Account");
+        }
+
+        [HttpGet]
+        [AuthorizationFilter("Admin")]
+        public IActionResult AuthorizeUser()
+        {
+            ViewBag.Users = userDAL.GetAllUsers();
+
+            ViewBag.Jobs = jobDAL.GetJobList();
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AuthorizeUser(UserJob userJob)
+        {
+            bool isSuccessful = jobDAL.AssignUserToJob(userJob);
 
             return RedirectToAction("Index", "Account");
         }

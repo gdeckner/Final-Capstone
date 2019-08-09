@@ -99,6 +99,11 @@ namespace WebApplication.Web.DAL
             }
         }
 
+        public Hours PullLoggedHours(int? userId)
+        {
+            throw new NotImplementedException();
+        }
+
         private List<Hours> MapHoursToReader(SqlDataReader reader)
         {
             List<Hours> hours = new List<Hours>();
