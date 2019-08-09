@@ -42,6 +42,8 @@ namespace WebApplication.Web.Controllers
             }
             else
             {
+                ViewBag.Hours = hoursDAL.GetAllHours(user.UserId);
+
                 return View(user);
             }
         }
@@ -160,7 +162,7 @@ namespace WebApplication.Web.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [AuthorizationFilter("Admin", "Author", "Manager")]
+        [AuthorizationFilter("Admin")]
         [HttpGet]
         public IActionResult CreateProjectTasks()
         {
