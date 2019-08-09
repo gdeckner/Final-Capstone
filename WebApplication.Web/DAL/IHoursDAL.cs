@@ -10,6 +10,8 @@ namespace WebApplication.Web.DAL
     {
         bool CreateNewHours(Hours hour);
 
-        
+        Hours PullLoggedHours(int? userId);
+
+        IList<Hours> GetAllHours(int userId);
     }
 }

@@ -11,4 +11,40 @@
     <a asp-action="LogTime">Log Time</a>
 </p>
 
-@*user view*@
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Date
+            </th>
+            <th>
+                Location
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Hours
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Hours hours in ViewBag.Hours)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => hours.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => hours.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => hours.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => hours.TimeInHours)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
