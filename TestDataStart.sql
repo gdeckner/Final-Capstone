@@ -65,9 +65,20 @@ create table Hours
 	location varchar(100),
 	timeInHours decimal (4,2),
 	dateLogged date,
-	isSubmitted bit default 0,
-	isApproved  bit default 0
+	
+
 )
+
+create table Payroll
+(
+	userId int foreign key references UserLogin(userId),
+	startDate date,
+	endDate date,
+	isApproved bit default 0,
+	isSubmitted bit default 0 not null
+
+)
+
 insert into Roles (roles_Title,role_Description) values ('Admin','Admin control' ),('Users','Generic User')
 insert into UserLogin (first_Last_Name, userName,userRole,password,salt) 
 values('Default Admin', 'Admin','Admin','qmtnGXtPXRXBLwrAJDC7wvz3msY=','nhyQHUYxoa0='),('Default User','User','Users','qmtnGXtPXRXBLwrAJDC7wvz3msY=','nhyQHUYxoa0='),
@@ -90,7 +101,3 @@ Insert into Tasks (job_Id,location_Id,project_Task_Title) Values (03,03,'Databas
 insert into Hours (userID,taskId,dateLogged,location,timeInHours) Values (03,01,'08/02/2019','NANO_LAB',7.8),
 (03,01,'08/03/2019','NANO_LAB',8),(02,02,'08/09/2019','NANO_LAB',13)
 
-SELECT project_Task_ID, tasks.job_Id, project_Task_Title, userJob.userid FROM tasks
-                                                    INNER JOIN userJob
-                                                    ON tasks.job_Id = userJob.job_Id
-                                                    WHERE userJob.userid = 3

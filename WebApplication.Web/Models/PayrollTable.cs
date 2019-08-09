@@ -30,12 +30,12 @@ namespace WebApplication.Web.Models
         /// The user's pay approval status.
         /// </summary>
         [Required]
-        public bool Approved { get; set; }
+        public bool IsSubmitted { get; set; }
 
-        /// <summary>
-        /// The user's pay submitted status.
-        /// </summary>
         [Required]
-        public bool Submitted { get; set; }
+        public bool IsApproved { get; set; }
+
+
+
     }
 }
