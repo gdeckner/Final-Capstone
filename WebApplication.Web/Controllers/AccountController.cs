@@ -16,12 +16,14 @@ namespace WebApplication.Web.Controllers
         private readonly IJobDAL jobDAL;
         private readonly ITaskDAL taskDAL;
         private readonly ILocationDAL locationDAL;
-        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL, ITaskDAL taskDAL, ILocationDAL locationDAL)
+        private readonly IHoursDAL hoursDAL;
+        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL, ITaskDAL taskDAL, ILocationDAL locationDAL, IHoursDAL hoursDAL)
         {
             this.authProvider = authProvider;
             this.jobDAL = jobDAL;
             this.taskDAL = taskDAL;
             this.locationDAL = locationDAL;
+            this.hoursDAL = hoursDAL;
         }
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
@@ -193,17 +195,18 @@ namespace WebApplication.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult LogTime(LogTimeViewModel logTimeViewModel)
+        public IActionResult LogTime(Hours hours)
         {
             if (ModelState.IsValid)
             {
+                hours.UserId = authProvider.GetCurrentUser().UserId;
 
-                //authProvider.CreateNewHours(logTimeViewModel.CurrentPassword, logTimeViewModel.NewPassword);
+                hoursDAL.CreateNewHours(hours);
 
                 return RedirectToAction("Index", "Account");
             }
 
-            return View(logTimeViewModel);
+            return View(hours);
         }
     }
 }

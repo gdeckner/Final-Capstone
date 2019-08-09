@@ -8,28 +8,31 @@ namespace WebApplication.Web.Models
 {
     public class Hours
     {
-        /// <summary>
-        /// The user's id.
-        /// </summary>
         [Required]
-        public int? UserId { get; set; }
+        [Display(Name = "User ID")]
+        public int UserId { get; set; }
 
-        /// <summary>
-        /// The user's assigned task id.
-        /// </summary>
-        [Required]
-        public int? TaskId { get; set; }
 
-        /// <summary>
-        /// The user's time worked in hours.
-        /// </summary>
         [Required]
+        [Display(Name = "Task ID")]
+        public int TaskId { get; set; }
+
+
+        [Required]
+        [Display(Name = "Time")]
         public decimal TimeInHours { get; set; }
 
-        /// <summary>
-        /// The user's date of work.
-        /// </summary>
+
         [Required]
+        [Display(Name = "Date")]
         public DateTime Date { get; set; }
+
+        [Required]
+        [Display(Name = "Description")]
+        public string Description { get; set; }
+
+        [Required]
+        [Display(Name = "Location")]
+        public int LocationId { get; set; }
     }
 }
