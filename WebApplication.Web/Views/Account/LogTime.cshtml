@@ -1,5 +1,4 @@
-﻿@using WebApplication.Web.Models.Account;
-@model LogTimeViewModel
+﻿@model Hours
 
 @{
     ViewData["Title"] = "LogTime";
@@ -15,10 +14,10 @@
     </div>
     <div class="form-group">
             <label asp-for="TaskId"></label>
-            <select>
-                @foreach (Tasks task in ViewBag.AvailableTasks)
+            <select asp-for="TaskId">
+                @foreach (Tasks tasks in ViewBag.AvailableTasks)
                 {
-                    <option value="@task.TaskId">@task.Title</option>
+                    <option value="@tasks.TaskId">@tasks.Title</option>
                 }
             </select>
             <span asp-validation-for="TaskId"></span>
@@ -29,14 +28,14 @@
         <span asp-validation-for="Description"></span>
     </div>
     <div class="form-group">
-            <label asp-for="LocationId"></label>
-            <select>
+            <label asp-for="Location"></label>
+            <select asp-for="Location">
                 @foreach (Location location in ViewBag.Locations)
                 {
-                    <option value="@location.LocationId">@location.Title</option>
+                    <option>@location.Title</option>
                 }
             </select>
-            <span asp-validation-for="LocationId"></span>
+            <span asp-validation-for="Location"></span>
         </div>
     <div class="form-group">
         <label asp-for="TimeInHours"></label>

@@ -116,7 +116,7 @@ namespace WebApplication.Web.DAL
                 {
                     UserId = Convert.ToInt32(reader["userID"]),
                     TaskId = Convert.ToInt32(reader["taskId"]),
-                    TimeInHours = Convert.ToInt32(reader["timeInHours"]),
+                    TimeInHours = Convert.ToDecimal(reader["timeInHours"]),
                     Date = Convert.ToDateTime(reader["dateLogged"]),
                     Description = Convert.ToString(reader["description"]),
                     Location = Convert.ToString(reader["location"]),

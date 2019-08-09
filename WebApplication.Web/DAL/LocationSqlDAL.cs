@@ -108,6 +108,7 @@ namespace WebApplication.Web.DAL
             {
                 Models.Location location = new Models.Location
                 {
+                    LocationId = Convert.ToInt32(reader["location_Id"]),
                     Title = Convert.ToString(reader["location_Title"]),
                     Description = Convert.ToString(reader["location_Description"]),
                 };

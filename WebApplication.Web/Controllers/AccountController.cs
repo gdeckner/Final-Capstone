@@ -201,10 +201,10 @@ namespace WebApplication.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult LogTime(Hours hours)
         {
+            hours.UserId = authProvider.GetCurrentUser().UserId;
+
             if (ModelState.IsValid)
             {
-                hours.UserId = authProvider.GetCurrentUser().UserId;
-
                 hoursDAL.CreateNewHours(hours);
 
                 return RedirectToAction("Index", "Account");
