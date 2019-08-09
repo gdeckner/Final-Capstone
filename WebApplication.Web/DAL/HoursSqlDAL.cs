@@ -83,7 +83,7 @@ namespace WebApplication.Web.DAL
 
                     connection.Open();
                     SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location FROM Hours
-                                                    WHERE userJob.userID = @userId
+                                                    WHERE userID = @userId
                                                     AND dateLogged BETWEEN CONVERT(datetime, @thirtyDays) AND CONVERT(datetime, @currentDays);", connection);
 
                     command.Parameters.AddWithValue("@userid", userId);
@@ -99,6 +99,11 @@ namespace WebApplication.Web.DAL
             }
         }
 
+        public Hours PullLoggedHours(int? userId)
+        {
+            throw new NotImplementedException();
+        }
+
         private List<Hours> MapHoursToReader(SqlDataReader reader)
         {
             List<Hours> hours = new List<Hours>();
@@ -109,7 +114,7 @@ namespace WebApplication.Web.DAL
                 {
                     UserId = Convert.ToInt32(reader["userID"]),
                     TaskId = Convert.ToInt32(reader["taskId"]),
-                    TimeInHours = Convert.ToInt32(reader["timeInHours"]),
+                    TimeInHours = Convert.ToDecimal(reader["timeInHours"]),
                     Date = Convert.ToDateTime(reader["dateLogged"]),
                     Description = Convert.ToString(reader["description"]),
                     Location = Convert.ToString(reader["location"]),

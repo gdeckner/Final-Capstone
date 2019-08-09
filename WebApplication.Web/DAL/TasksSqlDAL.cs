@@ -25,10 +25,10 @@ namespace WebApplication.Web.DAL
             {
 
                 connection.Open();
-                SqlCommand command = new SqlCommand(@"SELECT project_Task_ID, tasks.job_Id FROM tasks
+                SqlCommand command = new SqlCommand(@"SELECT project_Task_ID, tasks.job_Id, project_Task_Title, userJob.userid FROM tasks
                                                     INNER JOIN userJob
                                                     ON tasks.job_Id = userJob.job_Id
-                                                    WHERE userJob.job_id = @userId;", connection);
+                                                    WHERE userJob.userid = @userId;", connection);
                 command.Parameters.AddWithValue("@userid", userid);
                 SqlDataReader reader = command.ExecuteReader();
 
@@ -117,8 +117,9 @@ namespace WebApplication.Web.DAL
             {
                 Tasks task = new Tasks
                 {
-                    TaskId = Convert.ToInt32(reader["taskId"]),
-                    JobId = Convert.ToInt32(reader["jobId"]),
+                    TaskId = Convert.ToInt32(reader["project_Task_ID"]),
+                    JobId = Convert.ToInt32(reader["job_Id"]),
+                    Title = Convert.ToString(reader["project_Task_Title"]),
                 };
 
                 tasks.Add(task);
