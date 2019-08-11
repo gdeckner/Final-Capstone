@@ -120,8 +120,8 @@ namespace WebApplication.Web.DAL
                     UserId = Convert.ToInt32(reader["userId"]),
                     StartDate = Convert.ToDateTime(reader["startDate"]),
                     EndDate = Convert.ToDateTime(reader["endDate"]),
-                    Approved = Convert.ToBoolean(reader["isApproved"]),
-                    Submitted = Convert.ToBoolean(reader["isSubmitted"]),
+                    IsApproved = Convert.ToBoolean(reader["isApproved"]),
+                    IsSubmitted = Convert.ToBoolean(reader["isSubmitted"]),
                 };
 
                 reports.Add(report);

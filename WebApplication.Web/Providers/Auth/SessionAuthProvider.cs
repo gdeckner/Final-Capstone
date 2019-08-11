@@ -44,7 +44,7 @@ namespace WebApplication.Web.Providers.Auth
             var user = userDAL.GetUser(username);
             var hashProvider = new HashProvider();                        
             
-            if (user != null && hashProvider.VerifyPasswordMatch(user.Password, password, user.Salt))
+            if (user != null && userDAL.CheckLogin(username,password))
             {                
                 Session.SetString(SessionKey, user.Username);
                 return true;
@@ -73,15 +73,11 @@ namespace WebApplication.Web.Providers.Auth
             var user = GetCurrentUser();
             
             // Confirm existing password match
-            if (user != null && hashProvider.VerifyPasswordMatch(user.Password, existingPassword, user.Salt))
+            if (user != null && userDAL.CheckLogin(user.Username,existingPassword))
             {
-                // Hash new password
-                var newHash = hashProvider.HashPassword(newPassword);
-                user.Password = newHash.Password;
-                user.Salt = newHash.Salt;
 
                 // Save into the db
-                userDAL.UpdateUser(user);
+                userDAL.UpdateUser(user,newPassword);
 
                 return true;
             }
@@ -114,19 +110,15 @@ namespace WebApplication.Web.Providers.Auth
         /// <returns></returns>
         public void Register(string name, string username, string password, string role)
         {
-            var hashProvider = new HashProvider();
-            var passwordHash = hashProvider.HashPassword(password);
 
             var user = new User
             {
                 Name = name,
                 Username = username,
-                Password = passwordHash.Password,
-                Salt = passwordHash.Salt,
                 Role = role
             };
 
-            userDAL.CreateUser(user);
+            userDAL.CreateUser(user,password);
         }
 
         /// <summary>

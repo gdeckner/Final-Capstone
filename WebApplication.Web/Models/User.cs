@@ -33,14 +33,6 @@ namespace WebApplication.Web.Models
         /// <summary>
         /// The user's password.
         /// </summary>
-        [Required]
-        public string Password { get; set; }
-
-        /// <summary>
-        /// The user's salt.
-        /// </summary>
-        [Required]
-        public string Salt { get; set; }
 
         /// <summary>
         /// The user's role.
