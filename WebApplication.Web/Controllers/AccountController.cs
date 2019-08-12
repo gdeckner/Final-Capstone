@@ -297,8 +297,8 @@ namespace WebApplication.Web.Controllers
             {
                 payrollTable.StartDate = new DateTime(1753, 1, 1);
             }
-            ViewBag.PayPeriods = payrollDAL.GetListOfPayPeriods(); //unique start and end dates
-            ViewBag.TimeCards = payrollDAL.GetListOfTimeCards(payrollTable.StartDate); //timecards in the pay period
+            ViewBag.PayPeriods = payrollDAL.GetListOfPayPeriods();
+            ViewBag.TimeCards = payrollDAL.GetListOfTimeCards(payrollTable.StartDate);
 
             return View();
         }
