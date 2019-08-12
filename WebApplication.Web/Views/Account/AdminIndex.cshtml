@@ -36,16 +36,19 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.UserId)
+                User Id
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Full Name
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Username)
+                Username
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Role)
+                Logged Time
+            </th>
+            <th>
+                Authorization Level
             </th>
             <th></th>
         </tr>
@@ -62,6 +65,16 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Username)
+                </td>
+                <td>
+                    @if (item.Role == "Users")
+                    {
+                        <a asp-action="GetUserTimeLog" asp-route-username="@item.Username">@item.Name's Time Log</a>
+                    }
+                    @if (item.Role == "Admin")
+                    {
+                        <div>n/a</div>
+                    }
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Role)

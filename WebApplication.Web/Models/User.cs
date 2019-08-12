@@ -38,5 +38,7 @@ namespace WebApplication.Web.Models
         /// The user's role.
         /// </summary>
         public string Role { get; set; }
+
+        public string LogTimeSort { get; set; }
     }
 }

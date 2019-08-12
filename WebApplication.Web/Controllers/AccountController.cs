@@ -253,5 +253,41 @@ namespace WebApplication.Web.Controllers
 
             return RedirectToAction("Index", "Account");
         }
+
+        [HttpGet]
+        [AuthorizationFilter("Admin")]
+        public IActionResult GetUserTimeLog(string username)
+        {
+            User user = userDAL.GetUser(username);
+
+            IList<Hours> hoursList = hoursDAL.GetTimeReport(user.UserId, "1M");
+
+            ViewBag.HoursList = hoursList;
+
+            ViewBag.User = user;
+
+            ViewBag.SortType = "1M";
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SortUserTimeLog(User user)
+        {
+            //user = userDAL.GetUser(user.Username);
+
+            IList<Hours> hoursList = hoursDAL.GetTimeReport(user.UserId, user.LogTimeSort);
+
+            ViewBag.HoursList = hoursList;
+
+            ViewBag.User = user;
+
+            //ViewBag.UserFullName = user.Name;
+
+            /*ViewBag.SortType = user.LogTimeSort;*/
+
+            return View();
+        }
     }
 }
