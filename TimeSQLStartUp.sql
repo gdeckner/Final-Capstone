@@ -48,10 +48,8 @@ Create table Tasks
 	project_Task_ID int identity (1,1) primary key,
 	project_Task_Title varchar (100),
 	job_Id int foreign key references Jobs(job_Id),
-	location_Id int foreign key references Locations(location_Id)
-	
-
 )
+
 Create table userJob
 (
 userID int foreign key references UserLogin(userId),
@@ -134,9 +132,4 @@ from inserted i
 
 end;
 go
-
-insert into Roles (roles_Title,role_Description) values ('Admin','Admin control' ),('Users','Generic User')
-insert into UserLogin (first_Last_Name, userName,userRole,password,salt) 
-values('Default Admin', 'Admin','Admin','RrQlUO2CbmowsGDSpRhXZPGjRy1BEXkN3fdCrNs4xUJjxNcs','RrQlUO2CbmowsGDSpRhXZA=='),('Default User','User','Users','qmtnGXtPXRXBLwrAJDC7wvz3msY=','nhyQHUYxoa0='),
-('Gerg Acer','GAcer','Users', 'RrQlUO2CbmowsGDSpRhXZPGjRy1BEXkN3fdCrNs4xUJjxNcs','RrQlUO2CbmowsGDSpRhXZA==')
 
