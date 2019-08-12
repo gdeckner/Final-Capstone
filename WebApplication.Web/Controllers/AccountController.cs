@@ -273,7 +273,7 @@ namespace WebApplication.Web.Controllers
 
             ViewBag.User = user;
 
-            ViewBag.SortType = "1M";
+            ViewBag.User.LogTimeSort = "1M";
 
             return View();
         }
@@ -282,17 +282,11 @@ namespace WebApplication.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult SortUserTimeLog(User user)
         {
-            //user = userDAL.GetUser(user.Username);
-
             IList<Hours> hoursList = hoursDAL.GetTimeReport(user.UserId, user.LogTimeSort);
 
             ViewBag.HoursList = hoursList;
 
             ViewBag.User = user;
-
-            //ViewBag.UserFullName = user.Name;
-
-            /*ViewBag.SortType = user.LogTimeSort;*/
 
             return View();
         }
