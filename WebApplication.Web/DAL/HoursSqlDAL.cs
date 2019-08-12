@@ -58,6 +58,45 @@ namespace WebApplication.Web.DAL
             }
         }
 
+        public bool UpdateHours(Hours hour)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(@"UPDATE Hours SET timeInHours = @TimeInHours WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);", connection);
+                    SqlCommand commandTwo = new SqlCommand(@"UPDATE Hours SET dateLogged = @Date WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);", connection);
+
+                    command.Parameters.AddWithValue("@UserId", hour.UserId);
+                    command.Parameters.AddWithValue("@TaskId", hour.TaskId);
+                    command.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
+                    commandTwo.Parameters.AddWithValue("@UserId", hour.UserId);
+                    commandTwo.Parameters.AddWithValue("@TaskId", hour.TaskId);
+                    commandTwo.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
+                    commandTwo.Parameters.AddWithValue("@Date", hour.Date);
+
+                    command.ExecuteNonQuery();
+                    commandTwo.ExecuteNonQuery();
+
+                    if (hour.UserId == null || hour.TaskId == null || hour.TimeInHours == null || hour.Date == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
         public IList<Hours> GetAllHours(int userId)
         {
             IList<Hours> defaultHoursList = new List<Hours>();
