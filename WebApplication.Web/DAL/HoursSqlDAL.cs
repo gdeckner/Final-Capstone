@@ -107,27 +107,6 @@ namespace WebApplication.Web.DAL
             throw new NotImplementedException();
         }
 
-        private List<Hours> MapHoursToReader(SqlDataReader reader)
-        {
-            List<Hours> hours = new List<Hours>();
-
-            while (reader.Read())
-            {
-                Hours hour = new Hours
-                {
-                    UserId = Convert.ToInt32(reader["userID"]),
-                    TaskId = Convert.ToInt32(reader["taskId"]),
-                    TimeInHours = Convert.ToDecimal(reader["timeInHours"]),
-                    Date = Convert.ToDateTime(reader["dateLogged"]),
-                    Description = Convert.ToString(reader["description"]),
-                    Location = Convert.ToString(reader["location"]),
-                };
-
-                hours.Add(hour);
-            }
-            return hours;
-        }
-
         public IList<Hours> GetTimeReport(int userid, string duration)
         {
 
@@ -149,7 +128,7 @@ namespace WebApplication.Web.DAL
 
                     payrollLog = MapHoursToReader(reader);
                 }
-                if (duration == "1M")
+                else if (duration == "1M")
                 {
                     SqlCommand command = new SqlCommand(@"SELECT Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateLogged, Hours.description, Hours.location FROM Hours
                                                     WHERE userID = @userId
@@ -161,7 +140,7 @@ namespace WebApplication.Web.DAL
 
                     payrollLog = MapHoursToReader(reader);
                 }
-                if (duration == "1Q")
+                else if (duration == "1Q")
                 {
                     SqlCommand command = new SqlCommand(@"SELECT Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateLogged, Hours.description, Hours.location FROM Hours
                                                     WHERE userID = @userId
@@ -176,6 +155,28 @@ namespace WebApplication.Web.DAL
             }
 
             return payrollLog;
+        }
+
+
+        private List<Hours> MapHoursToReader(SqlDataReader reader)
+        {
+            List<Hours> hours = new List<Hours>();
+
+            while (reader.Read())
+            {
+                Hours hour = new Hours
+                {
+                    UserId = Convert.ToInt32(reader["userID"]),
+                    TaskId = Convert.ToInt32(reader["taskId"]),
+                    TimeInHours = Convert.ToDecimal(reader["timeInHours"]),
+                    Date = Convert.ToDateTime(reader["dateLogged"]),
+                    Description = Convert.ToString(reader["description"]),
+                    Location = Convert.ToString(reader["location"]),
+                };
+
+                hours.Add(hour);
+            }
+            return hours;
         }
     }
 }
