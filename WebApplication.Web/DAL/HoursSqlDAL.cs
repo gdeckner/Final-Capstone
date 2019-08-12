@@ -14,7 +14,7 @@ namespace WebApplication.Web.DAL
         private readonly DateTime lastMonth = DateTime.Now.AddDays(-30);
         private readonly DateTime lastWeek = DateTime.Now.AddDays(-7);
         private readonly DateTime lastQuarter = DateTime.Now.AddDays(-120);
-        private string updateHoursQuery = @"(BEGIN TRANSACTION);";
+        private string beginHoursSession = @"(BEGIN TRANSACTION);";
 
         public HoursSqlDAL(string connectionString)
         {
@@ -39,9 +39,6 @@ namespace WebApplication.Web.DAL
                     command.Parameters.AddWithValue("@Location", hour.Location);
                     command.Parameters.AddWithValue("@WorkedDate", hour.Date);
                     command.Parameters.AddWithValue("@LoggedDate", current);
-                    //command.Parameters.AddWithValue("@IsSubmitted", hour.isSubmitted);
-
-
 
                     command.ExecuteNonQuery();
 
@@ -68,58 +65,118 @@ namespace WebApplication.Web.DAL
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    if (hour.TimeInHours != null)
+                    if (hour.TaskId != null && hour.OldTask != null)
                     {
-                        string updateTime = @"(UPDATE Hours SET timeInHours = @TimeInHours WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);";
-                        updateHoursQuery += updateTime;
-                    }
-                    if (hour.TimeInHours != null)
-                    {
-                        string updateTime = @"(UPDATE Hours SET taskId = @TaskId WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);";
-                        updateHoursQuery += updateTime;
-                    }
-                    if (hour.Description != null)
-                    {
-                        string updateDescription = @"(UPDATE Hours SET Description = @Description WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);";
-                        updateHoursQuery += updateDescription;
+                        string updateTask = @"(UPDATE H
+                                               SET H.taskId = @TaskId
+                                               FROM dbo.Hours as H
+                                               INNER JOIN dbo.Payroll AS P
+                                               ON H.userID = P.userId
+                                               WHERE H.userID = @UserId
+                                               AND H.taskId = @OldTaskId
+                                               AND P.isApproved != '1');";
+                        beginHoursSession += updateTask;
                     }
                     if (hour.Description != null)
                     {
-                        string updateDescription = @"(UPDATE Hours SET dateLogged = @loggedDate WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);";
-                        updateHoursQuery += updateDescription;
+                        string updateDescription = @"(UPDATE H
+                                               SET H.Description = @Description
+                                               FROM dbo.Hours as H
+                                               INNER JOIN dbo.Payroll AS P
+                                               ON H.userID = P.userId
+                                               WHERE H.userID = @UserId
+                                               AND H.taskId = @TaskId
+                                               AND P.isApproved != '1');";
+
+                        beginHoursSession += updateDescription;
+                    }
+                    if (hour.Location != null)
+                    {
+                        string updateLocation = @"(UPDATE H
+                                               SET H.location = @Location
+                                               FROM dbo.Hours as H
+                                               INNER JOIN dbo.Payroll AS P
+                                               ON H.userID = P.userId
+                                               WHERE H.userID = @UserId
+                                               AND H.taskId = @TaskId
+                                               AND P.isApproved != '1');";
+
+                        beginHoursSession += updateLocation;
+
+                    }
+                    if (hour.TimeInHours != null)
+                    {
+                        string updateHours = @"(UPDATE H
+                                               SET H.timeInHours = @TimeInHours
+                                               FROM dbo.Hours as H
+                                               INNER JOIN dbo.Payroll AS P
+                                               ON H.userID = P.userId
+                                               WHERE H.userID = @UserId
+                                               AND H.taskId = @TaskId
+                                               AND P.isApproved != '1');";
+
+                        beginHoursSession += updateHours;
+
+                    }
+                    if (hour.DateWorked != null)
+                    {
+                        string updateDateWorked = @"(UPDATE H
+                                               SET H.dateWorked = @DateWorked
+                                               FROM dbo.Hours as H
+                                               INNER JOIN dbo.Payroll AS P
+                                               ON H.userID = P.userId
+                                               WHERE H.userID = @UserId
+                                               AND H.taskId = @TaskId
+                                               AND P.isApproved != '1');";
+
+                        beginHoursSession += updateDateWorked;
                     }
 
                     string loggedDate = @"(UPDATE Hours SET dateLogged = @DateLogged WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);";
                     string commit = @"(COMMIT);";
-                    updateHoursQuery += loggedDate;
-                    updateHoursQuery += commit;
-
-
-                    SqlCommand command = new SqlCommand(@"UPDATE Hours SET timeInHours = @TimeInHours WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);", connection);
-                    SqlCommand commandTwo = new SqlCommand(@"UPDATE Hours SET dateLogged = @DateLogged WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);", connection);
-
-
-                    string query = $@"{updateHoursQuery}
-                                  WHERE park_id = {hour.UserId}'";
-
-                    query = $@"{AcadiaSelectQuery} WHERE park_id = @parkId";
+                    beginHoursSession += loggedDate;
+                    beginHoursSession += commit;
 
 
                     SqlCommand command = connection.CreateCommand();
-                    command.CommandText = query;
-                    command.Parameters.AddWithValue("@UserId", hour.UserId);
-                    command.Parameters.AddWithValue("@TaskId", hour.TaskId);
-                    command.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
-                    commandTwo.Parameters.AddWithValue("@UserId", hour.UserId);
-                    commandTwo.Parameters.AddWithValue("@TaskId", hour.TaskId);
-                    commandTwo.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
-                    commandTwo.Parameters.AddWithValue("@DateLogged", current);
+                    command.CommandText = beginHoursSession;
+                    if (hour.UserId != null)
+                    {
+                        command.Parameters.AddWithValue("@UserId", hour.UserId);
+                    }
+                    if (hour.OldTask != null)
+                    {
+                        command.Parameters.AddWithValue("@OldTask", hour.OldTask);
+                    }
+                    if (hour.TaskId != null)
+                    {
+                        command.Parameters.AddWithValue("@TaskId", hour.TaskId);
+                    }
+                    if (hour.Description != null)
+                    {
+                        command.Parameters.AddWithValue("@Description", hour.Description);
+                    }
+                    if (hour.Location != null)
+                    {
+                        command.Parameters.AddWithValue("@Location", hour.Location);
+                    }
+                    if (hour.TimeInHours != null)
+                    {
+                        command.Parameters.AddWithValue("@TaskId", hour.TimeInHours);
+                    }
+                    if (hour.DateWorked != null)
+                    {
+                        command.Parameters.AddWithValue("@TimeInHours", hour.DateWorked);
+                    }
+
+
+                    command.Parameters.AddWithValue("@DateLogged", current);
 
                     connection.Open();
                     command.ExecuteNonQuery();
-                    commandTwo.ExecuteNonQuery();
 
-                    if (hour.UserId == null || hour.TaskId == null || hour.TimeInHours == null || hour.Date == null)
+
+                    if (hour.UserId == null)
                     {
                         return false;
                     }
