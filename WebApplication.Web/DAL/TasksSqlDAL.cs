@@ -46,12 +46,10 @@ namespace WebApplication.Web.DAL
                 {
                     connection.Open();
 
-                    SqlCommand command = new SqlCommand(@"INSERT INTO Tasks (project_Task_Title, project_Task_Description, job_Id, location_Id) VALUES(@Title, @Description, @JobId, @Location);", connection);
+                    SqlCommand command = new SqlCommand(@"INSERT INTO Tasks (project_Task_Title, job_Id) VALUES(@Title, (SELECT job_id FROM Jobs WHERE Jobs.job_Id = @JobId));", connection);
 
                     command.Parameters.AddWithValue("@Title", task.Title);
-                    command.Parameters.AddWithValue("@Description", task.Description);
                     command.Parameters.AddWithValue("@JobId", task.JobId);
-                    command.Parameters.AddWithValue("@Location", task.LocationId);
 
                     command.ExecuteNonQuery();
 
