@@ -37,7 +37,7 @@ namespace WebApplication.Web.DAL
                     command.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
                     command.Parameters.AddWithValue("@Description", hour.Description);
                     command.Parameters.AddWithValue("@Location", hour.Location);
-                    command.Parameters.AddWithValue("@WorkedDate", hour.Date);
+                    command.Parameters.AddWithValue("@WorkedDate", hour.DateWorked);
                     command.Parameters.AddWithValue("@LoggedDate", current);
 
                     command.ExecuteNonQuery();

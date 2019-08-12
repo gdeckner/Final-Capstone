@@ -8,7 +8,7 @@ namespace WebApplication.Web.Models
 {
     public class Hours
     {
-        [Required]
+        //[Required]
         [Display(Name = "User ID")]
         public int? UserId { get; set; }
 
@@ -17,7 +17,6 @@ namespace WebApplication.Web.Models
         [Display(Name = "Task ID")]
         public int? TaskId { get; set; }
 
-        [Required]
         [Display(Name = "Old Task ID")]
         public int? OldTask { get; set; }
 
@@ -27,9 +26,8 @@ namespace WebApplication.Web.Models
 
         [Required]
         [Display(Name = "Date Worked")]
-        public decimal? DateWorked { get; set; }
+        public DateTime? DateWorked { get; set; }
 
-        [Required]
         [Display(Name = "Date Logged")]
         public DateTime? Date { get; set; }
 
@@ -43,7 +41,6 @@ namespace WebApplication.Web.Models
         /// <summary>
         /// The user's description of work.
         /// </summary>
-        [Required]
         [Display(Name = "Task Title")]
         public string TaskTitle { get; set; }
 
