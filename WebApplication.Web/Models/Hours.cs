@@ -41,6 +41,13 @@ namespace WebApplication.Web.Models
         public string Description { get; set; }
 
         /// <summary>
+        /// The user's description of work.
+        /// </summary>
+        [Required]
+        [Display(Name = "Task Title")]
+        public string TaskTitle { get; set; }
+
+        /// <summary>
         /// The user's location of work.
         /// </summary>
         [Required]
