@@ -8,7 +8,7 @@
 <p>Welcome @Model.Name</p>
 
 <p>
-    <a asp-action="LogTime">Log Time</a>
+    <a asp-action="LogTime" class="btn btn-default">Log Time</a>
 </p>
 
 <table class="table">
@@ -33,16 +33,16 @@
         {
             <tr>
                 <td>
-                    @hours.Date
+                    @hours.DateWorked
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => hours.Location)
+                    @hours.Location
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => hours.Description)
+                    @hours.Description
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => hours.TimeInHours)
+                    @hours.TimeInHours
                 </td>
             </tr>
         }

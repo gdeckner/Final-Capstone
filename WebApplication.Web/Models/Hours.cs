@@ -14,14 +14,14 @@ namespace WebApplication.Web.Models
 
 
         [Required]
-        [Display(Name = "Task ID")]
+        [Display(Name = "Task")]
         public int? TaskId { get; set; }
 
         [Display(Name = "Old Task ID")]
         public int? OldTask { get; set; }
 
         [Required]
-        [Display(Name = "Time")]
+        [Display(Name = "Hours Worked")]
         public decimal? TimeInHours { get; set; }
 
         [Required]

@@ -18,22 +18,22 @@
 <p>Welcome @Model.Name</p>
 
 <p>
-    <a asp-action="Register">Create New User</a>
+    <a asp-action="Register" class="btn btn-default">Create New User</a>
 </p>
 <p>
-    <a asp-action="CreateJob">Create New Job</a>
+    <a asp-action="CreateJob" class="btn btn-default">Create New Job</a>
 </p>
 <p>
-    <a asp-action="CreateProjectTasks">Create New Project Task</a>
+    <a asp-action="CreateProjectTasks" class="btn btn-default">Create New Project Task</a>
 </p>
 <p>
-    <a asp-action="AddJobLocation">Add Job Location</a>
+    <a asp-action="AddJobLocation" class="btn btn-default">Add Job Location</a>
 </p>
 <p>
-    <a asp-action="AuthorizeUser">Authorize User To Job</a>
+    <a asp-action="AuthorizeUser" class="btn btn-default">Authorize User To Job</a>
 </p>
 <p>
-    <a asp-action="ApproveHoursHub">Approval Hub</a>
+    <a asp-action="ApproveHoursHub" class="btn btn-default">Approval Hub</a>
 </p>
 <table class="table">
     <thead>
@@ -61,13 +61,13 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.UserId)
+                    @item.UserId
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
+                    @item.Name
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Username)
+                    @item.Username
                 </td>
                 <td>
                     @if (item.Role == "Users")
