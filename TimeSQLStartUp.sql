@@ -81,4 +81,5 @@ create table Payroll
 
 insert into Roles (roles_Title,role_Description) values ('Admin','Admin control' ),('Users','Generic User')
 insert into UserLogin (first_Last_Name, userName,userRole,password,salt) 
-values('Default Admin', 'Admin','Admin','qmtnGXtPXRXBLwrAJDC7wvz3msY=','nhyQHUYxoa0=')
+values('Default Admin', 'Admin','Admin','RrQlUO2CbmowsGDSpRhXZPGjRy1BEXkN3fdCrNs4xUJjxNcs','RrQlUO2CbmowsGDSpRhXZA=='),('Default User','User','Users','qmtnGXtPXRXBLwrAJDC7wvz3msY=','nhyQHUYxoa0='),
+('Gerg Acer','GAcer','Users', 'RrQlUO2CbmowsGDSpRhXZPGjRy1BEXkN3fdCrNs4xUJjxNcs','RrQlUO2CbmowsGDSpRhXZA==')
