@@ -30,7 +30,7 @@ namespace WebApplication.Web.DAL
                     connection.Open();
 
                     SqlCommand command = new SqlCommand(@"INSERT INTO Hours (UserId, TaskID, TimeInHours, dateWorked, dateLogged, description, location) VALUES(@UserId, @TaskId, @TimeInHours, @WorkedDate, @LoggedDate, @Description, @Location);", connection);
-
+                    SqlCommand commandTitle = new SqlCommand(@"UPDATE Hours SET Hours.Title = (SELECT Tasks.project_Task_Title FROM Tasks WHERE Hours.taskId = Task.project_Task_ID);", connection);
 
                     command.Parameters.AddWithValue("@UserId", hour.UserId);
                     command.Parameters.AddWithValue("@TaskId", hour.TaskId);
@@ -41,6 +41,7 @@ namespace WebApplication.Web.DAL
                     command.Parameters.AddWithValue("@LoggedDate", current);
 
                     command.ExecuteNonQuery();
+                    commandTitle.ExecuteNonQuery();
 
                     if (hour.UserId == null || hour.TaskId == null || hour.TimeInHours == null || hour.Date == null)
                     {
@@ -204,7 +205,7 @@ namespace WebApplication.Web.DAL
                 {
 
                     connection.Open();
-                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location, isSubmitted,isApproved FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location, task_Title FROM Hours
                                                     WHERE userID = @userId;", connection);
 
                     command.Parameters.AddWithValue("@userid", userId);
@@ -220,7 +221,7 @@ namespace WebApplication.Web.DAL
                 {
 
                     connection.Open();
-                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location, task_Title FROM Hours
                                                     WHERE userID = @userId
                                                     AND dateLogged BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays);", connection);
 
@@ -251,14 +252,15 @@ namespace WebApplication.Web.DAL
             {
 
                 connection.Open();
+                
                 if (duration == "1W")
                 {
                     SqlCommand command = new SqlCommand(@"SELECT Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateLogged, Hours.description, Hours.location FROM Hours
                                                     WHERE userID = @userId
-                                                    AND dateLogged BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays);", connection);
+                                                    AND dateLogged BETWEEN CONVERT(datetime, @lastWeek) AND CONVERT(datetime, @currentDays);", connection);
                     command.Parameters.AddWithValue("@userid", userid);
                     command.Parameters.AddWithValue("@currentDays", current);
-                    command.Parameters.AddWithValue("@lastMonth", lastMonth);
+                    command.Parameters.AddWithValue("@lastWeek", lastWeek);
                     SqlDataReader reader = command.ExecuteReader();
 
                     payrollLog = MapHoursToReader(reader);
@@ -267,10 +269,10 @@ namespace WebApplication.Web.DAL
                 {
                     SqlCommand command = new SqlCommand(@"SELECT Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateLogged, Hours.description, Hours.location FROM Hours
                                                     WHERE userID = @userId
-                                                    AND dateLogged BETWEEN CONVERT(datetime, @lastWeek) AND CONVERT(datetime, @currentDays);", connection);
+                                                    AND dateLogged BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays);", connection);
                     command.Parameters.AddWithValue("@userid", userid);
                     command.Parameters.AddWithValue("@currentDays", current);
-                    command.Parameters.AddWithValue("@lastWeek", lastWeek);
+                    command.Parameters.AddWithValue("@lastMonth", lastMonth);
                     SqlDataReader reader = command.ExecuteReader();
 
                     payrollLog = MapHoursToReader(reader);

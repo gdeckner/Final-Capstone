@@ -263,6 +263,40 @@ namespace WebApplication.Web.Controllers
 
         [HttpGet]
         [AuthorizationFilter("Admin")]
+        public IActionResult GetUserTimeLog(string username)
+        {
+            User user = userDAL.GetUser(username);
+
+            IList<Hours> hoursList = hoursDAL.GetTimeReport(user.UserId, "1M");
+
+            ViewBag.HoursList = hoursList;
+
+            ViewBag.User = user;
+
+            ViewBag.SortType = "1M";
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SortUserTimeLog(User user)
+        {
+            //user = userDAL.GetUser(user.Username);
+
+            IList<Hours> hoursList = hoursDAL.GetTimeReport(user.UserId, user.LogTimeSort);
+
+            ViewBag.HoursList = hoursList;
+
+            ViewBag.User = user;
+
+            //ViewBag.UserFullName = user.Name;
+
+            /*ViewBag.SortType = user.LogTimeSort;*/
+
+            return View();
+        }
+
         public IActionResult ApproveHoursHub(PayrollTable payrollTable)
         {
             if (payrollTable.StartDate < new DateTime(1753, 1, 1))

@@ -1,0 +1,63 @@
+﻿@model User
+
+@{
+    ViewData["Title"] = "SortUserTimeLog";
+}
+
+<h2>SortUserTimeLog</h2>
+
+<h5>@ViewBag.User.LogTimeSort</h5>
+
+<h2>@ViewBag.User.Name</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Task
+            </th>
+            <th>
+                Date Logged
+            </th>
+            <th>
+                Location
+            </th>
+            <th>
+                Time In Hours
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Hours hours in ViewBag.HoursList)
+        {
+            <tr>
+                <td>
+                    @hours.TaskId
+                </td>
+                <td>
+                    @hours.Date
+                </td>
+                <td>
+                    @hours.Location
+                </td>
+                <td>
+                    @hours.TimeInHours
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form asp-action="SortUserTimeLog" method="post">
+    <label>Sort By: </label>
+    <select asp-for="LogTimeSort">
+        <option value="1W">Week</option>
+        <option value="1M">Month</option>
+        <option value="1Q">Quarter</option>
+    </select>
+    <input type="hidden" asp-for="Username" value="@ViewBag.User.Username" />
+    <input type="hidden" asp-for="UserId" value="@ViewBag.User.UserId" />
+    <input type="hidden" asp-for="Name" value="@ViewBag.User.Name" />
+    <input type="hidden" asp-for="Role" value="@ViewBag.User.Role" />
+    <input type="submit" value="Resort" />
+</form>
