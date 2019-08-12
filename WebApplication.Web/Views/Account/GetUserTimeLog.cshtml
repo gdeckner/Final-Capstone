@@ -10,7 +10,7 @@
 
 <h2>@ViewBag.User.Name</h2>
 
-<table>
+<table class="table">
     <thead>
         <tr>
             <th>
@@ -52,7 +52,7 @@
     <label>Sort By: </label>
     <select asp-for="LogTimeSort">
         <option value="1W">Week</option>
-        <option value="1M">Month</option>
+        <option selected value="1M">Month</option>
         <option value="1Q">Quarter</option>
     </select>
     <input type="hidden" asp-for="Username" value="@ViewBag.User.Username" />
