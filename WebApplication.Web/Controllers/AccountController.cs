@@ -42,7 +42,7 @@ namespace WebApplication.Web.Controllers
             }
             else
             {
-                ViewBag.Hours = hoursDAL.GetAllHours(user.UserId);
+                ViewBag.Hours = hoursDAL.GetAllHours(user.UserId, true);
 
                 return View(user);
             }
@@ -257,6 +257,16 @@ namespace WebApplication.Web.Controllers
             bool isSuccessful = jobDAL.AssignUserToJob(userJob);
 
             return RedirectToAction("Index", "Account");
+        }
+
+        [HttpGet]
+        [AuthorizationFilter("Admin")]
+        public IActionResult ApproveHoursHub(PayrollTable payrollTable)
+        {
+            //ViewBag.PayPeriods = payrollSdlDAO.GetListOfPayPeriods(); //unique start and end dates
+            //ViewBag.TimeCards = payrollSdlDAO.GetListOfTimeCards(payrollTable.StartDate, payrollTable.EndDate); //timecards in the pay period
+
+            return View();
         }
     }
 }
