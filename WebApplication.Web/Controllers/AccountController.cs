@@ -201,7 +201,7 @@ namespace WebApplication.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult LogTime(Hours hours)
         {
-            hours.UserId = authProvider.GetCurrentUser().UserId;
+            hours.UserId = authProvider.GetCurrentUser().UserId; //Needs to be userName
 
             if (ModelState.IsValid)
             {
@@ -209,7 +209,12 @@ namespace WebApplication.Web.Controllers
 
                 return RedirectToAction("Index", "Account");
             }
-
+            else
+            {
+                var errors = ModelState.Select(x => x.Value.Errors)
+                           .Where(y => y.Count > 0)
+                           .ToList();
+            }
             return View(hours);
         }
 
