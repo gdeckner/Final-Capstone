@@ -14,7 +14,7 @@ namespace WebApplication.Web.DAL
         private readonly DateTime lastMonth = DateTime.Now.AddDays(-30);
         private readonly DateTime lastWeek = DateTime.Now.AddDays(-7);
         private readonly DateTime lastQuarter = DateTime.Now.AddDays(-120);
-
+        private string updateHoursQuery = @"(BEGIN TRANSACTION);";
 
         public HoursSqlDAL(string connectionString)
         {
@@ -29,15 +29,19 @@ namespace WebApplication.Web.DAL
                 {
                     connection.Open();
 
-                    SqlCommand command = new SqlCommand(@"INSERT INTO Hours (UserId, TaskID, TimeInHours, dateLogged, description, location) VALUES(@UserId, @TaskId, @TimeInHours, @Date, @Description, @Location);", connection);
+                    SqlCommand command = new SqlCommand(@"INSERT INTO Hours (UserId, TaskID, TimeInHours, dateWorked, dateLogged, description, location) VALUES(@UserId, @TaskId, @TimeInHours, @WorkedDate, @LoggedDate, @Description, @Location);", connection);
 
 
                     command.Parameters.AddWithValue("@UserId", hour.UserId);
                     command.Parameters.AddWithValue("@TaskId", hour.TaskId);
                     command.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
-                    command.Parameters.AddWithValue("@Date", hour.Date);
                     command.Parameters.AddWithValue("@Description", hour.Description);
                     command.Parameters.AddWithValue("@Location", hour.Location);
+                    command.Parameters.AddWithValue("@WorkedDate", hour.Date);
+                    command.Parameters.AddWithValue("@LoggedDate", current);
+                    //command.Parameters.AddWithValue("@IsSubmitted", hour.isSubmitted);
+
+
 
                     command.ExecuteNonQuery();
 
@@ -64,19 +68,54 @@ namespace WebApplication.Web.DAL
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    connection.Open();
+                    if (hour.TimeInHours != null)
+                    {
+                        string updateTime = @"(UPDATE Hours SET timeInHours = @TimeInHours WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);";
+                        updateHoursQuery += updateTime;
+                    }
+                    if (hour.TimeInHours != null)
+                    {
+                        string updateTime = @"(UPDATE Hours SET taskId = @TaskId WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);";
+                        updateHoursQuery += updateTime;
+                    }
+                    if (hour.Description != null)
+                    {
+                        string updateDescription = @"(UPDATE Hours SET Description = @Description WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);";
+                        updateHoursQuery += updateDescription;
+                    }
+                    if (hour.Description != null)
+                    {
+                        string updateDescription = @"(UPDATE Hours SET dateLogged = @loggedDate WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);";
+                        updateHoursQuery += updateDescription;
+                    }
+
+                    string loggedDate = @"(UPDATE Hours SET dateLogged = @DateLogged WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);";
+                    string commit = @"(COMMIT);";
+                    updateHoursQuery += loggedDate;
+                    updateHoursQuery += commit;
+
 
                     SqlCommand command = new SqlCommand(@"UPDATE Hours SET timeInHours = @TimeInHours WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);", connection);
-                    SqlCommand commandTwo = new SqlCommand(@"UPDATE Hours SET dateLogged = @Date WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);", connection);
+                    SqlCommand commandTwo = new SqlCommand(@"UPDATE Hours SET dateLogged = @DateLogged WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);", connection);
 
+
+                    string query = $@"{updateHoursQuery}
+                                  WHERE park_id = {hour.UserId}'";
+
+                    query = $@"{AcadiaSelectQuery} WHERE park_id = @parkId";
+
+
+                    SqlCommand command = connection.CreateCommand();
+                    command.CommandText = query;
                     command.Parameters.AddWithValue("@UserId", hour.UserId);
                     command.Parameters.AddWithValue("@TaskId", hour.TaskId);
                     command.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
                     commandTwo.Parameters.AddWithValue("@UserId", hour.UserId);
                     commandTwo.Parameters.AddWithValue("@TaskId", hour.TaskId);
                     commandTwo.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
-                    commandTwo.Parameters.AddWithValue("@Date", hour.Date);
+                    commandTwo.Parameters.AddWithValue("@DateLogged", current);
 
+                    connection.Open();
                     command.ExecuteNonQuery();
                     commandTwo.ExecuteNonQuery();
 
@@ -97,12 +136,12 @@ namespace WebApplication.Web.DAL
             }
         }
 
-        public IList<Hours> GetAllHours(int userId)
+        public IList<Hours> GetAllHours(int userId, bool all)
         {
             IList<Hours> defaultHoursList = new List<Hours>();
             IList<Hours> specificHoursList = new List<Hours>();
 
-            if (false)
+            if (all == true)
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
