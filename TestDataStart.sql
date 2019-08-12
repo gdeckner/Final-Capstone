@@ -65,8 +65,7 @@ create table Hours
 	location varchar(100),
 	timeInHours decimal (4,2),
 	dateLogged date,
-	isSubmitted bit default 0 not null,
-	isApproved  bit default 0 not null
+	
 
 )
 
@@ -75,21 +74,15 @@ create table Payroll
 	userId int foreign key references UserLogin(userId),
 	startDate date,
 	endDate date,
-	isApproved bit default 0
+	isApproved bit default 0,
+	isSubmitted bit default 0 not null
 
 )
-create table Payroll
-(
-	userId int foreign key references UserLogin(userId),
-	startDate date,
-	endDate date,
-	isApproved bit default 0
 
-)
 insert into Roles (roles_Title,role_Description) values ('Admin','Admin control' ),('Users','Generic User')
 insert into UserLogin (first_Last_Name, userName,userRole,password,salt) 
-values('Default Admin', 'Admin','Admin','qmtnGXtPXRXBLwrAJDC7wvz3msY=','nhyQHUYxoa0='),('Default User','User','Users','qmtnGXtPXRXBLwrAJDC7wvz3msY=','nhyQHUYxoa0='),
-('Gerg Acer','GAcer','Users', 'qmtnGXtPXRXBLwrAJDC7wvz3msY=','nhyQHUYxoa0=')
+values('Default Admin', 'Admin','Admin','RrQlUO2CbmowsGDSpRhXZPGjRy1BEXkN3fdCrNs4xUJjxNcs','RrQlUO2CbmowsGDSpRhXZA=='),('Default User','User','Users','qmtnGXtPXRXBLwrAJDC7wvz3msY=','nhyQHUYxoa0='),
+('Gerg Acer','GAcer','Users', 'RrQlUO2CbmowsGDSpRhXZPGjRy1BEXkN3fdCrNs4xUJjxNcs','RrQlUO2CbmowsGDSpRhXZA==')
 
 
 
@@ -107,3 +100,4 @@ insert into userJob (userID,job_Id) values (03,03)
 Insert into Tasks (job_Id,location_Id,project_Task_Title) Values (03,03,'Database Tester'),(03,01,'Watching Coder Monkey')
 insert into Hours (userID,taskId,dateLogged,location,timeInHours) Values (03,01,'08/02/2019','NANO_LAB',7.8),
 (03,01,'08/03/2019','NANO_LAB',8),(02,02,'08/09/2019','NANO_LAB',13)
+

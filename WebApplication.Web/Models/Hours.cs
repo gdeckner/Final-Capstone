@@ -10,22 +10,22 @@ namespace WebApplication.Web.Models
     {
         [Required]
         [Display(Name = "User ID")]
-        public int UserId { get; set; }
+        public int? UserId { get; set; }
 
 
         [Required]
         [Display(Name = "Task ID")]
-        public int TaskId { get; set; }
+        public int? TaskId { get; set; }
 
 
         [Required]
         [Display(Name = "Time")]
-        public decimal TimeInHours { get; set; }
+        public decimal? TimeInHours { get; set; }
 
 
         [Required]
         [Display(Name = "Date")]
-        public DateTime Date { get; set; }
+        public DateTime? Date { get; set; }
 
         /// <summary>
         /// The user's description of work.
@@ -40,11 +40,5 @@ namespace WebApplication.Web.Models
         [Required]
         [Display(Name = "Location")]
         public string Location { get; set; }
-
-        public bool IsSubmitted { get; set; }
-
-        public bool IsApproved { get; set; }
-
-
     }
 }

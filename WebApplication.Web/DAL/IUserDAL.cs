@@ -23,13 +23,15 @@ namespace WebApplication.Web.DAL
         /// Creates a new user.
         /// </summary>
         /// <param name="user"></param>
-        void CreateUser(User user);
+        void CreateUser(User user,string password);
 
         /// <summary>
         /// Updates a user.
         /// </summary>
         /// <param name="user"></param>
-        void UpdateUser(User user);
+        void UpdateUser(User user,string password);
+
+        bool CheckLogin(string username, string password);
 
         /// <summary>
         /// Deletes a user from the system.

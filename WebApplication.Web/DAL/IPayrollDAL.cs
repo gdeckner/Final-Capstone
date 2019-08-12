@@ -10,5 +10,7 @@ namespace WebApplication.Web.DAL
     {
         bool CreatePayReport(PayrollTable report);
 
+
+
     }
 }
