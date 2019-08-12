@@ -42,7 +42,7 @@ namespace WebApplication.Web.Controllers
             }
             else
             {
-                ViewBag.Hours = hoursDAL.GetAllHours(user.UserId);
+                ViewBag.Hours = hoursDAL.GetAllHours(user.UserId, true);
 
                 return View(user);
             }
@@ -201,7 +201,7 @@ namespace WebApplication.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult LogTime(Hours hours)
         {
-            hours.UserId = authProvider.GetCurrentUser().UserId;
+            hours.UserId = authProvider.GetCurrentUser().UserId; //Needs to be userName
 
             if (ModelState.IsValid)
             {
@@ -209,7 +209,12 @@ namespace WebApplication.Web.Controllers
 
                 return RedirectToAction("Index", "Account");
             }
-
+            else
+            {
+                var errors = ModelState.Select(x => x.Value.Errors)
+                           .Where(y => y.Count > 0)
+                           .ToList();
+            }
             return View(hours);
         }
 
@@ -286,6 +291,14 @@ namespace WebApplication.Web.Controllers
             //ViewBag.UserFullName = user.Name;
 
             /*ViewBag.SortType = user.LogTimeSort;*/
+
+            return View();
+        }
+
+        public IActionResult ApproveHoursHub(PayrollTable payrollTable)
+        {
+            //ViewBag.PayPeriods = payrollSdlDAO.GetListOfPayPeriods(); //unique start and end dates
+            //ViewBag.TimeCards = payrollSdlDAO.GetListOfTimeCards(payrollTable.StartDate, payrollTable.EndDate); //timecards in the pay period
 
             return View();
         }

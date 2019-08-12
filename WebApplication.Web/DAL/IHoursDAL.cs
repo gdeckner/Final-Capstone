@@ -10,8 +10,12 @@ namespace WebApplication.Web.DAL
     {
         bool CreateNewHours(Hours hour);
 
-        IList<Hours> GetAllHours(int userId);
+        //IList<Hours> GetAllHours(int userId);
 
         IList<Hours> GetTimeReport(int userid, string duration);
+
+        IList<Hours> GetAllHours(int userId, bool all);
+
+        bool UpdateHours(Hours hour);
     }
 }

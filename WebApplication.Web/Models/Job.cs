@@ -8,7 +8,6 @@ namespace WebApplication.Web.Models
 {
     public class Job
     {
-
         /// <summary>
         /// The job's id.
         /// </summary>

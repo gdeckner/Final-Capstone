@@ -27,7 +27,6 @@ namespace WebApplication.Web.DAL
 
                     SqlCommand command = new SqlCommand(@"INSERT INTO PayrollTable (UserId, StartDate, EndDate, IsApproved,isSubmitted) VALUES(@UserId, @startdate, @enddate, @isapproved,@isSubmitted);", connection);
 
-
                     command.Parameters.AddWithValue("@UserId", report.UserId);
                     command.Parameters.AddWithValue("@startdate", report.StartDate);
                     command.Parameters.AddWithValue("@enddate", report.EndDate);
@@ -63,9 +62,11 @@ namespace WebApplication.Web.DAL
                 {
                     connection.Open();
 
-                    SqlCommand cmd = new SqlCommand("DELETE FROM Tasks WHERE payroll_Id = @Id;", connection);
+                    SqlCommand cmd = new SqlCommand("DELETE FROM Payroll WHERE payroll_Id = @Id AND startDate = @startDate AND endDate = @endDate;", connection);
 
                     cmd.Parameters.AddWithValue("@Id", report.UserId);
+                    cmd.Parameters.AddWithValue("@startDate", report.StartDate);
+                    cmd.Parameters.AddWithValue("@endDate", report.EndDate);
 
                     cmd.ExecuteNonQuery();
 

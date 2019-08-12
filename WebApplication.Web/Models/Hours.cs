@@ -17,14 +17,20 @@ namespace WebApplication.Web.Models
         [Display(Name = "Task ID")]
         public int? TaskId { get; set; }
 
+        [Required]
+        [Display(Name = "Old Task ID")]
+        public int? OldTask { get; set; }
 
         [Required]
         [Display(Name = "Time")]
         public decimal? TimeInHours { get; set; }
 
+        [Required]
+        [Display(Name = "Date Worked")]
+        public decimal? DateWorked { get; set; }
 
         [Required]
-        [Display(Name = "Date")]
+        [Display(Name = "Date Logged")]
         public DateTime? Date { get; set; }
 
         /// <summary>
