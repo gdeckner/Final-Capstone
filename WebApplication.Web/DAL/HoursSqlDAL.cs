@@ -309,6 +309,7 @@ namespace WebApplication.Web.DAL
                     Date = Convert.ToDateTime(reader["dateLogged"]),
                     Description = Convert.ToString(reader["description"]),
                     Location = Convert.ToString(reader["location"]),
+                    TaskTitle = Convert.ToString(reader["task_Title"])
                 };
 
                 hours.Add(hour);
