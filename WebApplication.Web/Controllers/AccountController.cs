@@ -291,6 +291,7 @@ namespace WebApplication.Web.Controllers
             return View();
         }
 
+        [AuthorizationFilter("Admin")]
         public IActionResult ApproveHoursHub(PayrollTable payrollTable)
         {
             if (payrollTable.StartDate < new DateTime(1753, 1, 1))
@@ -301,6 +302,23 @@ namespace WebApplication.Web.Controllers
             ViewBag.TimeCards = payrollDAL.GetListOfTimeCards(payrollTable.StartDate);
 
             return View();
+        }
+
+        [HttpGet]
+        [AuthorizationFilter("Admin")]
+        public IActionResult CreatePayPeriod()
+        {
+           
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreatePayPeriod(DateTime StartDate, DateTime EndDate)
+        {
+            payrollDAL.CreatePayPeriod(StartDate, EndDate);
+
+            return RedirectToAction("ApproveHoursHub", "Account");
         }
     }
 }
