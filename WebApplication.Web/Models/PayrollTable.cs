@@ -35,7 +35,7 @@ namespace WebApplication.Web.Models
         [Required]
         public bool IsApproved { get; set; }
 
-
+        public string Name { get; set; }
 
     }
 }

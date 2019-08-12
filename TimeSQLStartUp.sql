@@ -67,6 +67,7 @@ create table Hours
 	timeInHours decimal (4,2),
 	dateWorked date,
 	dateLogged date,
+	task_Title varchar(100),
 	
 
 )

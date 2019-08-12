@@ -10,7 +10,8 @@ namespace WebApplication.Web.DAL
     {
         bool CreatePayReport(PayrollTable report);
 
+        IList<PayrollTable> GetListOfTimeCards(DateTime startDate);
 
-
+        IList<PayrollTable> GetListOfPayPeriods();
     }
 }

@@ -18,7 +18,8 @@ namespace WebApplication.Web.Controllers
         private readonly ILocationDAL locationDAL;
         private readonly IHoursDAL hoursDAL;
         private readonly IUserDAL userDAL;
-        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL, ITaskDAL taskDAL, ILocationDAL locationDAL, IUserDAL userDAL, IHoursDAL hoursDAL)
+        private readonly IPayrollDAL payrollDAL;
+        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL, ITaskDAL taskDAL, ILocationDAL locationDAL, IUserDAL userDAL, IHoursDAL hoursDAL, IPayrollDAL payrollDAL)
         {
             this.authProvider = authProvider;
             this.jobDAL = jobDAL;
@@ -26,6 +27,7 @@ namespace WebApplication.Web.Controllers
             this.locationDAL = locationDAL;
             this.userDAL = userDAL;
             this.hoursDAL = hoursDAL;
+            this.payrollDAL = payrollDAL;
         }
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
@@ -291,8 +293,12 @@ namespace WebApplication.Web.Controllers
 
         public IActionResult ApproveHoursHub(PayrollTable payrollTable)
         {
-            //ViewBag.PayPeriods = payrollSdlDAO.GetListOfPayPeriods(); //unique start and end dates
-            //ViewBag.TimeCards = payrollSdlDAO.GetListOfTimeCards(payrollTable.StartDate, payrollTable.EndDate); //timecards in the pay period
+            if (payrollTable.StartDate < new DateTime(1753, 1, 1))
+            {
+                payrollTable.StartDate = new DateTime(1753, 1, 1);
+            }
+            ViewBag.PayPeriods = payrollDAL.GetListOfPayPeriods(); //unique start and end dates
+            ViewBag.TimeCards = payrollDAL.GetListOfTimeCards(payrollTable.StartDate); //timecards in the pay period
 
             return View();
         }
