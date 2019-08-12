@@ -45,8 +45,11 @@ namespace WebApplication.Web.DAL
         /// Saves the user to the database.
         /// </summary>
         /// <param name="user"></param>
-        public void CreateUser(User user)
+        public void CreateUser(User user,string password)
         {
+            byte[] salt = passHasher.GenerateRandomSalt();
+            string hashedPassword = passHasher.ComputeHash(password, salt);
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
@@ -55,8 +58,8 @@ namespace WebApplication.Web.DAL
                     SqlCommand cmd = new SqlCommand("INSERT INTO UserLogin (first_Last_Name, userName, password, salt, userRole) VALUES (@name, @username, @password, @salt, @role);", conn);
                     cmd.Parameters.AddWithValue("@name", user.Name);
                     cmd.Parameters.AddWithValue("@username", user.Username);
-                    cmd.Parameters.AddWithValue("@password", user.Password);
-                    cmd.Parameters.AddWithValue("@salt", user.Salt);
+                    cmd.Parameters.AddWithValue("@password", hashedPassword);
+                    cmd.Parameters.AddWithValue("@salt", salt);
                     cmd.Parameters.AddWithValue("@role", user.Role);
 
                     cmd.ExecuteNonQuery();
@@ -221,16 +224,19 @@ namespace WebApplication.Web.DAL
         /// Updates the user in the database.
         /// </summary>
         /// <param name="user"></param>
-        public void UpdateUser(User user)
+        public void UpdateUser(User user,string password)
         {
+            byte[] salt = passHasher.GenerateRandomSalt();
+            string hashedPassword = passHasher.ComputeHash(password, salt);
+
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand("UPDATE UserLogin SET password = @password, salt = @salt, userRole = @role WHERE userID = @id;", conn);                    
-                    cmd.Parameters.AddWithValue("@password", user.Password);
-                    cmd.Parameters.AddWithValue("@salt", user.Salt);
+                    cmd.Parameters.AddWithValue("@password", hashedPassword);
+                    cmd.Parameters.AddWithValue("@salt", Convert.ToBase64String(salt));
                     cmd.Parameters.AddWithValue("@role", user.Role);
                     cmd.Parameters.AddWithValue("@id", user.UserId);
 
@@ -252,8 +258,6 @@ namespace WebApplication.Web.DAL
                 UserId = Convert.ToInt32(reader["userID"]),
                 Name = Convert.ToString(reader["first_Last_Name"]),
                 Username = Convert.ToString(reader["userName"]),
-                Password = Convert.ToString(reader["password"]),
-                Salt = Convert.ToString(reader["salt"]),
                 Role = Convert.ToString(reader["userRole"])
             };
         }
