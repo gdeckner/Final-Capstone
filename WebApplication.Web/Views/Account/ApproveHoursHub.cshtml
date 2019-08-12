@@ -1,0 +1,55 @@
+﻿@model PayrollTable
+
+@{
+    ViewData["Title"] = "ApproveHoursHub";
+}
+
+<h2>ApproveHoursHub</h2>
+
+
+<form asp-controller="account" asp-action="ApproveHoursHub">
+    <div class="form-group">
+        <label>Select Pay Period: </label>
+        <select asp-for="StartDate">
+            @foreach (PayrollTable payroll in ViewBag.PayPeriods)
+            {
+                <option value="@payroll.StartDate">@payroll.StartDate - @payroll.EndDate</option>
+            }
+        </select>
+        <span asp-validation-for="StartDate"></span>
+    </div>
+
+    <input type="submit" value="Select Pay Period" class="btn btn-default" />
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Submitted?
+            </th>
+            <th>
+                Approved?
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (PayrollTable item in ViewBag.TimeCards)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.IsSubmitted
+                </td>
+                <td>
+                    @item.IsApproved
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

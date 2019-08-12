@@ -123,11 +123,52 @@ namespace WebApplication.Web.DAL
                     EndDate = Convert.ToDateTime(reader["endDate"]),
                     IsApproved = Convert.ToBoolean(reader["isApproved"]),
                     IsSubmitted = Convert.ToBoolean(reader["isSubmitted"]),
+                    Name = Convert.ToString(reader["first_Last_Name"])
                 };
 
                 reports.Add(report);
             }
             return reports;
+        }
+
+        public IList<PayrollTable> GetListOfTimeCards(DateTime startDate)
+        {
+
+            IList<PayrollTable> payrollLog = new List<PayrollTable>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                connection.Open();
+                SqlCommand command = new SqlCommand(@"SELECT payroll.userId, payroll.startDate, payroll.endDate, payroll.isSubmitted, payroll.isApproved, userLogin.first_Last_Name FROM payroll
+                                                    INNER JOIN userLogin
+                                                    ON payroll.userId = userLogin.userId
+                                                    WHERE payroll.startDate = @startDate;", connection);
+                command.Parameters.AddWithValue("@startDate", startDate);
+                SqlDataReader reader = command.ExecuteReader();
+
+                payrollLog = MapPayrollReader(reader);
+            }
+
+            return payrollLog;
+        }
+
+        public IList<PayrollTable> GetListOfPayPeriods()
+        {
+
+            IList<PayrollTable> payrollLog = new List<PayrollTable>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                connection.Open();
+                SqlCommand command = new SqlCommand(@"SELECT DISTINCT payroll.startDate, payroll.endDate FROM payroll", connection);
+                SqlDataReader reader = command.ExecuteReader();
+
+                payrollLog = MapPayrollReader(reader);
+            }
+
+            return payrollLog;
         }
     }
 }
