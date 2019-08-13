@@ -281,6 +281,7 @@ namespace WebApplication.Web.DAL
                     loginPassed = hash.Equals(pulledPassword);
                 }
             }
+            
             return loginPassed;
         }
     }

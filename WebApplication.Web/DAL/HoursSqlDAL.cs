@@ -25,6 +25,7 @@ namespace WebApplication.Web.DAL
         {
             try
             {
+               
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
@@ -53,6 +54,7 @@ namespace WebApplication.Web.DAL
                     {
                         return true;
                     }
+                    
                 }
             }
             catch (SqlException e)

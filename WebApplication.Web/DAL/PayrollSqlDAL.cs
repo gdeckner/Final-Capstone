@@ -207,7 +207,7 @@ namespace WebApplication.Web.DAL
                 throw;
             }
         }
-        public bool AlertIfDaysNotSubmitted(int userId)
+        public bool AlertIfDaysNotSubmitted(int? userId)
         {
             bool needsAlert = false;
             int result = 0;
