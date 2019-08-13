@@ -299,7 +299,6 @@ namespace WebApplication.Web.DAL
             return payrollLog;
         }
 
-
         private List<Hours> MapHoursToReader(SqlDataReader reader)
         {
             List<Hours> hours = new List<Hours>();
@@ -320,6 +319,30 @@ namespace WebApplication.Web.DAL
                 hours.Add(hour);
             }
             return hours;
+        }
+
+        public IList<Hours> GetTimeCard(int? userId, DateTime startDate, DateTime endDate)
+        {
+            IList<Hours> timeCard = new List<Hours>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                connection.Open();
+                SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, dateWorked, description, location, task_Title FROM Hours
+                                                    WHERE userID = @userId
+                                                    AND dateWorked BETWEEN CONVERT(datetime, @startDate) AND CONVERT(datetime, @endDate);", connection);
+
+                command.Parameters.AddWithValue("@userid", userId);
+                command.Parameters.AddWithValue("@startDate", startDate);
+                command.Parameters.AddWithValue("@endDate", endDate);
+
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                timeCard = MapHoursToReader(reader);
+            }
+            return timeCard;
         }
     }
 }

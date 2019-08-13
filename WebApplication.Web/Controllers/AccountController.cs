@@ -320,5 +320,14 @@ namespace WebApplication.Web.Controllers
 
             return RedirectToAction("ApproveHoursHub", "Account");
         }
+
+        [HttpGet]
+        [AuthorizationFilter("Admin")]
+        public IActionResult PeriodTimeCard(PayrollTable UserPeriod)
+        {
+            ViewBag.TimeCard = hoursDAL.GetTimeCard(UserPeriod.UserId, UserPeriod.StartDate, UserPeriod.EndDate);
+
+            return View();
+        }
     }
 }
