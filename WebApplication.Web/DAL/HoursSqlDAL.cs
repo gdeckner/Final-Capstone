@@ -208,7 +208,8 @@ namespace WebApplication.Web.DAL
 
                     connection.Open();
                     SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateWorked, description, location, task_Title FROM Hours
-                                                    WHERE userID = @userId;", connection);
+                                                    WHERE userID = @userId
+                                                    ORDER BY dateWorked DESC;", connection);
 
                     command.Parameters.AddWithValue("@userid", userId);
                     SqlDataReader reader = command.ExecuteReader();
@@ -225,7 +226,8 @@ namespace WebApplication.Web.DAL
                     connection.Open();
                     SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateWorked, description, location, task_Title FROM Hours
                                                     WHERE userID = @userId
-                                                    AND dateWorked BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays);", connection);
+                                                    AND dateWorked BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays)
+                                                    ORDER BY dateWorked DESC;", connection);
 
                     command.Parameters.AddWithValue("@userid", userId);
                     command.Parameters.AddWithValue("@currentDays", current);
