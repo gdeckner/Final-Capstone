@@ -21,7 +21,7 @@ namespace WebApplication.Web.DAL
         }
 
 
-        public IList<Log> GetTimeReport(int userid, string duration)
+        public IList<Log> GetUserLog(int userid, string duration)
         {
 
             IList<Log> userChangesLog = new List<Log>();
