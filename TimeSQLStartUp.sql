@@ -101,13 +101,14 @@ After  INSERT
 as
 begin
 	INSERT INTO LOG(
-	hoursId,hoursBefore,hoursAfter,targetUser,dateWorked,dateLogged)
+	hoursId,hoursBefore,hoursAfter,targetUser,dateWorked,dateLogged,modified_Date)
 	Select
 	h.hoursId,
 	'0',
 	h.timeInHours,
 	h.userID,
 	h.dateWorked,
+	h.dateLogged,
 	h.dateLogged
 	FROM inserted h
 	
