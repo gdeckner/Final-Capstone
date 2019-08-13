@@ -34,6 +34,8 @@ namespace WebApplication.Web.DAL
                 if (duration == "1W")
                 {
                     SqlCommand command = new SqlCommand(@"SELECT Log.targetUser, Log.dateWorked, Log.dateLogged, Log.modified_Date, Log.hoursId, Log.hoursBefore, Log.hoursAfter FROM Hours
+                                                    inner join log
+                                                    on hours.userId = log.currentUser
                                                     WHERE userID = @userId
                                                     AND Log.dateWorked BETWEEN CONVERT(datetime, @lastWeek) AND CONVERT(datetime, @currentDays)
                                                     ORDER BY Log.dateWorked DESC;", connection);
@@ -47,7 +49,9 @@ namespace WebApplication.Web.DAL
                 }
                 else if (duration == "1M")
                 {
-                    SqlCommand command = new SqlCommand(@"SELECT Log.targetUser, Log.dateWorked, Log.dateLogged, Log.modified_Date, Log.hoursId, Log.hoursBefore, Log.hoursAfter FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT Log.targetUser, Log.dateWorked, Log.dateLogged, Log.modified_Date, Log.hoursId, Log.hoursBefore, Log.hoursAfter FROM Hours 
+                                                    inner join log
+                                                    on hours.userId = log.currentUser
                                                     WHERE userID = @userId
                                                     AND Log.dateWorked BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays)
                                                     ORDER BY Log.dateWorked DESC;", connection);
@@ -62,6 +66,8 @@ namespace WebApplication.Web.DAL
                 else if (duration == "1Q")
                 {
                     SqlCommand command = new SqlCommand(@"SELECT Log.targetUser, Log.dateWorked, Log.dateLogged, Log.modified_Date, Log.hoursId, Log.hoursBefore, Log.hoursAfter FROM Hours
+                                                    inner join log
+                                                    on hours.userId = log.currentUser
                                                     WHERE userID = @userId
                                                     AND Log.dateWorked BETWEEN CONVERT(datetime, @lastQuarter) AND CONVERT(datetime, @currentDays)
                                                     ORDER BY Log.dateWorked DESC;", connection);

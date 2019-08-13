@@ -17,15 +17,15 @@ namespace WebApplication.Web.Models
         public int? TargetUser { get; set; }
 
         [Display(Name = "Date Worked")]
-        public DateTime? DateWorked { get; set; }
+        public DateTime DateWorked { get; set; }
 
         [Required]
         [Display(Name = "Date Logged")]
-        public DateTime? DateLogged { get; set; }
+        public DateTime DateLogged { get; set; }
 
         [Required]
         [Display(Name = "Modified Date")]
-        public DateTime? ModifiedDate { get; set; }
+        public DateTime ModifiedDate { get; set; }
 
         [Display(Name = "Hours Before")]
         public decimal? HoursBefore { get; set; }

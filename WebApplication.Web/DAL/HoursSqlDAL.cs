@@ -207,7 +207,7 @@ namespace WebApplication.Web.DAL
                 {
 
                     connection.Open();
-                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateWorked, description, location, task_Title FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT hoursId, userID, taskId, timeInHours, dateWorked, description, location, task_Title FROM Hours
                                                     WHERE userID = @userId;", connection);
 
                     command.Parameters.AddWithValue("@userid", userId);
@@ -223,7 +223,7 @@ namespace WebApplication.Web.DAL
                 {
 
                     connection.Open();
-                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateWorked, description, location, task_Title FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT hoursId, userID, taskId, timeInHours, dateWorked, description, location, task_Title FROM Hours
                                                     WHERE userID = @userId
                                                     AND dateWorked BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays);", connection);
 
@@ -307,6 +307,7 @@ namespace WebApplication.Web.DAL
             {
                 Hours hour = new Hours
                 {
+                    HoursId = Convert.ToInt32(reader["hoursId"]),
                     UserId = Convert.ToInt32(reader["userID"]),
                     TaskId = Convert.ToInt32(reader["taskId"]),
                     TimeInHours = Convert.ToDecimal(reader["timeInHours"]),

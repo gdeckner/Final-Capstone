@@ -1,0 +1,72 @@
+﻿@model User
+
+@{
+    ViewData["Title"] = "AuditedLogs";
+}
+
+<h2>AuditedLogs</h2>
+
+<br />
+<h2>@ViewBag.User.Name</h2>
+<br />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Date Worked On
+            </th>
+            <th>
+                Date User Logged Time
+            </th>
+            <th>
+                Date Log Modified
+            </th>
+            <th>
+                Time In Hours
+            </th>
+            <th>
+                Original Hours Logged
+            </th>
+            <th>
+                Updated Hours Worked
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (Log logs in ViewBag.LogList)
+        {
+            <tr>
+                <td>
+                    @(logs.DateWorked.ToShortDateString())
+                </td>
+                <td>
+                    @(logs.DateLogged.ToShortDateString())
+                </td>
+                <td>
+                    @(logs.ModifiedDate.ToShortDateString())
+                </td>
+                <td>
+                    @logs.HoursBefore
+                </td>
+                <td>
+                    @logs.HoursAfter
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<form asp-action="SortAuditedLogs" method="post">
+    <label>Sort By: </label>
+    <select asp-for="LogTimeSort">
+        <option value="1W">Week</option>
+        <option selected value="1M">Month</option>
+        <option value="1Q">Quarter</option>
+    </select>
+    <input type="hidden" asp-for="Username" value="@ViewBag.User.Username" />
+    <input type="hidden" asp-for="UserId" value="@ViewBag.User.UserId" />
+    <input type="hidden" asp-for="Name" value="@ViewBag.User.Name" />
+    <input type="hidden" asp-for="Role" value="@ViewBag.User.Role" />
+    <input type="submit" value="Resort" />
+</form>

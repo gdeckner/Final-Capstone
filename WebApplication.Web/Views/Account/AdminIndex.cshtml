@@ -53,6 +53,9 @@
             <th>
                 Authorization Level
             </th>
+            <th>
+                Log Audit Trail
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -81,6 +84,9 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Role)
+                </td>
+                <td>
+                    <a asp-action="AuditedLogs" asp-route-username="@item.Username">Log Audit</a>
                 </td>
                 <td>
                     @Html.ActionLink("Delete", "Delete", new { id = item.UserId })

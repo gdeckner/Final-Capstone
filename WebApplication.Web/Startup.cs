@@ -59,6 +59,7 @@ namespace WebApplication.Web
             services.AddTransient<IPayrollDAL>(m => new PayrollSqlDAL(connectionString));
             services.AddTransient<ILocationDAL>(m => new LocationSqlDAL(connectionString));
             services.AddTransient<ITaskDAL>(m => new TasksSqlDAL(connectionString));
+            services.AddTransient<ILogDAL>(m => new LogSqlDAL(connectionString));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
