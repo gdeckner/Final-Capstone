@@ -35,12 +35,12 @@ namespace WebApplication.Web.DAL
                 {
                     SqlCommand command = new SqlCommand(@"SELECT Log.targetUser, Log.dateWorked, Log.dateLogged, Log.modified_Date, Log.hoursId, Log.hoursBefore, Log.hoursAfter FROM Hours
                                                     inner join log
-                                                    on hours.userId = log.currentUser
+                                                    on hours.userId = log.targetUser
                                                     WHERE userID = @userId
                                                     AND Log.dateWorked BETWEEN CONVERT(datetime, @lastWeek) AND CONVERT(datetime, @currentDays)
                                                     ORDER BY Log.dateWorked DESC;", connection);
 
-                    command.Parameters.AddWithValue("@userid", userid);
+                    command.Parameters.AddWithValue("@userId", userid);
                     command.Parameters.AddWithValue("@currentDays", current);
                     command.Parameters.AddWithValue("@lastWeek", lastWeek);
                     SqlDataReader reader = command.ExecuteReader();
@@ -51,12 +51,12 @@ namespace WebApplication.Web.DAL
                 {
                     SqlCommand command = new SqlCommand(@"SELECT Log.targetUser, Log.dateWorked, Log.dateLogged, Log.modified_Date, Log.hoursId, Log.hoursBefore, Log.hoursAfter FROM Hours 
                                                     inner join log
-                                                    on hours.userId = log.currentUser
+                                                    on hours.userId = log.targetUser
                                                     WHERE userID = @userId
                                                     AND Log.dateWorked BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays)
                                                     ORDER BY Log.dateWorked DESC;", connection);
 
-                    command.Parameters.AddWithValue("@userid", userid);
+                    command.Parameters.AddWithValue("@userId", userid);
                     command.Parameters.AddWithValue("@currentDays", current);
                     command.Parameters.AddWithValue("@lastMonth", lastMonth);
                     SqlDataReader reader = command.ExecuteReader();
@@ -67,11 +67,11 @@ namespace WebApplication.Web.DAL
                 {
                     SqlCommand command = new SqlCommand(@"SELECT Log.targetUser, Log.dateWorked, Log.dateLogged, Log.modified_Date, Log.hoursId, Log.hoursBefore, Log.hoursAfter FROM Hours
                                                     inner join log
-                                                    on hours.userId = log.currentUser
+                                                    on hours.userId = log.targetUser
                                                     WHERE userID = @userId
                                                     AND Log.dateWorked BETWEEN CONVERT(datetime, @lastQuarter) AND CONVERT(datetime, @currentDays)
                                                     ORDER BY Log.dateWorked DESC;", connection);
-                    command.Parameters.AddWithValue("@userid", userid);
+                    command.Parameters.AddWithValue("@userId", userid);
                     command.Parameters.AddWithValue("@currentDays", current);
                     command.Parameters.AddWithValue("@lastQuarter", lastQuarter);
                     SqlDataReader reader = command.ExecuteReader();
