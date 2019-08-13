@@ -17,5 +17,7 @@ namespace WebApplication.Web.DAL
         IList<Hours> GetAllHours(int userId, bool all);
 
         bool UpdateHours(Hours hour);
+
+        IList<Hours> GetTimeCard(int? userId, DateTime startDate, DateTime endDate);
     }
 }

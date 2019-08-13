@@ -13,7 +13,7 @@
         <select asp-for="StartDate">
             @foreach (PayrollTable payroll in ViewBag.PayPeriods)
             {
-                <option value="@payroll.StartDate">@payroll.StartDate - @payroll.EndDate</option>
+                <option value="@payroll.StartDate">@payroll.StartDate.ToShortDateString() - @payroll.EndDate.ToShortDateString()</option>
             }
         </select>
         <span asp-validation-for="StartDate"></span>
@@ -44,7 +44,7 @@
         {
             <tr>
                 <td>
-                    @item.Name
+                    <a asp-action="PeriodTimeCard" asp-route-userId="@item.UserId" asp-route-StartDate="@item.StartDate" asp-route-EndDate="@item.EndDate">@item.Name</a>
                 </td>
                 <td>
                     @item.IsSubmitted
