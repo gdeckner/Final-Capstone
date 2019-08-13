@@ -13,5 +13,7 @@ namespace WebApplication.Web.DAL
         IList<PayrollTable> GetListOfTimeCards(DateTime startDate);
 
         IList<PayrollTable> GetListOfPayPeriods();
+
+        void CreatePayPeriod(DateTime startDate, DateTime endDate);
     }
 }
