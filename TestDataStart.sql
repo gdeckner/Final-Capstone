@@ -18,3 +18,4 @@ insert into Payroll (userId,startDate,endDate,isSubmitted,isApproved) values (03
 insert into Payroll (userId,startDate,endDate,isSubmitted,isApproved) values (03,'07/01/2019','07/15/2019',0,0)
 
 
+SELECT * FROM UserLogin WHERE userName = 'MFrench'
