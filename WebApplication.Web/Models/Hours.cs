@@ -8,6 +8,8 @@ namespace WebApplication.Web.Models
 {
     public class Hours
     {
+        public int HoursId { get; set; }
+
         //[Required]
         [Display(Name = "User ID")]
         public int? UserId { get; set; }

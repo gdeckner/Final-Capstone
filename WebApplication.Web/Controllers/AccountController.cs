@@ -19,7 +19,8 @@ namespace WebApplication.Web.Controllers
         private readonly IHoursDAL hoursDAL;
         private readonly IUserDAL userDAL;
         private readonly IPayrollDAL payrollDAL;
-        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL, ITaskDAL taskDAL, ILocationDAL locationDAL, IUserDAL userDAL, IHoursDAL hoursDAL, IPayrollDAL payrollDAL)
+        private readonly ILogDAL logDAL;
+        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL, ITaskDAL taskDAL, ILocationDAL locationDAL, IUserDAL userDAL, IHoursDAL hoursDAL, IPayrollDAL payrollDAL, ILogDAL logDAL)
         {
             this.authProvider = authProvider;
             this.jobDAL = jobDAL;
@@ -28,6 +29,7 @@ namespace WebApplication.Web.Controllers
             this.userDAL = userDAL;
             this.hoursDAL = hoursDAL;
             this.payrollDAL = payrollDAL;
+            this.logDAL = logDAL;
         }
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
@@ -327,6 +329,50 @@ namespace WebApplication.Web.Controllers
         {
             ViewBag.TimeCard = hoursDAL.GetTimeCard(UserPeriod.UserId, UserPeriod.StartDate, UserPeriod.EndDate);
             ViewBag.PayrollLine = UserPeriod;
+
+            return View();
+        }
+
+        [HttpGet]
+        [AuthorizationFilter("Admin")]
+        public IActionResult AuditedLogs(string username)
+        {
+            User user = userDAL.GetUser(username);
+
+            IList<Log> logList = logDAL.GetUserLog(user.UserId, "1M");
+
+            ViewBag.LogList = logList;
+
+            ViewBag.User = user;
+
+            ViewBag.User.LogTimeSort = "1M";
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SortAuditedLogs(User user)
+        {
+            IList<Log> logList = logDAL.GetUserLog(user.UserId, user.LogTimeSort);
+
+            ViewBag.Loglist = logList;
+
+            ViewBag.User = user;
+
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult EditLogs(int id)
+        {
+            // use id to pull specific log information
+
+            // prefill log information
+
+            // display data in dropdowns
+
+            //
 
             return View();
         }
