@@ -113,7 +113,7 @@ After  INSERT
 as
 begin
 	INSERT INTO LOG(
-	hoursId,hoursBefore,targetUser,dateWorked,dateLogged)
+	hoursId,hoursAfter,targetUser,dateWorked,dateLogged)
 	Select
 	h.hoursId,
 	h.timeInHours,

@@ -4,11 +4,11 @@
     ViewData["Title"] = "GetUserTimeLog";
 }
 
-<h2>GetUserTimeLog</h2>
+@*<h2>GetUserTimeLog</h2>
 
 <h5>@ViewBag.User.LogTimeSort</h5>
 
-<h2>@ViewBag.User.Name</h2>
+<h2>@ViewBag.User.Name</h2>*@
 
 <table class="table">
     <thead>
@@ -17,7 +17,7 @@
                 Task
             </th>
             <th>
-                Date Logged
+                Work Date
             </th>
             <th>
                 Location
@@ -32,10 +32,10 @@
         {
             <tr>
                 <td>
-                    @hours.TaskId
+                    @hours.TaskTitle
                 </td>
                 <td>
-                    @hours.Date
+                    @(hours.DateWorked.ToShortDateString())
                 </td>
                 <td>
                     @hours.Location
