@@ -15,7 +15,7 @@ namespace WebApplication.Web.DAL
         private readonly DateTime lastWeek = DateTime.Now.AddDays(-7);
         private readonly DateTime lastQuarter = DateTime.Now.AddDays(-120);
         private string beginHoursSession = @"(BEGIN TRANSACTION);";
-        private int before = 0;
+        private readonly decimal before = 0;
 
         public HoursSqlDAL(string connectionString)
         {
@@ -33,8 +33,8 @@ namespace WebApplication.Web.DAL
 
                     SqlCommand command = new SqlCommand(@"INSERT INTO Hours (userID, taskID, timeInHours, dateWorked, dateLogged, description, location) VALUES(@UserId, @TaskId, @TimeInHours, @WorkedDate, @LoggedDate, @Description, @Location);", connection);
                     SqlCommand commandTitle = new SqlCommand(@"UPDATE Hours SET Hours.task_Title = (SELECT Tasks.project_Task_Title FROM Tasks WHERE Hours.taskId = Tasks.project_Task_ID) WHERE Hours.taskId = @TaskId;", connection);
-                    SqlCommand commandLog = new SqlCommand(@" INSERT INTO Log (targetUser, dateWorked, dateLogged, modified_Date, hoursId, hoursBefore, hoursAfter, currentUser) 
-VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FROM Hours WHERE dateWorked = @WorkedDate AND Hours.userID = @UserId), 0, @TimeInHours, @UserId);", connection);
+                    SqlCommand commandLog = new SqlCommand(@"INSERT INTO Log (targetUser, dateWorked, dateLogged, modified_Date, hoursId, hoursBefore, hoursAfter, currentUser) 
+VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FROM Hours WHERE dateWorked = @WorkedDate AND Hours.userID = @UserId), @Before, @TimeInHours, @UserId);", connection);
 
                     command.Parameters.AddWithValue("@UserId", hour.UserId);
                     command.Parameters.AddWithValue("@TaskId", hour.TaskId);
