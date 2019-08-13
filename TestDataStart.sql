@@ -1,3 +1,6 @@
+insert into UserLogin (first_Last_Name, userName,userRole,password,salt) 
+values ('Default User','User','Users','qmtnGXtPXRXBLwrAJDC7wvz3msY=','nhyQHUYxoa0='),
+('Gerg Acer','GAcer','Users','RrQlUO2CbmowsGDSpRhXZPGjRy1BEXkN3fdCrNs4xUJjxNcs','RrQlUO2CbmowsGDSpRhXZA==')
 INSERT INTO Locations(location_Title, location_Description) VALUES('AAT_HQ', 'AwareAbility Technologies Office - Rev1');
 INSERT INTO Locations(location_Title) VALUES('AAT_Working Lab');
 INSERT INTO Locations(location_Title, location_Description) VALUES('OSU_LAB', 'OSU Laboratory');
@@ -11,3 +14,7 @@ insert into userJob (userID,job_Id) values (03,03)
 Insert into Tasks (job_Id,project_Task_Title) Values (03,'Database Tester'),(03,'Watching Coder Monkey')
 insert into Hours (userID,taskId,dateLogged,location,timeInHours) Values (03,01,'08/02/2019','NANO_LAB',7.8),
 (03,01,'08/03/2019','NANO_LAB',8),(02,02,'08/09/2019','NANO_LAB',13)
+insert into Payroll (userId,startDate,endDate,isSubmitted,isApproved) values (03,'08/01/2019','08/14/2019',0,0)
+insert into Payroll (userId,startDate,endDate,isSubmitted,isApproved) values (03,'07/01/2019','07/15/2019',0,0)
+
+

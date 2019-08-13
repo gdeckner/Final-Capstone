@@ -107,6 +107,7 @@ namespace WebApplication.Web.DAL
 
                 payrollLog = MapPayrollReader(reader);
             }
+           
 
             return payrollLog;
         }
@@ -177,7 +178,7 @@ namespace WebApplication.Web.DAL
                     payrollLog.Add(report);
                 }
             }
-
+            
             return payrollLog;
         }
 
@@ -205,6 +206,34 @@ namespace WebApplication.Web.DAL
                 Console.Write(E);
                 throw;
             }
+        }
+        public bool AlertIfDaysNotSubmitted(int userId)
+        {
+            bool needsAlert = false;
+            int result = 0;
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    SqlCommand cmd = connection.CreateCommand();
+
+                    cmd.CommandText = @"select userId,startDate,endDate,isApproved,isSubmitted from Payroll
+                    where userId = @userId and endDate < Current_TimeStamp and isSubmitted = 0";
+                    cmd.Parameters.AddWithValue("@userId", userId);
+                    result = Convert.ToInt32(cmd.ExecuteScalar());
+                }
+                if (result != 0)
+                {
+                    needsAlert = true;
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.Message);
+                
+            }
+            return needsAlert;
         }
 
         public bool ApproveTime(PayrollTable pay)

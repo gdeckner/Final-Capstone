@@ -95,8 +95,7 @@ create table Log
 
 insert into Roles (roles_Title,role_Description) values ('Admin','Admin control' ),('Users','Generic User')
 insert into UserLogin (first_Last_Name, userName,userRole,password,salt) 
-values('Default Admin', 'Admin','Admin','RrQlUO2CbmowsGDSpRhXZPGjRy1BEXkN3fdCrNs4xUJjxNcs','RrQlUO2CbmowsGDSpRhXZA=='),('Default User','User','Users','qmtnGXtPXRXBLwrAJDC7wvz3msY=','nhyQHUYxoa0='),
-('Gerg Acer','GAcer','Users', 'RrQlUO2CbmowsGDSpRhXZPGjRy1BEXkN3fdCrNs4xUJjxNcs','RrQlUO2CbmowsGDSpRhXZA==')
+values('Default Admin', 'Admin','Admin','RrQlUO2CbmowsGDSpRhXZPGjRy1BEXkN3fdCrNs4xUJjxNcs','RrQlUO2CbmowsGDSpRhXZA==')
 INSERT INTO Locations(location_Title, location_Description) VALUES('AAT_HQ', 'AwareAbility Technologies Office - Rev1');
 INSERT INTO Locations(location_Title) VALUES('AAT_Working Lab');
 INSERT INTO Locations(location_Title, location_Description) VALUES('OSU_LAB', 'OSU Laboratory');
@@ -141,3 +140,5 @@ from inserted i
 end;
 go
 
+select *
+from UserLogin
