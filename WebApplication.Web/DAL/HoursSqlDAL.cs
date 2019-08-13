@@ -261,7 +261,7 @@ namespace WebApplication.Web.DAL
                 
                 if (duration == "1W")
                 {
-                    SqlCommand command = new SqlCommand(@"SELECT Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateWorked, Hours.description, Hours.location, Hours.task_Title FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT Hours.hoursId, Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateWorked, Hours.description, Hours.location, Hours.task_Title FROM Hours
                                                     WHERE userID = @userId
                                                     AND dateWorked BETWEEN CONVERT(datetime, @lastWeek) AND CONVERT(datetime, @currentDays)
                                                     ORDER BY dateWorked DESC;", connection);
@@ -274,7 +274,7 @@ namespace WebApplication.Web.DAL
                 }
                 else if (duration == "1M")
                 {
-                    SqlCommand command = new SqlCommand(@"SELECT Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateWorked, Hours.description, Hours.location, Hours.task_Title FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT Hours.hoursId, Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateWorked, Hours.description, Hours.location, Hours.task_Title FROM Hours
                                                     WHERE userID = @userId
                                                     AND dateWorked BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays)
                                                     ORDER BY dateWorked DESC;", connection);
@@ -287,7 +287,7 @@ namespace WebApplication.Web.DAL
                 }
                 else if (duration == "1Q")
                 {
-                    SqlCommand command = new SqlCommand(@"SELECT Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateWorked, Hours.description, Hours.location, Hours.task_Title FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT Hours.hoursId, Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateWorked, Hours.description, Hours.location, Hours.task_Title FROM Hours
                                                     WHERE userID = @userId
                                                     AND dateWorked BETWEEN CONVERT(datetime, @lastQuarter) AND CONVERT(datetime, @currentDays)
                                                     ORDER BY dateWorked DESC;", connection);
@@ -334,7 +334,7 @@ namespace WebApplication.Web.DAL
             {
 
                 connection.Open();
-                SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, dateWorked, description, location, task_Title FROM Hours
+                SqlCommand command = new SqlCommand(@"SELECT hoursId, userID, taskId, timeInHours, dateLogged, dateWorked, description, location, task_Title FROM Hours
                                                     WHERE userID = @userId
                                                     AND dateWorked BETWEEN CONVERT(datetime, @startDate) AND CONVERT(datetime, @endDate);", connection);
 
