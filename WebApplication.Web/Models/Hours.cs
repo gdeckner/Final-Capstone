@@ -26,7 +26,7 @@ namespace WebApplication.Web.Models
 
         [Required]
         [Display(Name = "Date Worked")]
-        public DateTime? DateWorked { get; set; }
+        public DateTime DateWorked { get; set; }
 
         [Display(Name = "Date Logged")]
         public DateTime? Date { get; set; }

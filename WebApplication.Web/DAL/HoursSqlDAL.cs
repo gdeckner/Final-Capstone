@@ -29,8 +29,8 @@ namespace WebApplication.Web.DAL
                 {
                     connection.Open();
 
-                    SqlCommand command = new SqlCommand(@"INSERT INTO Hours (UserId, TaskID, TimeInHours, dateWorked, dateLogged, description, location) VALUES(@UserId, @TaskId, @TimeInHours, @WorkedDate, @LoggedDate, @Description, @Location);", connection);
-                    SqlCommand commandTitle = new SqlCommand(@"UPDATE Hours SET Hours.Title = (SELECT Tasks.project_Task_Title FROM Tasks WHERE Hours.taskId = Task.project_Task_ID);", connection);
+                    SqlCommand command = new SqlCommand(@"INSERT INTO Hours (userID, taskID, timeInHours, dateWorked, dateLogged, description, location) VALUES(@UserId, @TaskId, @TimeInHours, @WorkedDate, @LoggedDate, @Description, @Location);", connection);
+                    SqlCommand commandTitle = new SqlCommand(@"UPDATE Hours SET Hours.task_Title = (SELECT Tasks.project_Task_Title FROM Tasks WHERE Hours.taskId = Tasks.project_Task_ID) WHERE Hours.taskId = @TaskId;", connection);
 
                     command.Parameters.AddWithValue("@UserId", hour.UserId);
                     command.Parameters.AddWithValue("@TaskId", hour.TaskId);
@@ -39,11 +39,13 @@ namespace WebApplication.Web.DAL
                     command.Parameters.AddWithValue("@Location", hour.Location);
                     command.Parameters.AddWithValue("@WorkedDate", hour.DateWorked);
                     command.Parameters.AddWithValue("@LoggedDate", current);
+                    commandTitle.Parameters.AddWithValue("@TaskId", hour.TaskId);
+
 
                     command.ExecuteNonQuery();
                     commandTitle.ExecuteNonQuery();
 
-                    if (hour.UserId == null || hour.TaskId == null || hour.TimeInHours == null || hour.Date == null)
+                    if (hour.UserId == null || hour.TaskId == null || hour.TimeInHours == null || hour.DateWorked == null)
                     {
                         return false;
                     }
@@ -205,7 +207,7 @@ namespace WebApplication.Web.DAL
                 {
 
                     connection.Open();
-                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location, task_Title FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateWorked, description, location, task_Title FROM Hours
                                                     WHERE userID = @userId;", connection);
 
                     command.Parameters.AddWithValue("@userid", userId);
@@ -221,9 +223,9 @@ namespace WebApplication.Web.DAL
                 {
 
                     connection.Open();
-                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateLogged, description, location, task_Title FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT userID, taskId, timeInHours, dateWorked, description, location, task_Title FROM Hours
                                                     WHERE userID = @userId
-                                                    AND dateLogged BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays);", connection);
+                                                    AND dateWorked BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays);", connection);
 
                     command.Parameters.AddWithValue("@userid", userId);
                     command.Parameters.AddWithValue("@currentDays", current);
@@ -255,9 +257,10 @@ namespace WebApplication.Web.DAL
                 
                 if (duration == "1W")
                 {
-                    SqlCommand command = new SqlCommand(@"SELECT Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateLogged, Hours.description, Hours.location FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateWorked, Hours.description, Hours.location, Hours.task_Title FROM Hours
                                                     WHERE userID = @userId
-                                                    AND dateLogged BETWEEN CONVERT(datetime, @lastWeek) AND CONVERT(datetime, @currentDays);", connection);
+                                                    AND dateWorked BETWEEN CONVERT(datetime, @lastWeek) AND CONVERT(datetime, @currentDays)
+                                                    ORDER BY dateWorked DESC;", connection);
                     command.Parameters.AddWithValue("@userid", userid);
                     command.Parameters.AddWithValue("@currentDays", current);
                     command.Parameters.AddWithValue("@lastWeek", lastWeek);
@@ -267,9 +270,10 @@ namespace WebApplication.Web.DAL
                 }
                 else if (duration == "1M")
                 {
-                    SqlCommand command = new SqlCommand(@"SELECT Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateLogged, Hours.description, Hours.location FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateWorked, Hours.description, Hours.location, Hours.task_Title FROM Hours
                                                     WHERE userID = @userId
-                                                    AND dateLogged BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays);", connection);
+                                                    AND dateWorked BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays)
+                                                    ORDER BY dateWorked DESC;", connection);
                     command.Parameters.AddWithValue("@userid", userid);
                     command.Parameters.AddWithValue("@currentDays", current);
                     command.Parameters.AddWithValue("@lastMonth", lastMonth);
@@ -279,9 +283,10 @@ namespace WebApplication.Web.DAL
                 }
                 else if (duration == "1Q")
                 {
-                    SqlCommand command = new SqlCommand(@"SELECT Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateLogged, Hours.description, Hours.location FROM Hours
+                    SqlCommand command = new SqlCommand(@"SELECT Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateWorked, Hours.description, Hours.location, Hours.task_Title FROM Hours
                                                     WHERE userID = @userId
-                                                    AND dateLogged BETWEEN CONVERT(datetime, @lastQuarter) AND CONVERT(datetime, @currentDays);", connection);
+                                                    AND dateWorked BETWEEN CONVERT(datetime, @lastQuarter) AND CONVERT(datetime, @currentDays)
+                                                    ORDER BY dateWorked DESC;", connection);
                     command.Parameters.AddWithValue("@userid", userid);
                     command.Parameters.AddWithValue("@currentDays", current);
                     command.Parameters.AddWithValue("@lastQuarter", lastQuarter);
@@ -305,10 +310,10 @@ namespace WebApplication.Web.DAL
                     UserId = Convert.ToInt32(reader["userID"]),
                     TaskId = Convert.ToInt32(reader["taskId"]),
                     TimeInHours = Convert.ToDecimal(reader["timeInHours"]),
-                    Date = Convert.ToDateTime(reader["dateLogged"]),
+                    DateWorked = Convert.ToDateTime(reader["dateWorked"]),
                     Description = Convert.ToString(reader["description"]),
                     Location = Convert.ToString(reader["location"]),
-                    DateWorked = Convert.ToDateTime(reader["dateWorked"]),
+                    TaskTitle = Convert.ToString(reader["task_Title"]),
                 };
 
                 hours.Add(hour);

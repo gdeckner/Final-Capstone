@@ -16,6 +16,7 @@ namespace WebApplication.Web.DAL
             this.connectionString = connectionString;
         }
 
+        private string updatePayroll;
 
         public bool CreatePayReport(PayrollTable report)
         {
@@ -176,7 +177,7 @@ namespace WebApplication.Web.DAL
                     payrollLog.Add(report);
                 }
             }
-            
+
             return payrollLog;
         }
 
@@ -203,6 +204,55 @@ namespace WebApplication.Web.DAL
             {
                 Console.Write(E);
                 throw;
+            }
+        }
+
+        public bool ApproveTime(PayrollTable pay)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    if (pay.UserId != null && pay.StartDate != null && pay.EndDate != null && pay.IsApproved != false)
+                    {
+                        updatePayroll = @"(UPDATE Payroll
+                                               SET isApproved = @IsApproved
+                                               WHERE 
+                                               userId = @UserId
+                                               AND
+                                               startDate = @StartDate
+                                               AND 
+                                               endDate = @EndDate
+                                               AND isSubmitted != 0);";
+
+                    }
+
+                    SqlCommand command = connection.CreateCommand();
+                    command.CommandText = updatePayroll;
+
+
+                    command.Parameters.AddWithValue("@IsApproved", pay.IsApproved);
+                    command.Parameters.AddWithValue("@UserId", pay.UserId);
+                    command.Parameters.AddWithValue("@StartDate", pay.StartDate);
+                    command.Parameters.AddWithValue("@EndDate", pay.EndDate);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+
+                if (pay.UserId == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
             }
         }
     }

@@ -127,10 +127,3 @@ namespace WebApplication.Web.DAL
     }
 }
 
-
-//if (task.TaskId == null || task.Description == null || task.JobId == null || task.Location == null)
-//                    {
-//                        return false;
-//                    }
-    
-
