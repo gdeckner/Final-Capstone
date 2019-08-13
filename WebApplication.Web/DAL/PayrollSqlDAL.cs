@@ -16,6 +16,7 @@ namespace WebApplication.Web.DAL
             this.connectionString = connectionString;
         }
 
+        private string updatePayroll;
 
         public bool CreatePayReport(PayrollTable report)
         {
@@ -90,7 +91,7 @@ namespace WebApplication.Web.DAL
 
         public IList<PayrollTable> GetTimeReport(int userid)
         {
-            
+
             IList<PayrollTable> payrollLog = new List<PayrollTable>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
@@ -162,13 +163,97 @@ namespace WebApplication.Web.DAL
             {
 
                 connection.Open();
-                SqlCommand command = new SqlCommand(@"SELECT DISTINCT payroll.startDate, payroll.endDate FROM payroll", connection);
+                SqlCommand command = new SqlCommand(@"SELECT DISTINCT startDate, endDate FROM payroll", connection);
                 SqlDataReader reader = command.ExecuteReader();
 
-                payrollLog = MapPayrollReader(reader);
+                while (reader.Read())
+                {
+                    PayrollTable report = new PayrollTable
+                    {
+                        StartDate = Convert.ToDateTime(reader["startDate"]),
+                        EndDate = Convert.ToDateTime(reader["endDate"]),
+                    };
+
+                    payrollLog.Add(report);
+                }
             }
 
             return payrollLog;
+        }
+
+        public void CreatePayPeriod(DateTime StartDate, DateTime EndDate)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(@"INSERT INTO Payroll (UserId, StartDate, EndDate, IsApproved, isSubmitted)
+                                                          SELECT userID, @startdate, @enddate, 'False', 'False'
+                                                          FROM UserLogin;", connection);
+
+                    command.Parameters.AddWithValue("@startdate", StartDate);
+                    command.Parameters.AddWithValue("@enddate", EndDate);
+
+                    command.ExecuteNonQuery();
+
+                }
+            }
+            catch (SqlException E)
+            {
+                Console.Write(E);
+                throw;
+            }
+        }
+
+        public bool ApproveTime(PayrollTable pay)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    if (pay.UserId != null && pay.StartDate != null && pay.EndDate != null && pay.IsApproved != false)
+                    {
+                        updatePayroll = @"(UPDATE Payroll
+                                               SET isApproved = @IsApproved
+                                               WHERE 
+                                               userId = @UserId
+                                               AND
+                                               startDate = @StartDate
+                                               AND 
+                                               endDate = @EndDate
+                                               AND isSubmitted != 0);";
+
+                    }
+
+                    SqlCommand command = connection.CreateCommand();
+                    command.CommandText = updatePayroll;
+
+
+                    command.Parameters.AddWithValue("@IsApproved", pay.IsApproved);
+                    command.Parameters.AddWithValue("@UserId", pay.UserId);
+                    command.Parameters.AddWithValue("@StartDate", pay.StartDate);
+                    command.Parameters.AddWithValue("@EndDate", pay.EndDate);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+
+                if (pay.UserId == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
         }
     }
 }

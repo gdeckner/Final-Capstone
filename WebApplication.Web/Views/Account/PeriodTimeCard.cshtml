@@ -1,15 +1,9 @@
-﻿@model User
+﻿
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "PeriodTimeCard";
 }
 
-<h2>Index</h2>
-
-<p>Welcome @Model.Name</p>
-
-<p>
-    <a asp-action="LogTime" class="btn btn-default">Log Time</a>
-</p>
+<h2>PeriodTimeCard</h2>
 
 <table class="table">
     <thead>
@@ -29,7 +23,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (Hours hours in ViewBag.Hours)
+        @foreach (Hours hours in ViewBag.TimeCard)
         {
             <tr>
                 <td>
