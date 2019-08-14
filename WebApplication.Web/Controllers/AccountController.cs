@@ -386,5 +386,15 @@ namespace WebApplication.Web.Controllers
 
             return RedirectToAction("ApproveHoursHub", "Account");
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SubmitTimeCard(PayrollTable payrollLine)
+        {
+            payrollLine.IsApproved = true;
+            bool success = payrollDAL.ApproveTime(payrollLine);
+
+            return RedirectToAction("ApproveHoursHub", "Account");
+        }
     }
 }
