@@ -5,7 +5,21 @@
     var Users = ViewBag.Users;
 }
 
-<h2>Admin Index</h2>
+<style>
+    .id {
+        text-align: center;
+    }
+
+    span {
+        padding-right: 40px;
+    }
+
+    #welcome {
+        font-weight: bold;
+    }
+</style>
+<h2 class="id">Admin Index</h2>
+
 @if (ViewBag.IsSuccessful == "true")
 {
     <h5>Success</h5>
@@ -14,84 +28,104 @@
 {
     <h5>Failed</h5>
 }
-
-<p>Welcome @Model.Name</p>
-
-<p>
+<br />
+<p class="id" id="welcome">Welcome @Model.Name</p>
+<br />
+<span>
     <a asp-action="Register" class="btn btn-default">Create New User</a>
-</p>
-<p>
+</span>
+<span>
     <a asp-action="CreateJob" class="btn btn-default">Create New Job</a>
-</p>
-<p>
+</span>
+<span>
     <a asp-action="CreateProjectTasks" class="btn btn-default">Create New Project Task</a>
-</p>
-<p>
+</span>
+<span>
     <a asp-action="AddJobLocation" class="btn btn-default">Add Job Location</a>
-</p>
-<p>
+</span>
+<span>
     <a asp-action="AuthorizeUser" class="btn btn-default">Authorize User To Job</a>
-</p>
-<p>
+</span>
+<span>
     <a asp-action="ApproveHoursHub" class="btn btn-default">Approval Hub</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                User Id
-            </th>
-            <th>
-                Full Name
-            </th>
-            <th>
-                Username
-            </th>
-            <th>
-                Logged Time
-            </th>
-            <th>
-                Authorization Level
-            </th>
-            <th>
-                Log Audit Trail
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (User item in Users)
-        {
+</span>
+<br />
+<br />
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @item.UserId
-                </td>
-                <td>
-                    @item.Name
-                </td>
-                <td>
-                    @item.Username
-                </td>
-                <td>
-                    @if (item.Role == "Users")
-                    {
-                        <a asp-action="GetUserTimeLog" asp-route-username="@item.Username">@item.Name's Time Log</a>
-                    }
-                    @if (item.Role == "Admin")
-                    {
-                        <div>n/a</div>
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Role)
-                </td>
-                <td>
-                    <a asp-action="AuditedLogs" asp-route-username="@item.Username">Log Audit</a>
-                </td>
-                <td>
-                    @Html.ActionLink("Delete", "Delete", new { id = item.UserId })
-                </td>
+                <th>
+                    User Id
+                </th>
+                <th>
+                    Full Name
+                </th>
+                <th>
+                    Username
+                </th>
+                <th>
+                    Logged Time
+                </th>
+                <th>
+                    Authorization Level
+                </th>
+                <th>
+                    Log Audit Trail
+                </th>
+                <th>Change Role</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (User item in Users)
+            {
+                <tr>
+                    <td>
+                        @item.UserId
+                    </td>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Username
+                    </td>
+                    <td>
+                        @if (item.Role == "Users")
+                        {
+                            <a asp-action="GetUserTimeLog" asp-route-username="@item.Username">@item.Name's Time Log</a>
+                        }
+                        @if (item.Role == "Admin")
+                        {
+                            <div>n/a</div>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Role)
+                    </td>
+                    <td>
+                        <a asp-action="AuditedLogs" asp-route-username="@item.Username">Log Audit</a>
+                    </td>
+                    <td>
+                        <form asp-action="ChangeRole" asp-controller="Account" method="post">
+                            <span>
+                                <label>Select Role: </label>
+                                <select asp-for="Role">
+                                    <option value="Admin">Admin</option>
+                                    <option value="User FT">UserFT</option>
+                                    <option value="User PT">UserPT</option>
+                                    <option value="Inactive User">UserInactive</option>
+                                </select>
+                            </span>
+                            <span>
+                                <input type="hidden" asp-for="UserId" value="@item.UserId" />
+                                <input type="submit" value="Submit" />
+                            </span>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+
+

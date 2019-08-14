@@ -16,6 +16,7 @@ namespace WebApplication.Web.DAL
         private readonly DateTime lastQuarter = DateTime.Now.AddDays(-120);
         private string beginHoursSession = @"(BEGIN TRANSACTION);";
         private readonly decimal before = 0;
+        
 
         public HoursSqlDAL(string connectionString)
         {
@@ -95,6 +96,7 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                                                WHERE H.userID = @UserId
                                                AND H.taskId = @OldTaskId
                                                AND P.isApproved != '1');";
+
                         beginHoursSession += updateTask;
                     }
                     if (hour.Description != null)
@@ -135,7 +137,14 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                                                AND H.taskId = @TaskId
                                                AND P.isApproved != '1');";
 
+                        string logUpdateHours = @"INSERT INTO Log (targetUser, dateWorked, dateLogged, modified_Date, hoursId, hoursBefore, hoursAfter, 
+                                                currentUser) VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FROM Hours 
+                                                WHERE dateWorked = @WorkedDate AND Hours.userID = @UserId), (SELECT Log.hoursBefore FROM Log 
+                                                WHERE dateWorked = @WorkedDate AND Hours.userID = @UserId), @TimeInHours, @UserId);";
+
                         beginHoursSession += updateHours;
+                        beginHoursSession += logUpdateHours;
+
 
                     }
                     if (hour.DateWorked != null)
@@ -160,6 +169,7 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
 
                     SqlCommand command = connection.CreateCommand();
                     command.CommandText = beginHoursSession;
+
                     if (hour.UserId != null)
                     {
                         command.Parameters.AddWithValue("@UserId", hour.UserId);
@@ -182,15 +192,15 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                     }
                     if (hour.TimeInHours != null)
                     {
-                        command.Parameters.AddWithValue("@TaskId", hour.TimeInHours);
+                        command.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
                     }
                     if (hour.DateWorked != null)
                     {
-                        command.Parameters.AddWithValue("@TimeInHours", hour.DateWorked);
+                        command.Parameters.AddWithValue("@WorkedDate", hour.DateWorked);
+                        command.Parameters.AddWithValue("@LoggedDate", current);
+                        command.Parameters.AddWithValue("@LoggedDateT", current);
+                        command.Parameters.AddWithValue("@Before", before);
                     }
-
-
-                    command.Parameters.AddWithValue("@DateLogged", current);
 
                     connection.Open();
                     command.ExecuteNonQuery();
@@ -318,6 +328,43 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
             return payrollLog;
         }
 
+        public Hours GetHoursById(int hoursId)
+        {
+            Hours selectedHour = new Hours();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                connection.Open();
+                SqlCommand command = new SqlCommand(@"SELECT hoursId, userID, taskId, timeInHours, dateWorked, description, location, task_Title FROM Hours
+                                                WHERE hoursId = @hoursId
+                                                ORDER BY dateWorked DESC;", connection);
+
+                command.Parameters.AddWithValue("@hoursId", hoursId);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Hours hour = new Hours
+                    {
+                        HoursId = Convert.ToInt32(reader["hoursId"]),
+                        UserId = Convert.ToInt32(reader["userID"]),
+                        TaskId = Convert.ToInt32(reader["taskId"]),
+                        TimeInHours = Convert.ToDecimal(reader["timeInHours"]),
+                        DateWorked = Convert.ToDateTime(reader["dateWorked"]),
+                        Description = Convert.ToString(reader["description"]),
+                        Location = Convert.ToString(reader["location"]),
+                        TaskTitle = Convert.ToString(reader["task_Title"])
+                    };
+
+                    selectedHour = hour;
+                }
+            }
+
+            return selectedHour;
+        }
+
+
         private List<Hours> MapHoursToReader(SqlDataReader reader)
         {
             List<Hours> hours = new List<Hours>();
@@ -363,6 +410,45 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                 timeCard = MapHoursToReader(reader);
             }
             return timeCard;
+        }
+
+        public bool IsOverWeeklyHoursAlert(int? userId, DateTime startDate, DateTime endDate)
+        {
+            bool isOverAlert = false;
+            decimal pulledSumHours = 0;
+            string userRole = "";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                connection.Open();
+                SqlCommand command = new SqlCommand(@"select SUM(timeInHours)from hours
+                                                    where userID = @userId
+                                                    AND dateWorked BETWEEN CONVERT(datetime, @startDate) AND CONVERT(datetime, @endDate);", connection);
+
+                command.Parameters.AddWithValue("@userid", userId);
+                command.Parameters.AddWithValue("@startDate", startDate);
+                command.Parameters.AddWithValue("@endDate", endDate);
+
+                pulledSumHours = Convert.ToDecimal(command.ExecuteScalar());
+                command.CommandText = @"select userRole from userlogin where userId = @userId";
+                command.Parameters.AddWithValue("@userId", userId);
+
+                userRole = Convert.ToString(command.ExecuteScalar());
+                
+
+                if(userRole == "User FT" && pulledSumHours > 40)
+                {
+                    isOverAlert = true;
+                }
+                if(userRole == "User PT" && pulledSumHours > 27.5M)
+                {
+                    isOverAlert = true;
+                }
+
+                
+            }
+            return isOverAlert;
         }
     }
 }

@@ -32,7 +32,7 @@ namespace WebApplication.Web.Controllers
             this.logDAL = logDAL;
         }
 
-        [AuthorizationFilter("Admin", "Users")]
+        [AuthorizationFilter("Admin", "User FT", "User PT")]
         [HttpGet]
         public IActionResult Index()
         {
@@ -111,7 +111,8 @@ namespace WebApplication.Web.Controllers
             return View(registerViewModel);
         }
 
-        [AuthorizationFilter("Admin", "Users")]
+
+        [AuthorizationFilter("Admin", "User FT", "User PT")]
         [HttpGet]
         public IActionResult ChangePassword()
         {
@@ -139,11 +140,11 @@ namespace WebApplication.Web.Controllers
             return View(changePasswordViewModel);
         }
 
-        public IActionResult Delete(int id)
+        public IActionResult ChangeRole(int UserId, string Role)
         {
             User currentUser = authProvider.GetCurrentUser();
 
-            authProvider.DeleteUser(id, currentUser.UserId);
+            authProvider.ChangeRole(currentUser.UserId, UserId, Role);
 
             return RedirectToAction("Index", "Account");
         }
@@ -188,7 +189,7 @@ namespace WebApplication.Web.Controllers
         }
 
         [HttpGet]
-        [AuthorizationFilter("Admin", "Users")]
+        [AuthorizationFilter("Admin", "User FT", "User PT")]
         public IActionResult LogTime()
         {
             User currentUser = authProvider.GetCurrentUser();
@@ -364,19 +365,30 @@ namespace WebApplication.Web.Controllers
         [HttpGet]
         public IActionResult EditLogs(int id)
         {
-            // use id to pull specific log information
+            // use id to pull specific log information hours by id
+            Hours selectedHour = hoursDAL.GetHoursById(id);
 
             // prefill log information
+            ViewBag.SelectedHour = selectedHour;
 
-            // display data in dropdowns
+            User currentUser = authProvider.GetCurrentUser();
 
-            //
+            ViewBag.AvailableTasks = taskDAL.GetAllTasks(currentUser.UserId);
+
+            ViewBag.Locations = locationDAL.GetAllLocations();
 
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public IActionResult UpdateLog(Hours hours)
+        {
+            bool isSuccessful = hoursDAL.UpdateHours(hours);
+
+            return RedirectToAction("Index", "Account");
+        }
+
         public IActionResult ApproveTimeCard(PayrollTable payrollLine)
         {
             payrollLine.IsApproved = true;

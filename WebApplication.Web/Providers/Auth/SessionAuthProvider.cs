@@ -138,10 +138,11 @@ namespace WebApplication.Web.Providers.Auth
             return userDAL.GetAllUsers();
         }
 
-        public void DeleteUser(int userToDeleteId, int currentUserId)
+        public void ChangeRole(int currentUserId, int userToBeChanged, string userRole)
         {
-            userDAL.DeleteUser(userToDeleteId, currentUserId);
+            userDAL.ChangeRole(currentUserId, userToBeChanged, userRole);
         }
+
 
     }
 }

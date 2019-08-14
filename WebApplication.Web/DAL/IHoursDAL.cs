@@ -18,6 +18,8 @@ namespace WebApplication.Web.DAL
 
         bool UpdateHours(Hours hour);
 
+        Hours GetHoursById(int hoursId);
+
         IList<Hours> GetTimeCard(int? userId, DateTime startDate, DateTime endDate);
     }
 }

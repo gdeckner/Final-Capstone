@@ -1,11 +1,12 @@
 ﻿@model User
-@{
-    ViewData["Title"] = "Index";
-}
 
-<h2>Index</h2>
+    @{
+        ViewData["Title"] = "Index";
+    }
 
-<p>Welcome @Model.Name</p>
+    <h2>Index</h2>
+
+    <p>Welcome @Model.Name</p>
 
 
 
@@ -19,48 +20,48 @@
     <a asp-action="SubmitTimeCard" class="btn btn-default">Submit Time</a>
 </span>
 
-<br />
+    <br />
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Date
-            </th>
-            <th>
-                Location
-            </th>
-            <th>
-                Description
-            </th>
-            <th>
-                Hours
-            </th>
-            <th>
-                Edit
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (Hours hours in ViewBag.Hours)
-        {
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @(hours.DateWorked.ToShortDateString())
-                </td>
-                <td>
-                    @hours.Location
-                </td>
-                <td>
-                    @hours.Description
-                </td>
-                <td>
-                    @hours.TimeInHours
-                </td>
-                <td>
-                    <a asp-action="EditLogs" asp-route-id="@hours.HoursId">Edit</a>
-                </td>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Hours
+                </th>
+                <th>
+                    Edit
+                </th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (Hours hours in ViewBag.Hours)
+            {
+                <tr>
+                    <td>
+                        @(hours.DateWorked.ToShortDateString())
+                    </td>
+                    <td>
+                        @hours.Location
+                    </td>
+                    <td>
+                        @hours.Description
+                    </td>
+                    <td>
+                        @hours.TimeInHours
+                    </td>
+                    <td>
+                        <a asp-action="EditLogs" asp-route-id="@hours.HoursId">Edit</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
