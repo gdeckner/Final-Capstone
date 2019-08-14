@@ -310,7 +310,7 @@ namespace WebApplication.Web.Controllers
         [AuthorizationFilter("Admin")]
         public IActionResult CreatePayPeriod()
         {
-           
+
             return View();
         }
 
@@ -328,6 +328,7 @@ namespace WebApplication.Web.Controllers
         public IActionResult PeriodTimeCard(PayrollTable UserPeriod)
         {
             ViewBag.TimeCard = hoursDAL.GetTimeCard(UserPeriod.UserId, UserPeriod.StartDate, UserPeriod.EndDate);
+            ViewBag.PayrollLine = UserPeriod;
 
             return View();
         }
@@ -388,5 +389,23 @@ namespace WebApplication.Web.Controllers
 
             return RedirectToAction("Index", "Account");
         }
+
+        public IActionResult ApproveTimeCard(PayrollTable payrollLine)
+        {
+            payrollLine.IsApproved = true;
+            bool success = payrollDAL.ApproveTime(payrollLine);
+
+            return RedirectToAction("ApproveHoursHub", "Account");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult SubmitTimeCard(PayrollTable payrollLine)
+        {
+            payrollLine.IsApproved = true;
+            bool success = payrollDAL.ApproveTime(payrollLine);
+
+            return RedirectToAction("ApproveHoursHub", "Account");
+        }  
     }
 }

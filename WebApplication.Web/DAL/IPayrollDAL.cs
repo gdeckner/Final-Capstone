@@ -15,5 +15,7 @@ namespace WebApplication.Web.DAL
         IList<PayrollTable> GetListOfPayPeriods();
 
         void CreatePayPeriod(DateTime startDate, DateTime endDate);
+
+        bool ApproveTime(PayrollTable payrollLine);
     }
 }
