@@ -144,18 +144,33 @@ namespace WebApplication.Web.DAL
 
         public IList<PayrollTable> GetListOfTimeCards(DateTime startDate)
         {
-
+            DateTime EndDatePay = startDate.AddDays(14);
             IList<PayrollTable> payrollLog = new List<PayrollTable>();
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
-
                 connection.Open();
+
+
+                SqlCommand commandTwo = new SqlCommand(@"INSERT INTO Payroll (UserId, StartDate, EndDate, IsApproved, isSubmitted)
+                                                         SELECT userID, @startdate, @enddate, 'False', 'False'
+                                                         FROM UserLogin
+                                                         WHERE userRole != 'Admin'
+                                                         AND userRole != 'Inactive User'
+                                                         AND userLogin.userID NOT IN (SELECT userID from Payroll 
+                                                         WHERE payroll.StartDate = @startdate);", connection);
+
                 SqlCommand command = new SqlCommand(@"SELECT payroll.userId, payroll.startDate, payroll.endDate, payroll.isSubmitted, payroll.isApproved, userLogin.first_Last_Name FROM payroll
                                                     INNER JOIN userLogin
                                                     ON payroll.userId = userLogin.userId
                                                     WHERE payroll.startDate = @startDate;", connection);
+
                 command.Parameters.AddWithValue("@startDate", startDate);
+                commandTwo.Parameters.AddWithValue("@startdate", startDate);
+                commandTwo.Parameters.AddWithValue("@enddate", EndDatePay);
+
+                commandTwo.ExecuteNonQuery();
+
                 SqlDataReader reader = command.ExecuteReader();
 
                 payrollLog = MapPayrollReader(reader);
@@ -191,29 +206,107 @@ namespace WebApplication.Web.DAL
             return payrollLog;
         }
 
-        public void CreatePayPeriod(DateTime StartDate, DateTime EndDate)
+        public int SeeIfPayPeriodExists(DateTime StartDate, DateTime EndDate)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
+                    SqlCommand cmd = connection.CreateCommand();
 
-                    SqlCommand command = new SqlCommand(@"INSERT INTO Payroll (UserId, StartDate, EndDate, IsApproved, isSubmitted)
-                                                          SELECT userID, @startdate, @enddate, 'False', 'False'
-                                                          FROM UserLogin;", connection);
+                    cmd.CommandText = @"SELECT userId, startDate, endDate
+                                        FROM Payroll
+                                        WHERE startDate = @StartDate
+                                        AND
+                                        endDate = @EndDate";
 
-                    command.Parameters.AddWithValue("@startdate", StartDate);
-                    command.Parameters.AddWithValue("@enddate", EndDate);
+                    cmd.Parameters.AddWithValue("@StartDate", StartDate);
+                    cmd.Parameters.AddWithValue("@EndDate", EndDate);
 
-                    command.ExecuteNonQuery();
-
+                    var rowCount = cmd.ExecuteScalar();
+                    return rowCount == null ? 0 : Convert.ToInt32(rowCount);
                 }
             }
-            catch (SqlException E)
+            catch (SqlException e)
             {
-                Console.Write(E);
-                throw;
+                Console.WriteLine(e.Message);
+
+            }
+
+            return 0;
+
+        }
+
+        public int SeeIfUserInPayroll(int userId, DateTime StartDate, DateTime EndDate)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    SqlCommand cmd = connection.CreateCommand();
+
+                    cmd.CommandText = @"SELECT userId, startDate, endDate
+                                        FROM Payroll
+                                        WHERE startDate = @StartDate
+                                        AND
+                                        endDate = @EndDate
+                                        AND
+                                        userId = @UserId";
+
+                    cmd.Parameters.AddWithValue("@StartDate", StartDate);
+                    cmd.Parameters.AddWithValue("@EndDate", EndDate);
+                    cmd.Parameters.AddWithValue("@UserId", EndDate);
+
+                    var rowCount = cmd.ExecuteScalar();
+                    return rowCount == null ? 0 : Convert.ToInt32(rowCount);
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.Message);
+
+            }
+            return 0;
+        }
+
+
+
+
+
+
+        public void CreatePayPeriod(DateTime StartDate, DateTime EndDate)
+        {
+
+            int result = SeeIfPayPeriodExists(StartDate, EndDate);
+
+            if (result == 1)
+            {
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+
+                        SqlCommand command = new SqlCommand(@"INSERT INTO Payroll (UserId, StartDate, EndDate, IsApproved, isSubmitted)
+                                                          SELECT userID, @startdate, @enddate, 'False', 'False'
+                                                          FROM UserLogin
+                                                          WHERE userRole != 'Admin'
+                                                          AND userRole != 'Inactive User';", connection);
+
+                        command.Parameters.AddWithValue("@startdate", StartDate);
+                        command.Parameters.AddWithValue("@enddate", EndDate);
+
+                        command.ExecuteNonQuery();
+
+                    }
+                }
+                catch (SqlException E)
+                {
+                    Console.Write(E);
+                    throw;
+                }
             }
         }
 
