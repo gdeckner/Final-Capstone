@@ -141,11 +141,11 @@ namespace WebApplication.Web.Controllers
             return View(changePasswordViewModel);
         }
 
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int id, string userRole)
         {
             User currentUser = authProvider.GetCurrentUser();
 
-            authProvider.DeleteUser(id, currentUser.UserId);
+            authProvider.ChangeRole(currentUser.UserId, id, userRole);
 
             return RedirectToAction("Index", "Account");
         }
