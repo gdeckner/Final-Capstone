@@ -1,0 +1,56 @@
+﻿@model PayrollTable
+
+@{
+    ViewData["Title"] = "SubmitTimeCard";
+}
+
+<h2>SubmitTimeCard</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Start Date
+            </th>
+            <th>
+                End Date
+            </th>
+            <th>
+                Submitted?
+            </th>
+            <th>
+                Approved?
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (PayrollTable payPeriod in ViewBag.UnsubbedPayPeriods)
+        {
+            <tr>
+                <td>
+                    @(payPeriod.StartDate.ToShortDateString())
+                </td>
+                <td>
+                    @(payPeriod.EndDate.ToShortDateString())
+                </td>
+                <td>
+                    @payPeriod.IsSubmitted
+                </td>
+                <td>
+                    @payPeriod.IsApproved
+                </td>
+                <td>
+                    <form asp-controller="account" asp-action="SubmitTimeCard" method="post">
+                        <input type="hidden" asp-for="UserId" value="@payPeriod.UserId" />
+                        <input type="hidden" asp-for="StartDate" value="@payPeriod.StartDate" />
+                        <input type="hidden" asp-for="EndDate" value="@payPeriod.EndDate" />
+                        <input type="submit" value="Submit Timecard" class="btn btn-default" />
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

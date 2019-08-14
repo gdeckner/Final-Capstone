@@ -98,15 +98,26 @@ namespace WebApplication.Web.DAL
             {
 
                 connection.Open();
-                SqlCommand command = new SqlCommand(@"SELECT user_Id, startDate, endDate, isSub FROM payroll
-                                                    WHERE user_Id = @userId;", connection);
+                SqlCommand command = new SqlCommand(@"SELECT userId, startDate, endDate, isSubmitted, isApproved FROM payroll
+                                                    WHERE userId = @userId
+                                                    ORDER BY startDate DESC;", connection);
                 command.Parameters.AddWithValue("@userid", userid);
                 SqlDataReader reader = command.ExecuteReader();
 
-                payrollLog = MapPayrollReader(reader);
-            }
-           
+                while (reader.Read())
+                {
+                    PayrollTable report = new PayrollTable
+                    {
+                        UserId = Convert.ToInt32(reader["userId"]),
+                        StartDate = Convert.ToDateTime(reader["startDate"]),
+                        EndDate = Convert.ToDateTime(reader["endDate"]),
+                        IsApproved = Convert.ToBoolean(reader["isApproved"]),
+                        IsSubmitted = Convert.ToBoolean(reader["isSubmitted"]),
+                    };
 
+                    payrollLog.Add(report);
+                }
+            }
             return payrollLog;
         }
 
@@ -176,7 +187,7 @@ namespace WebApplication.Web.DAL
                     payrollLog.Add(report);
                 }
             }
-            
+
             return payrollLog;
         }
 
@@ -230,7 +241,7 @@ namespace WebApplication.Web.DAL
             catch (SqlException e)
             {
                 Console.WriteLine(e.Message);
-                
+
             }
             return needsAlert;
         }
@@ -260,6 +271,53 @@ namespace WebApplication.Web.DAL
 
 
                     command.Parameters.AddWithValue("@IsApproved", pay.IsApproved);
+                    command.Parameters.AddWithValue("@UserId", pay.UserId);
+                    command.Parameters.AddWithValue("@StartDate", pay.StartDate);
+                    command.Parameters.AddWithValue("@EndDate", pay.EndDate);
+
+                    connection.Open();
+                    command.ExecuteNonQuery();
+                }
+
+                if (pay.UserId == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        public bool SubmitTime(PayrollTable pay)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    if (pay.UserId != null && pay.StartDate != null && pay.EndDate != null && pay.IsSubmitted != false)
+                    {
+                        updatePayroll = @"UPDATE Payroll
+                                               SET isSubmitted = 1
+                                               WHERE 
+                                               userId = @UserId
+                                               AND
+                                               startDate = @StartDate
+                                               AND 
+                                               endDate = @EndDate
+                                               AND isApproved = 0;";
+
+                    }
+
+                    SqlCommand command = connection.CreateCommand();
+                    command.CommandText = updatePayroll;
+
                     command.Parameters.AddWithValue("@UserId", pay.UserId);
                     command.Parameters.AddWithValue("@StartDate", pay.StartDate);
                     command.Parameters.AddWithValue("@EndDate", pay.EndDate);

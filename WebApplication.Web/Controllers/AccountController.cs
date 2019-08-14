@@ -32,8 +32,7 @@ namespace WebApplication.Web.Controllers
             this.logDAL = logDAL;
         }
 
-        //[AuthorizationFilter] // actions can be filtered to only those that are logged in
-        [AuthorizationFilter("Admin", "Users")]  //<-- or filtered to only those that have a certain role
+        [AuthorizationFilter("Admin", "Users")]
         [HttpGet]
         public IActionResult Index()
         {
@@ -112,7 +111,6 @@ namespace WebApplication.Web.Controllers
             return View(registerViewModel);
         }
 
-
         [AuthorizationFilter("Admin", "Users")]
         [HttpGet]
         public IActionResult ChangePassword()
@@ -189,8 +187,8 @@ namespace WebApplication.Web.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [AuthorizationFilter("Admin", "Users")]
         [HttpGet]
+        [AuthorizationFilter("Admin", "Users")]
         public IActionResult LogTime()
         {
             User currentUser = authProvider.GetCurrentUser();
@@ -387,14 +385,24 @@ namespace WebApplication.Web.Controllers
             return RedirectToAction("ApproveHoursHub", "Account");
         }
 
+        [HttpGet]
+        [AuthorizationFilter("Admin", "Users")]
+        public IActionResult SubmitTimeCard()
+        {
+            User currentUser = authProvider.GetCurrentUser();
+            ViewBag.UnsubbedPayPeriods = payrollDAL.GetTimeReport(currentUser.UserId);
+
+            return View();
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult SubmitTimeCard(PayrollTable payrollLine)
         {
-            payrollLine.IsApproved = true;
-            bool success = payrollDAL.ApproveTime(payrollLine);
+            payrollLine.IsSubmitted = true;
+            bool success = payrollDAL.SubmitTime(payrollLine);
 
-            return RedirectToAction("ApproveHoursHub", "Account");
+            return RedirectToAction("SubmitTimeCard", "Account");
         }
     }
 }
