@@ -21,13 +21,22 @@
 
 <br />
 
-@if (ViewBag.IsOver == true && ViewBag.UserRole == "User FT")
+@if (ViewBag.IsOver == 1 && ViewBag.UserRole == "User FT")
 {
-    <h3>You have entered more than 40 hours for the current pay period!</h3>
+    <h3>You have entered more than 40 hours for the current week!</h3>
 }
-@if (ViewBag.IsOver == true && ViewBag.UserRole == "User PT")
+@if (ViewBag.IsOver == 1 && ViewBag.UserRole == "User PT")
 {
     <h3>You have entered more than 27.5 hours for the current pay period!</h3>
+}
+
+@if (ViewBag.IsOver == 2 && ViewBag.UserRole == "User FT")
+{
+    <h3>You have entered more than 40 hours for the current week!</h3>
+}
+@if (ViewBag.IsOver == 2 && ViewBag.UserRole == "User PT")
+{
+    <h3>You have entered more than 27.5 hours for the current week!</h3>
 }
 
 @*reminder*@

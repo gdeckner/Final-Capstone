@@ -54,9 +54,6 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                     commandLog.Parameters.AddWithValue("@LoggedDateT", current);
                     commandLog.Parameters.AddWithValue("@Before", before);
 
-
-
-
                     command.ExecuteNonQuery();
                     commandTitle.ExecuteNonQuery();
                     commandLog.ExecuteNonQuery();
@@ -79,6 +76,37 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                 return false;
             }
         }
+
+        public bool CheckPayrollForDates(DateTime StartDate, DateTime EndDate)
+        {
+
+            try
+            {
+
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand command = new SqlCommand(@"SELECT startDate, endDate
+                                                  FROM Payroll
+                                                  WHERE startDate >= @StartDate AND endDate <= @EndDate;", connection);
+
+                    command.Parameters.AddWithValue("@startDate", StartDate);
+                    command.Parameters.AddWithValue("@endDate", EndDate);
+                    command.ExecuteNonQuery();
+
+
+
+                    return false;
+                }
+            }
+            catch
+            {
+                return true;
+            }
+        }
+
+
 
         public bool UpdateHours(Hours hour)
         {
@@ -393,11 +421,16 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
             return timeCard;
         }
 
-        public bool IsOverWeeklyHoursAlert(int? userId, DateTime startDate, DateTime endDate)
+        public int IsOverWeeklyHoursAlert(int? userId, DateTime startDateOne, DateTime endDateTwo)
         {
-            bool isOverAlert = false;
-            decimal pulledSumHours = 0;
+            bool weekOneAlert = false;
+            bool weekTwoAlert = false;
+            int weeklyAlert = 0;
+            decimal pulledSumHoursOne = 0;
+            decimal pulledSumHoursTwo = 0;
             string userRole = "";
+            DateTime endDateOne = startDateOne.AddDays(7);
+            DateTime startDateTwo = endDateOne;
 
             try
             {
@@ -407,36 +440,62 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                     connection.Open();
                     SqlCommand command = new SqlCommand(@"select SUM(timeInHours)from hours
                                                         where userID = @userId
-                                                        AND dateWorked BETWEEN CONVERT(datetime, @startDate) AND CONVERT(datetime, @endDate);", connection);
+                                                        AND dateWorked BETWEEN CONVERT(datetime, @startDateOne) AND CONVERT(datetime, @endDateOne);", connection);
+
+                    SqlCommand commandTwo = new SqlCommand(@"select SUM(timeInHours)from hours
+                                                        where userID = @userId
+                                                        AND dateWorked BETWEEN CONVERT(datetime, @startDateTwo) AND CONVERT(datetime, @endDateTwo);", connection);
 
                     command.Parameters.AddWithValue("@userid", userId);
-                    command.Parameters.AddWithValue("@startDate", startDate);
-                    command.Parameters.AddWithValue("@endDate", endDate);
+                    command.Parameters.AddWithValue("@startDateOne", startDateOne);
+                    command.Parameters.AddWithValue("@endDateOne", endDateOne);
+                    command.Parameters.AddWithValue("@startDateTwo", startDateTwo);
+                    command.Parameters.AddWithValue("@endDateTwo", endDateTwo);
 
-                    pulledSumHours = Convert.ToDecimal(command.ExecuteScalar());
+
+                    pulledSumHoursOne = Convert.ToDecimal(command.ExecuteScalar());
+                    pulledSumHoursTwo = Convert.ToDecimal(command.ExecuteScalar());
+
                     command.CommandText = @"select userRole from userlogin where userId = @userIdName";
                     command.Parameters.AddWithValue("@userIdName", userId);
 
                     userRole = Convert.ToString(command.ExecuteScalar());
 
 
-                    if (userRole == "User FT" && pulledSumHours > 40)
-                    {
-                        isOverAlert = true;
-                    }
-                    if (userRole == "User PT" && pulledSumHours > 27.5M)
-                    {
-                        isOverAlert = true;
-                    }
 
-
+                    if (userRole == "User FT" && pulledSumHoursTwo > 40)
+                    {
+                        weekTwoAlert = true;
+                    }
+                    if (userRole == "User PT" && pulledSumHoursTwo > 27.5M)
+                    {
+                        weekTwoAlert = true;
+                    }
+                    if (userRole == "User FT" && pulledSumHoursOne > 40 && pulledSumHoursTwo == 0)
+                    {
+                        weekOneAlert = true;
+                    }
+                    if (userRole == "User PT" && pulledSumHoursOne > 27.5M && pulledSumHoursTwo == 0)
+                    {
+                        weekOneAlert = true;
+                    }
                 }
-                return isOverAlert;
+                if (weekTwoAlert == true)
+                {
+                    weeklyAlert = 2;
+                    return weeklyAlert;
+                }
+                else if (weekOneAlert == true)
+                {
+                    weeklyAlert = 1;
+                    return weeklyAlert;
+                }
+
+                return weeklyAlert;
             }
             catch (Exception)
             {
-
-                return false;
+                return 0;
             }
         }
     }

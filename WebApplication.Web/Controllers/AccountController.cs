@@ -52,7 +52,7 @@ namespace WebApplication.Web.Controllers
 
                 if (payrollList.Count > 0)
                 {
-                    bool isOver = hoursDAL.IsOverWeeklyHoursAlert(user.UserId, payrollList[0].StartDate, payrollList[0].EndDate);
+                    int isOver = hoursDAL.IsOverWeeklyHoursAlert(user.UserId, payrollList[0].StartDate, payrollList[0].EndDate);
 
                     ViewBag.IsOver = isOver;
 
