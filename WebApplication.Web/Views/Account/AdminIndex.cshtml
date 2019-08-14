@@ -56,7 +56,7 @@
             <th>
                 Log Audit Trail
             </th>
-            <th></th>
+            <th>Change Role</th>
         </tr>
     </thead>
     <tbody>
@@ -89,7 +89,20 @@
                     <a asp-action="AuditedLogs" asp-route-username="@item.Username">Log Audit</a>
                 </td>
                 <td>
-                    @Html.ActionLink("Delete", "Delete", new { id = item.UserId })
+                    <form asp-action="ChangeRole" asp-controller="Account" asp-route-userid="@item.UserId" method="post">
+                        <div>
+                            <label>Select Role: </label>
+                            <select asp-route-userRole>
+                                <option value="userRole">Admin</option>
+                                <option value="userRole">UserFT</option>
+                                <option value="userRole">UserPT</option>
+                                <option value="userRole">UserInactive</option>
+                            </select>
+                        </div>
+                        <div>
+                            <input type="submit" value="Submit" />
+                        </div>
+                    </form> 
                 </td>
             </tr>
         }
