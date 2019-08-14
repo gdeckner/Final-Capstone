@@ -9,6 +9,5 @@ namespace WebApplication.Web.DAL
     public interface IRolesDAL
     {
         bool CreateNewRole(Roles role);
-
     }
 }
