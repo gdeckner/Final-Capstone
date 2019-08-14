@@ -374,5 +374,44 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
             }
             return timeCard;
         }
+
+        public bool IsOverWeeklyHoursAlert(int? userId, DateTime startDate, DateTime endDate)
+        {
+            bool isOverAlert = false;
+            decimal pulledSumHours = 0;
+            string userRole = "";
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                connection.Open();
+                SqlCommand command = new SqlCommand(@"select SUM(timeInHours)from hours
+                                                    where userID = @userId
+                                                    AND dateWorked BETWEEN CONVERT(datetime, @startDate) AND CONVERT(datetime, @endDate);", connection);
+
+                command.Parameters.AddWithValue("@userid", userId);
+                command.Parameters.AddWithValue("@startDate", startDate);
+                command.Parameters.AddWithValue("@endDate", endDate);
+
+                pulledSumHours = Convert.ToDecimal(command.ExecuteScalar());
+                command.CommandText = @"select userRole from userlogin where userId = @userId";
+                command.Parameters.AddWithValue("@userId", userId);
+
+                userRole = Convert.ToString(command.ExecuteScalar());
+                
+
+                if(userRole == "User FT" && pulledSumHours > 40)
+                {
+                    isOverAlert = true;
+                }
+                if(userRole == "User PT" && pulledSumHours > 27.5M)
+                {
+                    isOverAlert = true;
+                }
+
+                
+            }
+            return isOverAlert;
+        }
     }
 }
