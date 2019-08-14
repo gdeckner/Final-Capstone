@@ -77,37 +77,7 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
             }
         }
 
-        public bool CheckPayrollForDates(DateTime StartDate, DateTime EndDate)
-        {
-
-            try
-            {
-
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-
-                    SqlCommand command = new SqlCommand(@"SELECT startDate, endDate
-                                                  FROM Payroll
-                                                  WHERE startDate >= @StartDate AND endDate <= @EndDate;", connection);
-
-                    command.Parameters.AddWithValue("@startDate", StartDate);
-                    command.Parameters.AddWithValue("@endDate", EndDate);
-                    command.ExecuteNonQuery();
-
-
-
-                    return false;
-                }
-            }
-            catch
-            {
-                return true;
-            }
-        }
-
-
-
+       
         public bool UpdateHours(Hours hour)
         {
             try

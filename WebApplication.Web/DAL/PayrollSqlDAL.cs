@@ -89,6 +89,42 @@ namespace WebApplication.Web.DAL
 
         }
 
+
+        public IList<PayrollTable> CheckPayrollForDates(DateTime StartDate)
+        {
+            IList<PayrollTable> payrollLog = new List<PayrollTable>();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(@"SELECT startDate, endDate
+                                                  FROM Payroll
+                                                  WHERE startDate > @StartDate AND endDate > @StartDate;", connection);
+
+                command.Parameters.AddWithValue("@startDate", StartDate);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    PayrollTable report = new PayrollTable
+                    {
+                        UserId = Convert.ToInt32(reader["userId"]),
+                        StartDate = Convert.ToDateTime(reader["startDate"]),
+                        EndDate = Convert.ToDateTime(reader["endDate"]),
+                        IsApproved = Convert.ToBoolean(reader["isApproved"]),
+                        IsSubmitted = Convert.ToBoolean(reader["isSubmitted"]),
+                    };
+
+                    payrollLog.Add(report);
+                }
+            }
+            return payrollLog;
+        }
+
+
+
+
         public IList<PayrollTable> GetTimeReport(int userid)
         {
 
@@ -280,8 +316,10 @@ namespace WebApplication.Web.DAL
         {
 
             int result = SeeIfPayPeriodExists(StartDate, EndDate);
+            var payPeriod = CheckPayrollForDates(StartDate);
 
-            if (result == 1)
+
+            if (result == 1 && payPeriod.Count == 0 && (EndDate > StartDate))
             {
                 try
                 {
