@@ -33,7 +33,7 @@ namespace WebApplication.Web.Controllers
         }
 
         //[AuthorizationFilter] // actions can be filtered to only those that are logged in
-        [AuthorizationFilter("Admin", "Users")]  //<-- or filtered to only those that have a certain role
+        [AuthorizationFilter("Admin", "User FT", "User PT")]  //<-- or filtered to only those that have a certain role
         [HttpGet]
         public IActionResult Index()
         {
@@ -113,7 +113,7 @@ namespace WebApplication.Web.Controllers
         }
 
 
-        [AuthorizationFilter("Admin", "Users")]
+        [AuthorizationFilter("Admin", "User FT", "User PT")]
         [HttpGet]
         public IActionResult ChangePassword()
         {
@@ -189,7 +189,7 @@ namespace WebApplication.Web.Controllers
             return RedirectToAction("Index", "Account");
         }
 
-        [AuthorizationFilter("Admin", "Users")]
+        [AuthorizationFilter("Admin", "User FT", "User PT")]
         [HttpGet]
         public IActionResult LogTime()
         {
@@ -366,19 +366,30 @@ namespace WebApplication.Web.Controllers
         [HttpGet]
         public IActionResult EditLogs(int id)
         {
-            // use id to pull specific log information
+            // use id to pull specific log information hours by id
+            Hours selectedHour = hoursDAL.GetHoursById(id);
 
             // prefill log information
+            ViewBag.SelectedHour = selectedHour;
 
-            // display data in dropdowns
+            User currentUser = authProvider.GetCurrentUser();
 
-            //
+            ViewBag.AvailableTasks = taskDAL.GetAllTasks(currentUser.UserId);
+
+            ViewBag.Locations = locationDAL.GetAllLocations();
 
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public IActionResult UpdateLog(Hours hours)
+        {
+            bool isSuccessful = hoursDAL.UpdateHours(hours);
+
+            return RedirectToAction("Index", "Account");
+        }
+
         public IActionResult ApproveTimeCard(PayrollTable payrollLine)
         {
             payrollLine.IsApproved = true;
@@ -395,6 +406,6 @@ namespace WebApplication.Web.Controllers
             bool success = payrollDAL.ApproveTime(payrollLine);
 
             return RedirectToAction("ApproveHoursHub", "Account");
-        }
+        }  
     }
 }
