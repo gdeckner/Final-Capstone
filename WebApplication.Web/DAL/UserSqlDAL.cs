@@ -95,10 +95,9 @@ namespace WebApplication.Web.DAL
                     {
                         conn.Open();
                         SqlCommand cmd = new SqlCommand(@"
-                        Delete from Payroll WHERE userId = @id 
-                        Delete from Hours WHERE userId = @id
-                        Delete from UserJob WHERE userId = @id
-                        DELETE FROM userLogin WHERE userId = @id;", conn);
+                        update userLogin
+                        set userRole = 'Deactivated Account'
+                        where userId = @id;", conn);
                         cmd.Parameters.AddWithValue("@id", userToDeleteId);
 
                         cmd.ExecuteNonQuery();

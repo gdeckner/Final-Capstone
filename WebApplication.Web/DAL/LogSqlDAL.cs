@@ -33,10 +33,8 @@ namespace WebApplication.Web.DAL
 
                 if (duration == "1W")
                 {
-                    SqlCommand command = new SqlCommand(@"SELECT Log.targetUser, Log.dateWorked, Log.dateLogged, Log.modified_Date, Log.hoursId, Log.hoursBefore, Log.hoursAfter FROM Hours
-                                                    inner join log
-                                                    on hours.userId = log.targetUser
-                                                    WHERE userID = @userId
+                    SqlCommand command = new SqlCommand(@"SELECT Log.targetUser, Log.dateWorked, Log.dateLogged, Log.modified_Date, Log.hoursId, Log.hoursBefore, Log.hoursAfter FROM Log                                                 
+                                                    WHERE targetUser = @userId
                                                     AND Log.dateWorked BETWEEN CONVERT(datetime, @lastWeek) AND CONVERT(datetime, @currentDays)
                                                     ORDER BY Log.dateWorked DESC;", connection);
 
@@ -49,10 +47,8 @@ namespace WebApplication.Web.DAL
                 }
                 else if (duration == "1M")
                 {
-                    SqlCommand command = new SqlCommand(@"SELECT Log.targetUser, Log.dateWorked, Log.dateLogged, Log.modified_Date, Log.hoursId, Log.hoursBefore, Log.hoursAfter FROM Hours 
-                                                    inner join log
-                                                    on hours.userId = log.targetUser
-                                                    WHERE userID = @userId
+                    SqlCommand command = new SqlCommand(@"SELECT Log.targetUser, Log.dateWorked, Log.dateLogged, Log.modified_Date, Log.hoursId, Log.hoursBefore, Log.hoursAfter FROM Log                                                   
+                                                    WHERE targetUser = @userId
                                                     AND Log.dateWorked BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays)
                                                     ORDER BY Log.dateWorked DESC;", connection);
 
@@ -65,10 +61,8 @@ namespace WebApplication.Web.DAL
                 }
                 else if (duration == "1Q")
                 {
-                    SqlCommand command = new SqlCommand(@"SELECT Log.targetUser, Log.dateWorked, Log.dateLogged, Log.modified_Date, Log.hoursId, Log.hoursBefore, Log.hoursAfter FROM Hours
-                                                    inner join log
-                                                    on hours.userId = log.targetUser
-                                                    WHERE userID = @userId
+                    SqlCommand command = new SqlCommand(@"SELECT Log.targetUser, Log.dateWorked, Log.dateLogged, Log.modified_Date, Log.hoursId, Log.hoursBefore, Log.hoursAfter FROM Log                                                
+                                                    WHERE targetUser = @userId
                                                     AND Log.dateWorked BETWEEN CONVERT(datetime, @lastQuarter) AND CONVERT(datetime, @currentDays)
                                                     ORDER BY Log.dateWorked DESC;", connection);
                     command.Parameters.AddWithValue("@userId", userid);
@@ -100,6 +94,7 @@ namespace WebApplication.Web.DAL
                     HoursBefore = Convert.ToDecimal(reader["hoursBefore"]),
                     HoursAfter = Convert.ToDecimal(reader["hoursAfter"]),
                 };
+
 
                 logs.Add(log);
             }
