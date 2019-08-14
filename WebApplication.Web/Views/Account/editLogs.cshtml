@@ -1,7 +1,75 @@
-﻿
+﻿@model Hours
+
 @{
     ViewData["Title"] = "editLogs";
 }
 
 <h2>editLogs</h2>
 
+
+
+<form asp-action="UpdateLog" method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Location
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Hours
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <span>@(ViewBag.SelectedHour.DateWorked.ToShortDateString())</span>
+                        <input type="hidden" asp-for="DateWorked" value="@ViewBag.SelectedHour.DateWorked" />
+                        <span asp-validation-for="DateWorked"></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label asp-for="Location"></label>
+                        <select asp-for="Location">
+                            <option selected>@ViewBag.SelectedHour.Location</option>
+                            @foreach (Location location in ViewBag.Locations)
+                            {
+                                if (location.Title != ViewBag.SelectedHour.Location)
+                                {
+                                    <option>@location.Title</option>
+                                }
+                            }
+                        </select>
+                        <span asp-validation-for="Location"></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label asp-for="Description"></label>
+                        <input value="@ViewBag.SelectedHour.Description" type="text" asp-for="Description" />
+                        <span asp-validation-for="Description"></span>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <label asp-for="TimeInHours"></label>
+                        <input type="text" asp-for="TimeInHours" value="@ViewBag.SelectedHour.TimeInHours" />
+                        <span asp-validation-for="TimeInHours"></span>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <input type="hidden" value="@ViewBag.SelectedHour.TaskId" asp-for="TaskId" />
+    <input type="hidden" value="@ViewBag.SelectedHour.UserId" asp-for="UserId" />
+    <input type="submit" value="Submit Time" class="btn btn-default" />
+</form>

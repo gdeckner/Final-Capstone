@@ -328,6 +328,43 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
             return payrollLog;
         }
 
+        public Hours GetHoursById(int hoursId)
+        {
+            Hours selectedHour = new Hours();
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                connection.Open();
+                SqlCommand command = new SqlCommand(@"SELECT hoursId, userID, taskId, timeInHours, dateWorked, description, location, task_Title FROM Hours
+                                                WHERE hoursId = @hoursId
+                                                ORDER BY dateWorked DESC;", connection);
+
+                command.Parameters.AddWithValue("@hoursId", hoursId);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Hours hour = new Hours
+                    {
+                        HoursId = Convert.ToInt32(reader["hoursId"]),
+                        UserId = Convert.ToInt32(reader["userID"]),
+                        TaskId = Convert.ToInt32(reader["taskId"]),
+                        TimeInHours = Convert.ToDecimal(reader["timeInHours"]),
+                        DateWorked = Convert.ToDateTime(reader["dateWorked"]),
+                        Description = Convert.ToString(reader["description"]),
+                        Location = Convert.ToString(reader["location"]),
+                        TaskTitle = Convert.ToString(reader["task_Title"])
+                    };
+
+                    selectedHour = hour;
+                }
+            }
+
+            return selectedHour;
+        }
+
+
         private List<Hours> MapHoursToReader(SqlDataReader reader)
         {
             List<Hours> hours = new List<Hours>();
