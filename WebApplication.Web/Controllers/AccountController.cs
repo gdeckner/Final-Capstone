@@ -365,15 +365,28 @@ namespace WebApplication.Web.Controllers
         [HttpGet]
         public IActionResult EditLogs(int id)
         {
-            // use id to pull specific log information
+            // use id to pull specific log information hours by id
+            Hours selectedHour = hoursDAL.GetHoursById(id);
 
             // prefill log information
+            ViewBag.SelectedHour = selectedHour;
 
-            // display data in dropdowns
+            User currentUser = authProvider.GetCurrentUser();
 
-            //
+            ViewBag.AvailableTasks = taskDAL.GetAllTasks(currentUser.UserId);
+
+            ViewBag.Locations = locationDAL.GetAllLocations();
 
             return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult UpdateLog(Hours hours)
+        {
+            bool isSuccessful = hoursDAL.UpdateHours(hours);
+
+            return RedirectToAction("Index", "Account");
         }
     }
 }
