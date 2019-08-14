@@ -16,6 +16,7 @@ namespace WebApplication.Web.DAL
         private readonly DateTime lastQuarter = DateTime.Now.AddDays(-120);
         private string beginHoursSession = @"(BEGIN TRANSACTION);";
         private readonly decimal before = 0;
+        
 
         public HoursSqlDAL(string connectionString)
         {
@@ -95,6 +96,7 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                                                WHERE H.userID = @UserId
                                                AND H.taskId = @OldTaskId
                                                AND P.isApproved != '1');";
+
                         beginHoursSession += updateTask;
                     }
                     if (hour.Description != null)
@@ -135,7 +137,14 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                                                AND H.taskId = @TaskId
                                                AND P.isApproved != '1');";
 
+                        string logUpdateHours = @"INSERT INTO Log (targetUser, dateWorked, dateLogged, modified_Date, hoursId, hoursBefore, hoursAfter, 
+                                                currentUser) VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FROM Hours 
+                                                WHERE dateWorked = @WorkedDate AND Hours.userID = @UserId), (SELECT Log.hoursBefore FROM Log 
+                                                WHERE dateWorked = @WorkedDate AND Hours.userID = @UserId), @TimeInHours, @UserId);";
+
                         beginHoursSession += updateHours;
+                        beginHoursSession += logUpdateHours;
+
 
                     }
                     if (hour.DateWorked != null)
@@ -160,6 +169,7 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
 
                     SqlCommand command = connection.CreateCommand();
                     command.CommandText = beginHoursSession;
+
                     if (hour.UserId != null)
                     {
                         command.Parameters.AddWithValue("@UserId", hour.UserId);
@@ -182,15 +192,15 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                     }
                     if (hour.TimeInHours != null)
                     {
-                        command.Parameters.AddWithValue("@TaskId", hour.TimeInHours);
+                        command.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
                     }
                     if (hour.DateWorked != null)
                     {
-                        command.Parameters.AddWithValue("@TimeInHours", hour.DateWorked);
+                        command.Parameters.AddWithValue("@WorkedDate", hour.DateWorked);
+                        command.Parameters.AddWithValue("@LoggedDate", current);
+                        command.Parameters.AddWithValue("@LoggedDateT", current);
+                        command.Parameters.AddWithValue("@Before", before);
                     }
-
-
-                    command.Parameters.AddWithValue("@DateLogged", current);
 
                     connection.Open();
                     command.ExecuteNonQuery();

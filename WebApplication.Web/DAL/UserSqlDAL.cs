@@ -80,7 +80,7 @@ namespace WebApplication.Web.DAL
 
         //public void DeleteUser(int id)
 
-        public void DeleteUser(int userToDeleteId, int currentUserId)
+        public void ChangeRole(int currentUserId, int userToDeleteId, string userRole)
         {
 
             if(userToDeleteId == currentUserId)
@@ -96,9 +96,11 @@ namespace WebApplication.Web.DAL
                         conn.Open();
                         SqlCommand cmd = new SqlCommand(@"
                         update userLogin
-                        set userRole = 'Deactivated Account'
+                        set userRole = '@Role'
                         where userId = @id;", conn);
                         cmd.Parameters.AddWithValue("@id", userToDeleteId);
+                        cmd.Parameters.AddWithValue("@Role", userRole);
+
 
                         cmd.ExecuteNonQuery();
 
