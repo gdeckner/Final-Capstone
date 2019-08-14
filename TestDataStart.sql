@@ -58,5 +58,3 @@ insert into Payroll (startDate,endDate,isApproved,isSubmitted,userId) values
 ,('06-01-2019','06-16-2019',1,1,8)
 ,('08-01-2019','08-16-2019',0,0,8)
 
-select *
-from log
