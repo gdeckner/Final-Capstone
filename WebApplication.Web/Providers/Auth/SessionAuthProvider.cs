@@ -138,9 +138,9 @@ namespace WebApplication.Web.Providers.Auth
             return userDAL.GetAllUsers();
         }
 
-        public void ChangeRole(int currentUserId, int userToDeleteId, string userRole)
+        public void ChangeRole(int currentUserId, int userToBeChanged, string userRole)
         {
-            userDAL.ChangeRole(currentUserId, currentUserId, userRole);
+            userDAL.ChangeRole(currentUserId, userToBeChanged, userRole);
         }
 
 

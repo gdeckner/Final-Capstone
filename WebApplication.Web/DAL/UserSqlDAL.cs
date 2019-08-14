@@ -96,7 +96,7 @@ namespace WebApplication.Web.DAL
                         conn.Open();
                         SqlCommand cmd = new SqlCommand(@"
                         update userLogin
-                        set userRole = '@Role'
+                        set userRole = @Role
                         where userId = @id;", conn);
                         cmd.Parameters.AddWithValue("@id", userToDeleteId);
                         cmd.Parameters.AddWithValue("@Role", userRole);
