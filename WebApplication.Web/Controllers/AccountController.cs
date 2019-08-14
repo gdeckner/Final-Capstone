@@ -47,7 +47,7 @@ namespace WebApplication.Web.Controllers
             {
                 ViewBag.Hours = hoursDAL.GetAllHours(user.UserId, true);
 
-                // get pay period information
+                // alert section
                 IList<PayrollTable> payrollList = payrollDAL.GetTimeReport(user.UserId);
 
                 if (payrollList.Count > 0)
@@ -60,10 +60,39 @@ namespace WebApplication.Web.Controllers
 
                     ViewBag.UserRole = userRole.Role;
                 }
-                
 
+                // end of alert section
+                // reminder section
                 
-                // end
+                DateTime startPayPeriodDate = payrollList[0].StartDate;
+                DateTime endPayPeriodDate = payrollList[0].EndDate;
+                DateTime dateToday = DateTime.Now;
+                int numOfWeekendDays = CalculateWeekends(startPayPeriodDate, endPayPeriodDate); // not correct
+
+                int CalculateWeekends(DateTime DateTime1, DateTime DateTime2)
+                {
+                    int iReturn = 0;
+                    TimeSpan xTimeSpan;
+                    if (DateTime2 > DateTime1)
+                        xTimeSpan = DateTime2.Subtract(DateTime1);
+                    else
+                        xTimeSpan = DateTime1.Subtract(DateTime2);
+                    int iDays = 5 + System.Convert.ToInt32(xTimeSpan.TotalDays);
+                    iReturn = (iDays / 7);
+                    return iReturn;
+                }
+
+                TimeSpan expectedDaysTimeSpan = dateToday.Subtract(startPayPeriodDate);
+                int expectedDaysInt = (int)expectedDaysTimeSpan.TotalDays - numOfWeekendDays;
+                int numberOfDaysLoggedWithCurrentPayPeriod = logDAL.GetUserLogWithinPayPeriod(user.UserId, startPayPeriodDate, endPayPeriodDate);
+                bool allLogsEntered = true;
+                if (expectedDaysInt != numberOfDaysLoggedWithCurrentPayPeriod)
+                {
+                    allLogsEntered = false;
+                }
+
+                ViewBag.AllLogsEntered = allLogsEntered;
+                // end of reminder section
 
 
                 return View(user);
