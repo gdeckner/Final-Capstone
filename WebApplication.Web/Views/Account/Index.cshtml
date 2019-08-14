@@ -9,16 +9,26 @@
     <p>Welcome @Model.Name</p>
 
 
-
 <span>
     <a asp-action="LogTime" class="btn btn-default">Log Time</a>
 </span>
-<span>
+@*<span>
     <a asp-action="editLogs" class="btn btn-default">Edit Time</a>
-</span>
+</span>*@
 <span>
     <a asp-action="SubmitTimeCard" class="btn btn-default">Submit Time</a>
 </span>
+
+<br />
+
+@if (ViewBag.IsOver == true && ViewBag.UserRole == "User FT")
+{
+    <h3>You have entered more than 40 hours for the current pay period!</h3>
+}
+@if (ViewBag.IsOver == true && ViewBag.UserRole == "User PT")
+{
+    <h3>You have entered more than 27.5 hours for the current pay period!</h3>
+}
 
     <br />
 
@@ -38,7 +48,7 @@
                     Hours
                 </th>
                 <th>
-                    Edit
+                    
                 </th>
             </tr>
         </thead>

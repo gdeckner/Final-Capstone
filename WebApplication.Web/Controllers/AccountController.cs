@@ -47,6 +47,25 @@ namespace WebApplication.Web.Controllers
             {
                 ViewBag.Hours = hoursDAL.GetAllHours(user.UserId, true);
 
+                // get pay period information
+                IList<PayrollTable> payrollList = payrollDAL.GetTimeReport(user.UserId);
+
+                if (payrollList.Count > 0)
+                {
+                    bool isOver = hoursDAL.IsOverWeeklyHoursAlert(user.UserId, payrollList[0].StartDate, payrollList[0].EndDate);
+
+                    ViewBag.IsOver = isOver;
+
+                    User userRole = authProvider.GetCurrentUser();
+
+                    ViewBag.UserRole = userRole.Role;
+                }
+                
+
+                
+                // end
+
+
                 return View(user);
             }
         }
@@ -389,6 +408,8 @@ namespace WebApplication.Web.Controllers
             return RedirectToAction("Index", "Account");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ApproveTimeCard(PayrollTable payrollLine)
         {
             payrollLine.IsApproved = true;
@@ -398,7 +419,7 @@ namespace WebApplication.Web.Controllers
         }
 
         [HttpGet]
-        [AuthorizationFilter("Admin", "Users")]
+        [AuthorizationFilter("Admin", "User FT", "User PT")]
         public IActionResult SubmitTimeCard()
         {
             User currentUser = authProvider.GetCurrentUser();
