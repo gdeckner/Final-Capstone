@@ -100,9 +100,9 @@ on Hours
 After  INSERT
 as
 begin
-	INSERT INTO LOG(
-	hoursId,hoursBefore,hoursAfter,targetUser,dateWorked,dateLogged,modified_Date)
+	Insert Into Log (hoursId,hoursBefore,hoursAfter,targetUser,dateWorked,dateLogged,modified_Date)
 	Select
+	
 	h.hoursId,
 	'0',
 	h.timeInHours,
@@ -112,6 +112,9 @@ begin
 	h.dateLogged
 	FROM inserted h
 	
+
+
+
 	
 end;
 go
@@ -125,8 +128,12 @@ update log
 set targetUser = i.userID,hoursAfter = i.timeInHours,
 hoursId = i.hoursId,dateWorked = i.dateWorked, modified_Date = CURRENT_TIMESTAMP
 from inserted i
+inner join hours
+on i.hoursId = hours.hoursId
+where i.hoursId = hours.hoursId
 	
 
 end;
 go
+
 
