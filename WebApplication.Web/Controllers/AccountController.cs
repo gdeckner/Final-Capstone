@@ -389,6 +389,8 @@ namespace WebApplication.Web.Controllers
             return RedirectToAction("Index", "Account");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ApproveTimeCard(PayrollTable payrollLine)
         {
             payrollLine.IsApproved = true;

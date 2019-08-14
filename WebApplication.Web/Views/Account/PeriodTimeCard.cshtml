@@ -1,4 +1,5 @@
-﻿
+﻿@model PayrollTable
+
 @{
     ViewData["Title"] = "PeriodTimeCard";
 }
@@ -43,6 +44,9 @@
     </tbody>
 </table>
 
-<p>
-    <a asp-action="ApproveTimeCard" asp-route-payrollLine="@ViewBag.PayrollLine" class="btn btn-default">Approve</a>
-</p>
+<form asp-controller="account" asp-action="ApproveTimeCard" method="post">
+    <input type="hidden" asp-for="UserId" value="@ViewBag.PayrollLine.UserId" />
+    <input type="hidden" asp-for="StartDate" value="@ViewBag.PayrollLine.StartDate" />
+    <input type="hidden" asp-for="EndDate" value="@ViewBag.PayrollLine.EndDate" />
+    <input type="submit" value="Approve Timecard" class="btn btn-default" />
+</form>
