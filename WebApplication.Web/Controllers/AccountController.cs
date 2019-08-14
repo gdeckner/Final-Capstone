@@ -437,6 +437,8 @@ namespace WebApplication.Web.Controllers
             return RedirectToAction("Index", "Account");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ApproveTimeCard(PayrollTable payrollLine)
         {
             payrollLine.IsApproved = true;
@@ -446,7 +448,7 @@ namespace WebApplication.Web.Controllers
         }
 
         [HttpGet]
-        [AuthorizationFilter("Admin", "Users")]
+        [AuthorizationFilter("Admin", "User FT", "User PT")]
         public IActionResult SubmitTimeCard()
         {
             User currentUser = authProvider.GetCurrentUser();

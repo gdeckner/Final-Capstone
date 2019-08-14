@@ -173,7 +173,7 @@ namespace WebApplication.Web.DAL
             {
 
                 connection.Open();
-                SqlCommand command = new SqlCommand(@"SELECT DISTINCT startDate, endDate FROM payroll", connection);
+                SqlCommand command = new SqlCommand(@"SELECT DISTINCT startDate, endDate FROM payroll ORDER BY startDate DESC", connection);
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read())
@@ -254,23 +254,20 @@ namespace WebApplication.Web.DAL
                 {
                     if (pay.UserId != null && pay.StartDate != null && pay.EndDate != null && pay.IsApproved != false)
                     {
-                        updatePayroll = @"(UPDATE Payroll
-                                               SET isApproved = @IsApproved
+                        updatePayroll = @"UPDATE Payroll
+                                               SET isApproved = 1
                                                WHERE 
                                                userId = @UserId
                                                AND
                                                startDate = @StartDate
                                                AND 
                                                endDate = @EndDate
-                                               AND isSubmitted != 0);";
-
+                                               AND isSubmitted != 0;";
                     }
 
                     SqlCommand command = connection.CreateCommand();
                     command.CommandText = updatePayroll;
 
-
-                    command.Parameters.AddWithValue("@IsApproved", pay.IsApproved);
                     command.Parameters.AddWithValue("@UserId", pay.UserId);
                     command.Parameters.AddWithValue("@StartDate", pay.StartDate);
                     command.Parameters.AddWithValue("@EndDate", pay.EndDate);
@@ -312,7 +309,6 @@ namespace WebApplication.Web.DAL
                                                AND 
                                                endDate = @EndDate
                                                AND isApproved = 0;";
-
                     }
 
                     SqlCommand command = connection.CreateCommand();

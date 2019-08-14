@@ -364,7 +364,6 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
             return selectedHour;
         }
 
-
         private List<Hours> MapHoursToReader(SqlDataReader reader)
         {
             List<Hours> hours = new List<Hours>();
