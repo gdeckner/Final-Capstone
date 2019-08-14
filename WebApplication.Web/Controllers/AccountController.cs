@@ -47,6 +47,25 @@ namespace WebApplication.Web.Controllers
             {
                 ViewBag.Hours = hoursDAL.GetAllHours(user.UserId, true);
 
+                // get pay period information
+                IList<PayrollTable> payrollList = payrollDAL.GetTimeReport(user.UserId);
+
+                if (payrollList.Count > 0)
+                {
+                    bool isOver = hoursDAL.IsOverWeeklyHoursAlert(user.UserId, payrollList[0].StartDate, payrollList[0].EndDate);
+
+                    ViewBag.IsOver = isOver;
+
+                    User userRole = authProvider.GetCurrentUser();
+
+                    ViewBag.UserRole = userRole.Role;
+                }
+                
+
+                
+                // end
+
+
                 return View(user);
             }
         }

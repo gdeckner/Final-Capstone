@@ -430,8 +430,8 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                 command.Parameters.AddWithValue("@endDate", endDate);
 
                 pulledSumHours = Convert.ToDecimal(command.ExecuteScalar());
-                command.CommandText = @"select userRole from userlogin where userId = @userId";
-                command.Parameters.AddWithValue("@userId", userId);
+                command.CommandText = @"select userRole from userlogin where userId = @userIdName";
+                command.Parameters.AddWithValue("@userIdName", userId);
 
                 userRole = Convert.ToString(command.ExecuteScalar());
                 
