@@ -98,10 +98,8 @@ namespace WebApplication.Web.DAL
             {
 
                 connection.Open();
-                SqlCommand command = new SqlCommand(@"SELECT payroll.user_Id, payroll.startDate, payroll.endDate, payroll.isSub FROM payroll
-                                                    INNER JOIN userJob
-                                                    ON payroll.user_Id = hours.user_Id
-                                                    WHERE payroll.userid = @userId;", connection);
+                SqlCommand command = new SqlCommand(@"SELECT user_Id, startDate, endDate, isSub FROM payroll
+                                                    WHERE user_Id = @userId;", connection);
                 command.Parameters.AddWithValue("@userid", userid);
                 SqlDataReader reader = command.ExecuteReader();
 
@@ -207,6 +205,7 @@ namespace WebApplication.Web.DAL
                 throw;
             }
         }
+
         public bool AlertIfDaysNotSubmitted(int? userId)
         {
             bool needsAlert = false;
