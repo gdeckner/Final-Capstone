@@ -77,6 +77,31 @@ namespace WebApplication.Web.DAL
             return userChangesLog;
         }
 
+        public int GetUserLogWithinPayPeriod(int userid, DateTime startPayPeriodDate, DateTime endPayPeriodDate)
+        {
+
+            int numOfUserLogsInPayPeriod = 0;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+
+                connection.Open();
+
+                {
+                    SqlCommand command = new SqlCommand(@"SELECT COUNT(dateWorked) 
+                                                          FROM Hours
+                                                          WHERE userID = @userId AND dateWorked BETWEEN @startDate AND @endDate;", connection);
+
+                    command.Parameters.AddWithValue("@userId", userid);
+                    command.Parameters.AddWithValue("@startDate", startPayPeriodDate);
+                    command.Parameters.AddWithValue("@endDate", endPayPeriodDate);
+                    numOfUserLogsInPayPeriod = (int)command.ExecuteScalar();
+
+                }
+            }
+
+            return numOfUserLogsInPayPeriod;
+        }
 
         private List<Log> MapHoursToReader(SqlDataReader reader)
         {

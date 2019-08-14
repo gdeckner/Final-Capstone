@@ -418,37 +418,45 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
             decimal pulledSumHours = 0;
             string userRole = "";
 
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+
+                    connection.Open();
+                    SqlCommand command = new SqlCommand(@"select SUM(timeInHours)from hours
+                                                        where userID = @userId
+                                                        AND dateWorked BETWEEN CONVERT(datetime, @startDate) AND CONVERT(datetime, @endDate);", connection);
+
+                    command.Parameters.AddWithValue("@userid", userId);
+                    command.Parameters.AddWithValue("@startDate", startDate);
+                    command.Parameters.AddWithValue("@endDate", endDate);
+
+                    pulledSumHours = Convert.ToDecimal(command.ExecuteScalar());
+                    command.CommandText = @"select userRole from userlogin where userId = @userIdName";
+                    command.Parameters.AddWithValue("@userIdName", userId);
+
+                    userRole = Convert.ToString(command.ExecuteScalar());
+                
+
+                    if(userRole == "User FT" && pulledSumHours > 40)
+                    {
+                        isOverAlert = true;
+                    }
+                    if(userRole == "User PT" && pulledSumHours > 27.5M)
+                    {
+                        isOverAlert = true;
+                    }
+
+                
+                }
+                return isOverAlert;
+            }
+            catch (Exception)
             {
 
-                connection.Open();
-                SqlCommand command = new SqlCommand(@"select SUM(timeInHours)from hours
-                                                    where userID = @userId
-                                                    AND dateWorked BETWEEN CONVERT(datetime, @startDate) AND CONVERT(datetime, @endDate);", connection);
-
-                command.Parameters.AddWithValue("@userid", userId);
-                command.Parameters.AddWithValue("@startDate", startDate);
-                command.Parameters.AddWithValue("@endDate", endDate);
-
-                pulledSumHours = Convert.ToDecimal(command.ExecuteScalar());
-                command.CommandText = @"select userRole from userlogin where userId = @userIdName";
-                command.Parameters.AddWithValue("@userIdName", userId);
-
-                userRole = Convert.ToString(command.ExecuteScalar());
-                
-
-                if(userRole == "User FT" && pulledSumHours > 40)
-                {
-                    isOverAlert = true;
-                }
-                if(userRole == "User PT" && pulledSumHours > 27.5M)
-                {
-                    isOverAlert = true;
-                }
-
-                
+                return false;
             }
-            return isOverAlert;
         }
     }
 }

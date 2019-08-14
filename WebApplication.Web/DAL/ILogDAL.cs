@@ -10,6 +10,6 @@ namespace WebApplication.Web.DAL
     {
         IList<Log> GetUserLog(int userid, string duration);
 
-
+        int GetUserLogWithinPayPeriod(int userid, DateTime startPayPeriodDate, DateTime endPayPeriodDate);
     }
 }
