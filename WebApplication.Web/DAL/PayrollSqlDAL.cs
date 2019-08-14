@@ -173,7 +173,7 @@ namespace WebApplication.Web.DAL
             {
 
                 connection.Open();
-                SqlCommand command = new SqlCommand(@"SELECT DISTINCT startDate, endDate FROM payroll", connection);
+                SqlCommand command = new SqlCommand(@"SELECT DISTINCT startDate, endDate FROM payroll ORDER BY startDate DESC", connection);
                 SqlDataReader reader = command.ExecuteReader();
 
                 while (reader.Read())

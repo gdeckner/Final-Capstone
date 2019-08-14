@@ -419,7 +419,7 @@ namespace WebApplication.Web.Controllers
         }
 
         [HttpGet]
-        [AuthorizationFilter("Admin", "Users")]
+        [AuthorizationFilter("Admin", "User FT", "User PT")]
         public IActionResult SubmitTimeCard()
         {
             User currentUser = authProvider.GetCurrentUser();
