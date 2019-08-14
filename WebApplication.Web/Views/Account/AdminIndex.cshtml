@@ -89,22 +89,27 @@
                     <a asp-action="AuditedLogs" asp-route-username="@item.Username">Log Audit</a>
                 </td>
                 <td>
-                    <form asp-action="ChangeRole" asp-controller="Account" asp-route-userid="@item.UserId" method="post">
-                        <div>
+                    <form asp-action="ChangeRole" asp-controller="Account" method="post">
+                        <span>
                             <label>Select Role: </label>
-                            <select asp-route-userRole>
-                                <option value="userRole">Admin</option>
-                                <option value="userRole">UserFT</option>
-                                <option value="userRole">UserPT</option>
-                                <option value="userRole">UserInactive</option>
+                            <select asp-for="Role">
+                                <option value="Admin">Admin</option>
+                                <option value="UserFT">UserFT</option>
+                                <option value="UserPT">UserPT</option>
+                                <option value="UserInactive">UserInactive</option>
                             </select>
-                        </div>
-                        <div>
+                        </span>
+                        <span>
+                            <input type="hidden" asp-for="UserId" value="@item.UserId" />
                             <input type="submit" value="Submit" />
-                        </div>
-                    </form> 
+                        </span>
+                    </form>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+
+
+
