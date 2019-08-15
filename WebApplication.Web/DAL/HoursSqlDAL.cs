@@ -14,9 +14,9 @@ namespace WebApplication.Web.DAL
         private readonly DateTime lastMonth = DateTime.Now.AddDays(-30);
         private readonly DateTime lastWeek = DateTime.Now.AddDays(-7);
         private readonly DateTime lastQuarter = DateTime.Now.AddDays(-120);
-        private string beginHoursSession = @"(BEGIN TRANSACTION);";
+        private string beginHoursSession = @"BEGIN TRANSACTION;";
         private readonly decimal before = 0;
-        
+
 
         public HoursSqlDAL(string connectionString)
         {
@@ -27,7 +27,7 @@ namespace WebApplication.Web.DAL
         {
             try
             {
-               
+
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
@@ -54,9 +54,6 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                     commandLog.Parameters.AddWithValue("@LoggedDateT", current);
                     commandLog.Parameters.AddWithValue("@Before", before);
 
-
-
-
                     command.ExecuteNonQuery();
                     commandTitle.ExecuteNonQuery();
                     commandLog.ExecuteNonQuery();
@@ -70,7 +67,7 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                     {
                         return true;
                     }
-                    
+
                 }
             }
             catch (SqlException e)
@@ -80,67 +77,71 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
             }
         }
 
+       
         public bool UpdateHours(Hours hour)
         {
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    if (hour.TaskId != null && hour.OldTask != null)
-                    {
-                        string updateTask = @"(UPDATE H
-                                               SET H.taskId = @TaskId
-                                               FROM dbo.Hours as H
-                                               INNER JOIN dbo.Payroll AS P
-                                               ON H.userID = P.userId
-                                               WHERE H.userID = @UserId
-                                               AND H.taskId = @OldTaskId
-                                               AND P.isApproved != '1');";
+                    //if (hour.TaskId != null && hour.OldTask != null)
+                    //{
+                    //    string updateTask = @"UPDATE H
+                    //                           SET H.taskId = @TaskId
+                    //                           FROM dbo.Hours as H
+                    //                           INNER JOIN dbo.Payroll AS P
+                    //                           ON H.userID = P.userId
+                    //                           WHERE H.userID = @UserId
+                    //                           AND H.taskId = @OldTaskId
+                    //                           AND P.isApproved != 1;";
 
-                        beginHoursSession += updateTask;
-                    }
+                    //    beginHoursSession += updateTask;
+                    //}
                     if (hour.Description != null)
                     {
-                        string updateDescription = @"(UPDATE H
+                        string updateDescription = @"UPDATE H
                                                SET H.Description = @Description
                                                FROM dbo.Hours as H
                                                INNER JOIN dbo.Payroll AS P
                                                ON H.userID = P.userId
                                                WHERE H.userID = @UserId
                                                AND H.taskId = @TaskId
-                                               AND P.isApproved != '1');";
+                                               AND P.isApproved != 1 
+                                               AND H.dateWorked = @DateWorked;";
 
                         beginHoursSession += updateDescription;
                     }
                     if (hour.Location != null)
                     {
-                        string updateLocation = @"(UPDATE H
+                        string updateLocation = @"UPDATE H
                                                SET H.location = @Location
                                                FROM dbo.Hours as H
                                                INNER JOIN dbo.Payroll AS P
                                                ON H.userID = P.userId
                                                WHERE H.userID = @UserId
                                                AND H.taskId = @TaskId
-                                               AND P.isApproved != '1');";
+                                               AND P.isApproved != 1
+                                               AND H.dateWorked = @DateWorked;";
 
                         beginHoursSession += updateLocation;
 
                     }
                     if (hour.TimeInHours != null)
                     {
-                        string updateHours = @"(UPDATE H
+                        string updateHours = @"UPDATE H
                                                SET H.timeInHours = @TimeInHours
                                                FROM dbo.Hours as H
                                                INNER JOIN dbo.Payroll AS P
                                                ON H.userID = P.userId
                                                WHERE H.userID = @UserId
                                                AND H.taskId = @TaskId
-                                               AND P.isApproved != '1');";
+                                               AND P.isApproved != 1
+                                               AND H.dateWorked = @DateWorked;";
 
                         string logUpdateHours = @"INSERT INTO Log (targetUser, dateWorked, dateLogged, modified_Date, hoursId, hoursBefore, hoursAfter, 
-                                                currentUser) VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FROM Hours 
-                                                WHERE dateWorked = @WorkedDate AND Hours.userID = @UserId), (SELECT Log.hoursBefore FROM Log 
-                                                WHERE dateWorked = @WorkedDate AND Hours.userID = @UserId), @TimeInHours, @UserId);";
+                                                currentUser) VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT hoursId FROM Hours 
+                                                WHERE dateWorked = @WorkedDate AND userID = @UserId), (SELECT Log.hoursBefore FROM Log 
+                                                WHERE dateWorked = @WorkedDate AND targetUser = @UserId), @TimeInHours, @UserId);";
 
                         beginHoursSession += updateHours;
                         beginHoursSession += logUpdateHours;
@@ -149,58 +150,41 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                     }
                     if (hour.DateWorked != null)
                     {
-                        string updateDateWorked = @"(UPDATE H
+                        string updateDateWorked = @"UPDATE H
                                                SET H.dateWorked = @DateWorked
                                                FROM dbo.Hours as H
                                                INNER JOIN dbo.Payroll AS P
                                                ON H.userID = P.userId
                                                WHERE H.userID = @UserId
                                                AND H.taskId = @TaskId
-                                               AND P.isApproved != '1');";
+                                               AND P.isApproved != 1
+                                               AND H.dateWorked = @DateWorked;";
 
                         beginHoursSession += updateDateWorked;
                     }
 
-                    string loggedDate = @"(UPDATE Hours SET dateLogged = @DateLogged WHERE userID = @UserId AND taskId = @TaskId AND isSubmitted != 1);";
-                    string commit = @"(COMMIT);";
+                    string loggedDate = @"UPDATE Hours SET dateLogged = @DateLogged WHERE userID = @UserId AND taskId = @TaskId AND dateWorked = @DateWorked;";
+                    string commit = @"COMMIT;";
+
                     beginHoursSession += loggedDate;
                     beginHoursSession += commit;
 
 
                     SqlCommand command = connection.CreateCommand();
                     command.CommandText = beginHoursSession;
+                    command.Parameters.AddWithValue("@UserId", hour.UserId);
+                    //command.Parameters.AddWithValue("@OldTask", hour.OldTask);
+                    command.Parameters.AddWithValue("@TaskId", hour.TaskId);
+                    command.Parameters.AddWithValue("@Description", hour.Description);
+                    command.Parameters.AddWithValue("@Location", hour.Location);
+                    command.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
+                    command.Parameters.AddWithValue("@WorkedDate", hour.DateWorked);
+                    command.Parameters.AddWithValue("@DateWorked", hour.DateWorked);
+                    command.Parameters.AddWithValue("@LoggedDate", current);
+                    command.Parameters.AddWithValue("@DateLogged", current);
+                    command.Parameters.AddWithValue("@LoggedDateT", current);
+                    command.Parameters.AddWithValue("@Before", before);
 
-                    if (hour.UserId != null)
-                    {
-                        command.Parameters.AddWithValue("@UserId", hour.UserId);
-                    }
-                    if (hour.OldTask != null)
-                    {
-                        command.Parameters.AddWithValue("@OldTask", hour.OldTask);
-                    }
-                    if (hour.TaskId != null)
-                    {
-                        command.Parameters.AddWithValue("@TaskId", hour.TaskId);
-                    }
-                    if (hour.Description != null)
-                    {
-                        command.Parameters.AddWithValue("@Description", hour.Description);
-                    }
-                    if (hour.Location != null)
-                    {
-                        command.Parameters.AddWithValue("@Location", hour.Location);
-                    }
-                    if (hour.TimeInHours != null)
-                    {
-                        command.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
-                    }
-                    if (hour.DateWorked != null)
-                    {
-                        command.Parameters.AddWithValue("@WorkedDate", hour.DateWorked);
-                        command.Parameters.AddWithValue("@LoggedDate", current);
-                        command.Parameters.AddWithValue("@LoggedDateT", current);
-                        command.Parameters.AddWithValue("@Before", before);
-                    }
 
                     connection.Open();
                     command.ExecuteNonQuery();
@@ -283,7 +267,7 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
             {
 
                 connection.Open();
-                
+
                 if (duration == "1W")
                 {
                     SqlCommand command = new SqlCommand(@"SELECT Hours.hoursId, Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateWorked, Hours.description, Hours.location, Hours.task_Title FROM Hours
@@ -411,11 +395,16 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
             return timeCard;
         }
 
-        public bool IsOverWeeklyHoursAlert(int? userId, DateTime startDate, DateTime endDate)
+        public int IsOverWeeklyHoursAlert(int? userId, DateTime startDateOne, DateTime endDateTwo)
         {
-            bool isOverAlert = false;
-            decimal pulledSumHours = 0;
+            bool weekOneAlert = false;
+            bool weekTwoAlert = false;
+            int weeklyAlert = 0;
+            decimal pulledSumHoursOne = 0;
+            decimal pulledSumHoursTwo = 0;
             string userRole = "";
+            DateTime endDateOne = startDateOne.AddDays(7);
+            DateTime startDateTwo = endDateOne;
 
             try
             {
@@ -425,36 +414,62 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                     connection.Open();
                     SqlCommand command = new SqlCommand(@"select SUM(timeInHours)from hours
                                                         where userID = @userId
-                                                        AND dateWorked BETWEEN CONVERT(datetime, @startDate) AND CONVERT(datetime, @endDate);", connection);
+                                                        AND dateWorked BETWEEN CONVERT(datetime, @startDateOne) AND CONVERT(datetime, @endDateOne);", connection);
+
+                    SqlCommand commandTwo = new SqlCommand(@"select SUM(timeInHours)from hours
+                                                        where userID = @userId
+                                                        AND dateWorked BETWEEN CONVERT(datetime, @startDateTwo) AND CONVERT(datetime, @endDateTwo);", connection);
 
                     command.Parameters.AddWithValue("@userid", userId);
-                    command.Parameters.AddWithValue("@startDate", startDate);
-                    command.Parameters.AddWithValue("@endDate", endDate);
+                    command.Parameters.AddWithValue("@startDateOne", startDateOne);
+                    command.Parameters.AddWithValue("@endDateOne", endDateOne);
+                    command.Parameters.AddWithValue("@startDateTwo", startDateTwo);
+                    command.Parameters.AddWithValue("@endDateTwo", endDateTwo);
 
-                    pulledSumHours = Convert.ToDecimal(command.ExecuteScalar());
+
+                    pulledSumHoursOne = Convert.ToDecimal(command.ExecuteScalar());
+                    pulledSumHoursTwo = Convert.ToDecimal(command.ExecuteScalar());
+
                     command.CommandText = @"select userRole from userlogin where userId = @userIdName";
                     command.Parameters.AddWithValue("@userIdName", userId);
 
                     userRole = Convert.ToString(command.ExecuteScalar());
-                
 
-                    if(userRole == "User FT" && pulledSumHours > 40)
-                    {
-                        isOverAlert = true;
-                    }
-                    if(userRole == "User PT" && pulledSumHours > 27.5M)
-                    {
-                        isOverAlert = true;
-                    }
 
-                
+
+                    if (userRole == "User FT" && pulledSumHoursTwo > 40)
+                    {
+                        weekTwoAlert = true;
+                    }
+                    if (userRole == "User PT" && pulledSumHoursTwo > 27.5M)
+                    {
+                        weekTwoAlert = true;
+                    }
+                    if (userRole == "User FT" && pulledSumHoursOne > 40 && pulledSumHoursTwo == 0)
+                    {
+                        weekOneAlert = true;
+                    }
+                    if (userRole == "User PT" && pulledSumHoursOne > 27.5M && pulledSumHoursTwo == 0)
+                    {
+                        weekOneAlert = true;
+                    }
                 }
-                return isOverAlert;
+                if (weekTwoAlert == true)
+                {
+                    weeklyAlert = 2;
+                    return weeklyAlert;
+                }
+                else if (weekOneAlert == true)
+                {
+                    weeklyAlert = 1;
+                    return weeklyAlert;
+                }
+
+                return weeklyAlert;
             }
             catch (Exception)
             {
-
-                return false;
+                return 0;
             }
         }
     }

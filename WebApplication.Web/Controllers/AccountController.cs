@@ -52,7 +52,7 @@ namespace WebApplication.Web.Controllers
 
                 if (payrollList.Count > 0)
                 {
-                    bool isOver = hoursDAL.IsOverWeeklyHoursAlert(user.UserId, payrollList[0].StartDate, payrollList[0].EndDate);
+                    int isOver = hoursDAL.IsOverWeeklyHoursAlert(user.UserId, payrollList[0].StartDate, payrollList[0].EndDate);
 
                     ViewBag.IsOver = isOver;
 
@@ -105,6 +105,17 @@ namespace WebApplication.Web.Controllers
             return View();
         }
 
+        //---------------------FOR DEMO ONLY------------------------------
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RESETDEMO()
+        {
+
+
+            return RedirectToAction("Login", "Account");
+        }
+        //---------------------FOR DEMO ONLY------------------------------
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginViewModel loginViewModel)
@@ -145,7 +156,7 @@ namespace WebApplication.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Register(RegisterViewModel registerViewModel)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !userDAL.CheckIfUserNameExists(registerViewModel.UserName))
             {
                 // Register them as a new user (and set default role)
                 // When a user registeres they need to be given a role. If you don't need anything special
@@ -260,13 +271,8 @@ namespace WebApplication.Web.Controllers
 
                 return RedirectToAction("Index", "Account");
             }
-            else
-            {
-                var errors = ModelState.Select(x => x.Value.Errors)
-                           .Where(y => y.Count > 0)
-                           .ToList();
-            }
-            return View(hours);
+          
+            return RedirectToAction("LogTime","Account");
         }
 
         [HttpGet]
@@ -340,13 +346,25 @@ namespace WebApplication.Web.Controllers
             return View();
         }
 
+        [HttpGet]
         [AuthorizationFilter("Admin")]
+        public IActionResult ApproveHoursHub()
+        {
+            ViewBag.PayPeriods = payrollDAL.GetListOfPayPeriods();
+            ViewBag.TimeCards = new List<PayrollTable>();
+
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ApproveHoursHub(PayrollTable payrollTable)
         {
             if (payrollTable.StartDate < new DateTime(1753, 1, 1))
             {
                 payrollTable.StartDate = new DateTime(1753, 1, 1);
             }
+
             ViewBag.PayPeriods = payrollDAL.GetListOfPayPeriods();
             ViewBag.TimeCards = payrollDAL.GetListOfTimeCards(payrollTable.StartDate);
 

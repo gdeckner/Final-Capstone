@@ -10,6 +10,7 @@ namespace WebApplication.Web.DAL
     public class PayrollSqlDAL : IPayrollDAL
     {
         private readonly string connectionString;
+        private readonly string InitialStart = "1753-01-01";
 
         public PayrollSqlDAL(string connectionString)
         {
@@ -88,6 +89,38 @@ namespace WebApplication.Web.DAL
             }
 
         }
+
+
+        public bool CheckPayrollForDates(DateTime StartDate)
+        {
+            bool result = false;
+            int? theDate;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                SqlCommand command = new SqlCommand(@"SELECT userId, startDate, endDate
+                                                  FROM Payroll
+                                                  WHERE startDate > @StartDate OR endDate > @StartDate;", connection);
+
+                command.Parameters.AddWithValue("@startDate", StartDate);
+
+                theDate = Convert.ToInt32(command.ExecuteScalar());
+
+                if(theDate != 0)
+                {
+                    result = true;
+                }
+
+                
+            }
+
+            return result;
+        }
+
+
+
 
         public IList<PayrollTable> GetTimeReport(int userid)
         {
@@ -231,7 +264,6 @@ namespace WebApplication.Web.DAL
             catch (SqlException e)
             {
                 Console.WriteLine(e.Message);
-
             }
 
             return 0;
@@ -280,8 +312,10 @@ namespace WebApplication.Web.DAL
         {
 
             int result = SeeIfPayPeriodExists(StartDate, EndDate);
+            var payPeriod = CheckPayrollForDates(StartDate);
 
-            if (result == 1)
+
+            if (result == 0 && payPeriod == false && (EndDate > StartDate))
             {
                 try
                 {
@@ -295,10 +329,16 @@ namespace WebApplication.Web.DAL
                                                           WHERE userRole != 'Admin'
                                                           AND userRole != 'Inactive User';", connection);
 
+                        SqlCommand commandTwo = new SqlCommand(@"DELETE FROM 
+                                                            Payroll
+                                                            WHERE startDate = @InitialStart;", connection);
+
                         command.Parameters.AddWithValue("@startdate", StartDate);
                         command.Parameters.AddWithValue("@enddate", EndDate);
+                        commandTwo.Parameters.AddWithValue("@InitialStart", InitialStart);
 
                         command.ExecuteNonQuery();
+                        commandTwo.ExecuteNonQuery();
 
                     }
                 }

@@ -22,6 +22,6 @@ namespace WebApplication.Web.DAL
 
         IList<Hours> GetTimeCard(int? userId, DateTime startDate, DateTime endDate);
 
-        bool IsOverWeeklyHoursAlert(int? userId, DateTime startDate, DateTime endDate);
+        int IsOverWeeklyHoursAlert(int? userId, DateTime startDate, DateTime endDate);
     }
 }

@@ -87,7 +87,7 @@
                         @item.Username
                     </td>
                     <td>
-                        @if (item.Role == "Users")
+                        @if (item.Role == "User FT" || item.Role == "User PT")
                         {
                             <a asp-action="GetUserTimeLog" asp-route-username="@item.Username">@item.Name's Time Log</a>
                         }
