@@ -24,6 +24,7 @@ namespace WebApplication.Web.Models
         public int? OldTask { get; set; }
 
         [Required]
+        [Range (0,99,ErrorMessage = "Hours must be between 0 and 99")]
         [Display(Name = "Hours Worked")]
         public decimal? TimeInHours { get; set; }
 

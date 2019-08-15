@@ -94,20 +94,21 @@ namespace WebApplication.Web.DAL
         public bool CheckPayrollForDates(DateTime StartDate)
         {
             bool result = false;
-            DateTime theDate;
+            int? theDate;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 connection.Open();
 
-                SqlCommand command = new SqlCommand(@"SELECT startDate, endDate
+                SqlCommand command = new SqlCommand(@"SELECT userId, startDate, endDate
                                                   FROM Payroll
                                                   WHERE startDate > @StartDate OR endDate > @StartDate;", connection);
 
                 command.Parameters.AddWithValue("@startDate", StartDate);
-                theDate = Convert.ToDateTime(command.ExecuteScalar());
 
-                if(theDate != null)
+                theDate = Convert.ToInt32(command.ExecuteScalar());
+
+                if(theDate != 0)
                 {
                     result = true;
                 }

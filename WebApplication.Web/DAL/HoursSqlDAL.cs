@@ -106,7 +106,8 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                                                ON H.userID = P.userId
                                                WHERE H.userID = @UserId
                                                AND H.taskId = @TaskId
-                                               AND P.isApproved != 1;";
+                                               AND P.isApproved != 1 
+                                               AND H.dateWorked = @DateWorked;";
 
                         beginHoursSession += updateDescription;
                     }
@@ -119,7 +120,8 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                                                ON H.userID = P.userId
                                                WHERE H.userID = @UserId
                                                AND H.taskId = @TaskId
-                                               AND P.isApproved != 1;";
+                                               AND P.isApproved != 1
+                                               AND H.dateWorked = @DateWorked;";
 
                         beginHoursSession += updateLocation;
 
@@ -133,7 +135,8 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                                                ON H.userID = P.userId
                                                WHERE H.userID = @UserId
                                                AND H.taskId = @TaskId
-                                               AND P.isApproved != 1;";
+                                               AND P.isApproved != 1
+                                               AND H.dateWorked = @DateWorked;";
 
                         string logUpdateHours = @"INSERT INTO Log (targetUser, dateWorked, dateLogged, modified_Date, hoursId, hoursBefore, hoursAfter, 
                                                 currentUser) VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT hoursId FROM Hours 
@@ -154,12 +157,13 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                                                ON H.userID = P.userId
                                                WHERE H.userID = @UserId
                                                AND H.taskId = @TaskId
-                                               AND P.isApproved != 1;";
+                                               AND P.isApproved != 1
+                                               AND H.dateWorked = @DateWorked;";
 
                         beginHoursSession += updateDateWorked;
                     }
 
-                    string loggedDate = @"UPDATE Hours SET dateLogged = @DateLogged WHERE userID = @UserId AND taskId = @TaskId;";
+                    string loggedDate = @"UPDATE Hours SET dateLogged = @DateLogged WHERE userID = @UserId AND taskId = @TaskId AND dateWorked = @DateWorked;";
                     string commit = @"COMMIT;";
 
                     beginHoursSession += loggedDate;

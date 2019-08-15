@@ -91,3 +91,5 @@ create table Log
 	hoursAfter decimal,
 	currentUser int foreign key references UserLogin(userId)
 )
+insert into Roles (roles_Title,role_Description) values ('Admin','Admin control' ),('Inactive User','Inactive User'),
+('User FT','Full Time Employee'),('User PT','Part Time Employee')
