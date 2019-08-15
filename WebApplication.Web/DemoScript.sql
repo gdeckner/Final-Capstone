@@ -30,6 +30,7 @@ Insert into Jobs(job_Title) values ('QA Tester'),('Data Anaylst'),('Junior Softw
 Insert into userJob (userID,job_Id) values (07,01),(07,02),(08,03),(09,04),(10,1),(10,2)
 
 
+
 insert into Tasks (job_Id,project_Task_Title) values (01,'Fujitsu POS'), (01,'SSE Mobile'),(01,'SHS')
 ,(02,'Payments'),(02,'Shipping'),(02,'Marketing'),(03,'Customer Support Applications'),(03,'Website Team'),(04,'Mentoring'),(04,'New Application Development')
 insert into Hours (dateLogged,dateWorked,task_Title,timeInHours,userID,description,taskId,location) values
@@ -60,3 +61,4 @@ insert into Payroll (startDate,endDate,isApproved,isSubmitted,userId) values
 
 ,('06-01-2019','06-16-2019',1,1,8)
 ,('08-01-2019','08-16-2019',0,0,8)
+
