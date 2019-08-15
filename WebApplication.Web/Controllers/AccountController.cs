@@ -145,7 +145,7 @@ namespace WebApplication.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Register(RegisterViewModel registerViewModel)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !userDAL.CheckIfUserNameExists(registerViewModel.UserName))
             {
                 // Register them as a new user (and set default role)
                 // When a user registeres they need to be given a role. If you don't need anything special
