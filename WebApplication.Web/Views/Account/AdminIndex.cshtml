@@ -2,7 +2,8 @@
 
 @{
     ViewData["Title"] = "AdminIndex";
-    var Users = ViewBag.Users;
+    IEnumerable<dynamic> Users = ViewBag.Users;
+    Users = Users.OrderBy(x => x.Name).ToList();
 }
 
 <style>
@@ -53,23 +54,30 @@
         <thead>
             <tr>
                 <th>
-                    User Id
-                </th>
-                <th>
                     Full Name
                 </th>
+                <th></th>
+                <th></th>
                 <th>
                     Username
                 </th>
+                <th></th>
+                <th></th>
                 <th>
                     Logged Time
                 </th>
+                <th></th>
+                <th></th>
                 <th>
                     Authorization Level
                 </th>
+                <th></th>
+                <th></th>
                 <th>
                     Log Audit Trail
                 </th>
+                <th></th>
+                <th></th>
                 <th>Change Role</th>
             </tr>
         </thead>
@@ -78,14 +86,15 @@
             {
                 <tr>
                     <td>
-                        @item.UserId
-                    </td>
-                    <td>
                         @item.Name
                     </td>
+                    <td></td>
+                    <td></td>
                     <td>
                         @item.Username
                     </td>
+                    <td></td>
+                    <td></td>
                     <td>
                         @if (item.Role == "User FT" || item.Role == "User PT")
                         {
@@ -93,15 +102,25 @@
                         }
                         @if (item.Role == "Admin")
                         {
-                            <div>n/a</div>
+                            <div>Admin</div>
+                        }
+                        @if (item.Role == "Inactive User")
+                        {
+                            <div>Inactive</div>
                         }
                     </td>
+                    <td></td>
+                    <td></td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Role)
                     </td>
+                    <td></td>
+                    <td></td>
                     <td>
                         <a asp-action="AuditedLogs" asp-route-username="@item.Username">Log Audit</a>
                     </td>
+                    <td></td>
+                    <td></td>
                     <td>
                         <form asp-action="ChangeRole" asp-controller="Account" method="post">
                             <span>
@@ -113,6 +132,7 @@
                                     <option value="Inactive User">UserInactive</option>
                                 </select>
                             </span>
+                            <span></span>
                             <span>
                                 <input type="hidden" asp-for="UserId" value="@item.UserId" />
                                 <input type="submit" value="Submit" />
