@@ -77,6 +77,9 @@
             <th>
 
             </th>
+            <th>
+
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -96,7 +99,14 @@
                     @hours.TimeInHours
                 </td>
                 <td>
-                    <a asp-action="EditLogs" asp-route-id="@hours.HoursId">Edit</a>
+                    <form asp-action="EditLogs" asp-route-id="@hours.HoursId" method="get">
+                        <input type="submit" value="Edit" />
+                    </form>
+                </td>
+                <td>
+                    <form asp-controller="Account" asp-action="DeleteLog" method="post" asp-route-hoursId="@hours.HoursId">
+                        <input type="submit" value="Delete" />
+                    </form>
                 </td>
             </tr>
         }

@@ -128,19 +128,6 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    //if (hour.TaskId != null && hour.OldTask != null)
-                    //{
-                    //    string updateTask = @"UPDATE H
-                    //                           SET H.taskId = @TaskId
-                    //                           FROM dbo.Hours as H
-                    //                           INNER JOIN dbo.Payroll AS P
-                    //                           ON H.userID = P.userId
-                    //                           WHERE H.userID = @UserId
-                    //                           AND H.taskId = @OldTaskId
-                    //                           AND P.isApproved != 1;";
-
-                    //    beginHoursSession += updateTask;
-                    //}
                     if (hour.Description != null)
                     {
                         string updateDescription = @"UPDATE H
@@ -245,6 +232,41 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
             }
         }
 
+        public bool DeleteHours(int hoursId)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+
+                    SqlCommand cmd = new SqlCommand(@"UPDATE
+                                               HOURS
+                                               SET Location = NULL
+                                               WHERE hoursId = @HoursId;", connection);
+
+                    cmd.Parameters.AddWithValue("@HoursId", hoursId);
+
+                    cmd.ExecuteNonQuery();
+
+                    if (hoursId == 0)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (SqlException E)
+            {
+                Console.Write(E);
+                throw;
+            }
+        }
+
+
         public IList<Hours> GetAllHours(int userId, bool all)
         {
             IList<Hours> defaultHoursList = new List<Hours>();
@@ -257,7 +279,8 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
 
                     connection.Open();
                     SqlCommand command = new SqlCommand(@"SELECT hoursId, userID, taskId, timeInHours, dateWorked, description, location, task_Title FROM Hours
-                                                    WHERE userID = @userId
+                                                    WHERE userID = @userId 
+                                                    AND LOCATION IS NOT NULL
                                                     ORDER BY dateWorked DESC;", connection);
 
                     command.Parameters.AddWithValue("@userid", userId);
@@ -274,7 +297,8 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
 
                     connection.Open();
                     SqlCommand command = new SqlCommand(@"SELECT hoursId, userID, taskId, timeInHours, dateWorked, description, location, task_Title FROM Hours
-                                                    WHERE userID = @userId
+                                                    WHERE userID = @userId 
+                                                    AND LOCATION IS NOT NULL
                                                     AND dateWorked BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays)
                                                     ORDER BY dateWorked DESC;", connection);
 
@@ -311,6 +335,7 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                     SqlCommand command = new SqlCommand(@"SELECT Hours.hoursId, Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateWorked, Hours.description, Hours.location, Hours.task_Title FROM Hours
                                                     WHERE userID = @userId
                                                     AND dateWorked BETWEEN CONVERT(datetime, @lastWeek) AND CONVERT(datetime, @currentDays)
+                                                    AND Location IS NOT NULL
                                                     ORDER BY dateWorked DESC;", connection);
                     command.Parameters.AddWithValue("@userid", userid);
                     command.Parameters.AddWithValue("@currentDays", current);
@@ -324,6 +349,7 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                     SqlCommand command = new SqlCommand(@"SELECT Hours.hoursId, Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateWorked, Hours.description, Hours.location, Hours.task_Title FROM Hours
                                                     WHERE userID = @userId
                                                     AND dateWorked BETWEEN CONVERT(datetime, @lastMonth) AND CONVERT(datetime, @currentDays)
+                                                    AND Location IS NOT NULL
                                                     ORDER BY dateWorked DESC;", connection);
                     command.Parameters.AddWithValue("@userid", userid);
                     command.Parameters.AddWithValue("@currentDays", current);
@@ -337,6 +363,7 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                     SqlCommand command = new SqlCommand(@"SELECT Hours.hoursId, Hours.userID, Hours.taskId, Hours.timeInHours, Hours.dateWorked, Hours.description, Hours.location, Hours.task_Title FROM Hours
                                                     WHERE userID = @userId
                                                     AND dateWorked BETWEEN CONVERT(datetime, @lastQuarter) AND CONVERT(datetime, @currentDays)
+                                                    AND Location IS NOT NULL
                                                     ORDER BY dateWorked DESC;", connection);
                     command.Parameters.AddWithValue("@userid", userid);
                     command.Parameters.AddWithValue("@currentDays", current);
@@ -360,6 +387,7 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                 connection.Open();
                 SqlCommand command = new SqlCommand(@"SELECT hoursId, userID, taskId, timeInHours, dateWorked, description, location, task_Title FROM Hours
                                                 WHERE hoursId = @hoursId
+                                                AND Location IS NOT NULL
                                                 ORDER BY dateWorked DESC;", connection);
 
                 command.Parameters.AddWithValue("@hoursId", hoursId);
@@ -419,6 +447,7 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                 connection.Open();
                 SqlCommand command = new SqlCommand(@"SELECT hoursId, userID, taskId, timeInHours, dateLogged, dateWorked, description, location, task_Title FROM Hours
                                                     WHERE userID = @userId
+                                                    AND LOCATION IS NOT NULL
                                                     AND dateWorked BETWEEN CONVERT(datetime, @startDate) AND CONVERT(datetime, @endDate);", connection);
 
                 command.Parameters.AddWithValue("@userid", userId);
@@ -452,10 +481,12 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                     connection.Open();
                     SqlCommand command = new SqlCommand(@"select SUM(timeInHours)from hours
                                                         where userID = @userId
+                                                        AND LOCATION IS NOT NULL
                                                         AND dateWorked BETWEEN CONVERT(datetime, @startDateOne) AND CONVERT(datetime, @endDateOne);", connection);
 
                     SqlCommand commandTwo = new SqlCommand(@"select SUM(timeInHours)from hours
                                                         where userID = @userId
+                                                        AND LOCATION IS NOT NULL
                                                         AND dateWorked BETWEEN CONVERT(datetime, @startDateTwo) AND CONVERT(datetime, @endDateTwo);", connection);
 
                     command.Parameters.AddWithValue("@userid", userId);
