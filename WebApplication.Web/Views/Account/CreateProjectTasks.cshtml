@@ -1,17 +1,16 @@
 ﻿@model Tasks
 
 @{
-    ViewData["Title"] = "CreateProjectTasks";
+    ViewData["Title"] = "Create Tasks";
     
 }
 
-<h2>Create Project Tasks</h2>
 
 <form style="display:table" asp-action="CreateProjectTasks" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div style="display:table-row" class="form-group">
         <label style="display:table-cell">Select Job: </label>
-        <select style="display:table-cell" asp-for="JobId">
+        <select class="btn btn-default" style="display:table-cell" asp-for="JobId">
             @foreach (Job job in ViewBag.Jobs)
             {
                 <option value="@job.JobId">@job.Title</option>
@@ -21,7 +20,7 @@
     <br />
     <div style="display:table-row" class="form-group">
         <label style="display:table-cell">Input Task Title: </label>
-        <input style="display:table-cell" type="text" asp-for="Title" />
+        <input class="btn btn-default" style="display:table-cell; width:100%;" type="text" asp-for="Title" />
         <span asp-validation-for="Title" class="text-danger"></span>
     </div>
     <br />

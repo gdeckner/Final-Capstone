@@ -1,22 +1,21 @@
 ﻿@model Hours
 
 @{
-    ViewData["Title"] = "LogTime";
+    ViewData["Title"] = "Log Time";
 }
 
-<h2>Log Time</h2>
 
 <form style="display:table" asp-controller="account" asp-action="LogTime" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div style="display:table-row" class="form-group">
         <label style="display:table-cell" asp-for="DateWorked"></label>
-        <input style="display:table-cell" type="date" asp-for="DateWorked" />
+        <input class="btn btn-default" style="display:table-cell" type="date" asp-for="DateWorked" />
         <span asp-validation-for="DateWorked" class="text-danger"></span>
     </div>
     <br />
     <div style="display:table-row" class="form-group">
         <label style="display:table-cell" asp-for="TaskId"></label>
-        <select style="display:table-cell" asp-for="TaskId">
+        <select class="btn btn-default" style="display:table-cell" asp-for="TaskId">
             @foreach (Tasks tasks in ViewBag.AvailableTasks)
             {
                 <option value="@tasks.TaskId">@tasks.Title</option>
@@ -27,13 +26,13 @@
     <br />
     <div style="display:table-row" class="form-group">
         <label style="display:table-cell" asp-for="Description"></label>
-        <input style="display:table-cell" type="text" asp-for="Description" />
+        <input class="btn btn-default" style="display:table-cell" type="text" asp-for="Description" />
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
     <br />
     <div style="display:table-row" class="form-group">
         <label style="display:table-cell" asp-for="Location"></label>
-        <select style="display:table-cell" asp-for="Location">
+        <select class="btn btn-default" style="display:table-cell" asp-for="Location">
             @foreach (Location location in ViewBag.Locations)
             {
                 <option>@location.Title</option>
@@ -44,7 +43,7 @@
     <br />
     <div style="display:table-row" class="form-group">
         <label style="display:table-cell" asp-for="TimeInHours"></label>
-        <input style="display:table-cell" type="text" asp-for="TimeInHours" placeholder="ex: 8.0" />
+        <input class="btn btn-default" style="display:table-cell" type="text" asp-for="TimeInHours" placeholder="ex: 8.0" />
         <span asp-validation-for="TimeInHours" class="text-danger"></span>
     </div>
     <br />

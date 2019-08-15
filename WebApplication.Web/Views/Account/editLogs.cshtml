@@ -1,11 +1,8 @@
 ﻿@model Hours
 
 @{
-    ViewData["Title"] = "editLogs";
+    ViewData["Title"] = "Edit Log";
 }
-
-<h2>Edit Log</h2>
-
 
 
 <form asp-action="UpdateLog" method="post">
@@ -38,7 +35,7 @@
                 <td>
                     <div class="form-group">
                         <label asp-for="Location"></label>
-                        <select asp-for="Location">
+                        <select class="btn btn-default" asp-for="Location">
                             <option selected>@ViewBag.SelectedHour.Location</option>
                             @foreach (Location location in ViewBag.Locations)
                             {
@@ -54,14 +51,14 @@
                 <td>
                     <div class="form-group">
                         <label asp-for="Description"></label>
-                        <input value="@ViewBag.SelectedHour.Description" type="text" asp-for="Description" />
+                        <input class="btn btn-default" value="@ViewBag.SelectedHour.Description" type="text" asp-for="Description" />
                         <span asp-validation-for="Description"></span>
                     </div>
                 </td>
                 <td>
                     <div class="form-group">
                         <label asp-for="TimeInHours"></label>
-                        <input type="text" asp-for="TimeInHours" value="@ViewBag.SelectedHour.TimeInHours" />
+                        <input class="btn btn-default" type="text" asp-for="TimeInHours" value="@ViewBag.SelectedHour.TimeInHours" />
                         <span asp-validation-for="TimeInHours"></span>
                     </div>
                 </td>

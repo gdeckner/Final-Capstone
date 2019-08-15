@@ -1,15 +1,14 @@
 ﻿@model UserJob
 
 @{
-    ViewData["Title"] = "AuthorizeUser";
+    ViewData["Title"] = "Authorize User";
 }
 
-<h2>Authorize User</h2>
 
 <form style="display:table" asp-action="AuthorizeUser" method="post">
     <div style="display:table-row" class="form-group">
         <label style="display:table-cell">Select User To Authorize: </label>
-        <select style="display:table-cell" asp-for="UserId">
+        <select class="btn btn-default" style="display:table-cell; width:100%;" asp-for="UserId">
             @foreach (User user in ViewBag.Users)
             {
                 <option value="@user.UserId">@user.Name</option>
@@ -19,7 +18,7 @@
     <br />
     <div style="display:table-row" class="form-group">
         <label style="display:table-cell">Select Job: </label>
-        <select style="display:table-cell" asp-for="JobId">
+        <select class="btn btn-default" style="display:table-cell" asp-for="JobId">
             @foreach (Job job in ViewBag.Jobs)
             {
                 <option value="@job.JobId">@job.Title</option>

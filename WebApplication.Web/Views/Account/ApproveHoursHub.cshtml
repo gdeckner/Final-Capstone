@@ -1,16 +1,15 @@
 ﻿@model PayrollTable
 
 @{
-    ViewData["Title"] = "ApproveHoursHub";
+    ViewData["Title"] = "Approval Hub";
 }
 
-<h2>Approval Hub</h2>
 
 
 <form asp-controller="account" asp-action="ApproveHoursHub">
     <div class="form-group">
         <label>Select Pay Period: </label>
-        <select asp-for="StartDate">
+        <select class="btn btn-default" asp-for="StartDate">
             @foreach (PayrollTable payroll in ViewBag.PayPeriods)
             {
                 <option value="@payroll.StartDate">@payroll.StartDate.ToShortDateString() - @payroll.EndDate.ToShortDateString()</option>

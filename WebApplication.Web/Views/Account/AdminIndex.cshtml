@@ -1,7 +1,7 @@
 ﻿@model User
 
 @{
-    ViewData["Title"] = "AdminIndex";
+    ViewData["Title"] = "Admin";
     IEnumerable<dynamic> Users = ViewBag.Users;
     Users = Users.OrderBy(x => x.Name).ToList();
 }
@@ -19,7 +19,7 @@
         font-weight: bold;
     }
 </style>
-<h2 class="id">Admin Index</h2>
+@*<h2 class="id">Admin Index</h2>*@
 
 @*@if (ViewBag.IsSuccessful == "true")
     {
@@ -39,8 +39,6 @@
     <h5>Job creation failed</h5>
 }
 
-<br />
-<p class="id" id="welcome">Welcome @Model.Name</p>
 <br />
 <span>
     <a asp-action="Register" class="btn btn-default">Create New User</a>
@@ -90,7 +88,7 @@
                 </th>
                 <th></th>
                 <th></th>
-                <th>Change Role</th>
+                <th style="text-align:center">Change Role</th>
             </tr>
         </thead>
         <tbody>
@@ -137,14 +135,13 @@
                         <form asp-action="ChangeRole" asp-controller="Account" method="post">
                             <span>
                                 <label>Select Role: </label>
-                                <select asp-for="Role">
+                                <select class="btn btn-default" asp-for="Role">
                                     <option value="Admin">Admin</option>
                                     <option value="User FT">UserFT</option>
                                     <option value="User PT">UserPT</option>
                                     <option value="Inactive User">UserInactive</option>
                                 </select>
                             </span>
-                            <span></span>
                             <span>
                                 <input type="hidden" asp-for="UserId" value="@item.UserId" />
                                 <input type="submit" value="Submit" class="btn btn-default" />

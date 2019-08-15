@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AwareAbility Technologies</title>
+    <link rel="icon" href="~/images/favicons.png" />
 
     <environment include="Development">
         <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
@@ -30,12 +31,6 @@
                 <a style="color:white" asp-area="" asp-controller="Account" asp-action="Index" class="navbar-brand">AwareAbility Technologies</a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li><a asp-area="" asp-controller="Home" asp-action="Index"></a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="About"></a></li>
-                    <li><a asp-area="" asp-controller="Home" asp-action="Contact"></a></li>
-                </ul>
-
                 <ul class="nav navbar-nav navbar-right">
                     @await Component.InvokeAsync("NavBar") @* Render the NavBar component. *@
                 </ul>
@@ -46,10 +41,14 @@
     <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">
+        <br />
+        <a asp-area="" asp-controller="Account" asp-action="Index"><img style="display:block; margin-left:auto; margin-right:auto; height:100px;" src="~/images/logo.png" /></a>
+        <br />
+        <br />
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; 2019 - AwareAbility Technologies</p>
+            <p style="color:white;">&copy; 2019 - AwareAbility Technologies</p>
             <a href='javascript:history.go(-1)'>Return to last page</a>
         </footer>
     </div>

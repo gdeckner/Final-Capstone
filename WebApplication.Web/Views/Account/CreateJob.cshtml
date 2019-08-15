@@ -1,16 +1,18 @@
 ﻿@model Job
 
 @{
-    ViewData["Title"] = "CreateJob";
+    ViewData["Title"] = "Create Job";
 }
 
-<h2>Create Job</h2>
 
 <form asp-action="CreateJob" method="post">
-
-    <label>Job Title: </label>
-    <input type="text" asp-for="Title" />
-
-    <input type="submit" value="Create Job" class="btn btn-default" />
+    <div>
+        <label>Job Title: </label>
+        <input class="btn btn-default" type="text" asp-for="Title" />
+    </div>
+    <br />
+    <div style="padding-left:100px">
+        <input type="submit" value="Create Job" class="btn btn-default" />
+    </div>
 </form>
 

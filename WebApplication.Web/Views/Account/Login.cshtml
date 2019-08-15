@@ -4,19 +4,18 @@
     ViewData["Title"] = "Login";
 }
 
-<h2>Login</h2>
 
 <form style="display:table" asp-controller="account" asp-action="login" method="post">
 
     <div style="display:table-row" class="form-group">
         <label style="display:table-cell" asp-for="UserName"></label>
-        <input style="display:table-cell" asp-for="UserName" />
+        <input class="btn btn-default" style="display:table-cell" asp-for="UserName" />
         <span asp-validation-for="UserName"></span>
     </div>
     <br />
     <div style="display:table-row" class="form-group">
         <label style="display:table-cell" asp-for="Password"></label>
-        <input style="display:table-cell" type="password" asp-for="Password" />
+        <input class="btn btn-default" style="display:table-cell" type="password" asp-for="Password" />
         <span asp-validation-for="Password"></span>
     </div>
     <br />
