@@ -1,11 +1,9 @@
-insert into Roles (roles_Title,role_Description) values ('Admin','Admin control' ),('Inactive User','Inactive User'),
-('User FT','Full Time Employee'),('User PT','Part Time Employee')
 
 insert into UserLogin (first_Last_Name, userName,userRole,password,salt)
 values('Default Admin', 'Admin','Admin','RrQlUO2CbmowsGDSpRhXZPGjRy1BEXkN3fdCrNs4xUJjxNcs','RrQlUO2CbmowsGDSpRhXZA==')
 
 
-INSERT INTO Locations(location_Title, location_Description) VALUES('AAT_HQ', 'AwareAbility Technologies Office - Rev1');
+INSERT INTO Locations(location_Title, location_Description) VALUES('AAT_HQ', 'AwareAbility Technologies Office');
 INSERT INTO Locations(location_Title) VALUES('AAT_Working Lab');
 INSERT INTO Locations(location_Title, location_Description) VALUES('OSU_LAB', 'OSU Laboratory');
 INSERT INTO Locations(location_Title, location_Description) VALUES('UC_LAB', 'University of Cincinnati Laboratory');
@@ -32,7 +30,7 @@ insert into Tasks (job_Id,project_Task_Title) values (01,'Fujitsu POS'), (01,'SS
 ,(02,'Payments'),(02,'Shipping'),(02,'Marketing'),(03,'Customer Support Applications'),(03,'Website Team'),(04,'Mentoring'),(04,'New Application Development')
 insert into Hours (dateLogged,dateWorked,task_Title,timeInHours,userID,description,taskId,location) values
 ('07-07-2019','07-01-2019','Fujitsu POS',13,07,'Tested version 11.0 of pos',01,'Rev1 Building'),
-('07-10-2019','07-11-2019','Fujitsu POS',32,07,'Tested version 12.0 of pos',01.'Rev1 Building'),
+('07-10-2019','07-11-2019','Fujitsu POS',32,07,'Tested version 12.0 of pos',01,'Rev1 Building'),
 ('08-15-2019','08-12-2019','Fujitsu POS',07,07,'Tested version 13.0 of pos',01,'Rev1 Building'),
 ('08-14-2019','08-14-2019','SSE Mobile',13,07,'Manually tested new app',01,'Home'),
 
