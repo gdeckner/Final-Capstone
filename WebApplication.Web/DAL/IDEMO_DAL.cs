@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace WebApplication.Web.DAL
 {
-    interface IDEMO_DAL
+    public interface IDEMO_DAL
     {
         //---------------------FOR DEMO ONLY------------------------------
-
+        void DemoReset();
         //---------------------FOR DEMO ONLY------------------------------
     }
 }

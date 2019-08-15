@@ -20,8 +20,11 @@ namespace WebApplication.Web.Controllers
         private readonly IUserDAL userDAL;
         private readonly IPayrollDAL payrollDAL;
         private readonly ILogDAL logDAL;
-        public AccountController(IAuthProvider authProvider, IJobDAL jobDAL, ITaskDAL taskDAL, ILocationDAL locationDAL, IUserDAL userDAL, IHoursDAL hoursDAL, IPayrollDAL payrollDAL, ILogDAL logDAL)
+        private readonly IDEMO_DAL demoDal;
+
+        public AccountController(IDEMO_DAL demoDal,IAuthProvider authProvider, IJobDAL jobDAL, ITaskDAL taskDAL, ILocationDAL locationDAL, IUserDAL userDAL, IHoursDAL hoursDAL, IPayrollDAL payrollDAL, ILogDAL logDAL)
         {
+            this.demoDal = demoDal;
             this.authProvider = authProvider;
             this.jobDAL = jobDAL;
             this.taskDAL = taskDAL;
@@ -108,10 +111,10 @@ namespace WebApplication.Web.Controllers
         //---------------------FOR DEMO ONLY------------------------------
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RESETDEMO()
+        public IActionResult DEMORESET()
         {
 
-
+            demoDal.DemoReset();
             return RedirectToAction("Login", "Account");
         }
         //---------------------FOR DEMO ONLY------------------------------

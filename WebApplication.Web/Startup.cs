@@ -60,6 +60,7 @@ namespace WebApplication.Web
             services.AddTransient<ILocationDAL>(m => new LocationSqlDAL(connectionString));
             services.AddTransient<ITaskDAL>(m => new TasksSqlDAL(connectionString));
             services.AddTransient<ILogDAL>(m => new LogSqlDAL(connectionString));
+            services.AddTransient<IDEMO_DAL>(m => new DEMO_SqlDAL(connectionString));
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
