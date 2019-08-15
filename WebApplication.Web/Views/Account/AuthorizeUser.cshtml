@@ -6,26 +6,26 @@
 
 <h2>Authorize User</h2>
 
-<form asp-action="AuthorizeUser" method="post">
-    <div>
-        <label>Select User To Authorize: </label>
-        <select asp-for="UserId">
+<form style="display:table" asp-action="AuthorizeUser" method="post">
+    <div style="display:table-row" class="form-group">
+        <label style="display:table-cell">Select User To Authorize: </label>
+        <select style="display:table-cell" asp-for="UserId">
             @foreach (User user in ViewBag.Users)
             {
                 <option value="@user.UserId">@user.Name</option>
             }
         </select>
     </div>
-    <div>
-        <label>Select Job: </label>
-        <select asp-for="JobId">
+    <br />
+    <div style="display:table-row" class="form-group">
+        <label style="display:table-cell">Select Job: </label>
+        <select style="display:table-cell" asp-for="JobId">
             @foreach (Job job in ViewBag.Jobs)
             {
                 <option value="@job.JobId">@job.Title</option>
             }
         </select>
     </div>
-    <div>
-        <input type="submit" value="Assign User" />
-    </div>
+    <br />
+    <input type="submit" value="Assign User" class="btn btn-default" />
 </form>

@@ -6,19 +6,21 @@
 
 <h2>Add Job Location</h2>
 
-<form asp-action="AddJobLocation" method="post">
-    <div>
-        <label>New Location Title: </label>
-        <input type="text" asp-for="Title" />
+<form style="display:table" asp-action="AddJobLocation" method="post">
+    <div style="display:table-row" class="form-group">
+        <label style="display:table-cell">New Location Title: </label>
+        <input style="display:table-cell" type="text" asp-for="Title" />
     </div>
-    <div>
-        <label>Location Description: </label>
-        <input type="text" asp-for="Description" />
+    <br />
+    <div style="display:table-row" class="form-group">
+        <label style="display:table-cell">Location Description: </label>
+        <input style="display:table-cell" type="text" asp-for="Description" />
     </div>
-    <div>
-        <input type="submit" value="Add Location" />
-    </div>
+    <br />
+        <input type="submit" value="Add Location" class="btn btn-default" />
 </form>
+
+<br />
 
 <ul>
     @foreach (Location location in ViewBag.Locations)

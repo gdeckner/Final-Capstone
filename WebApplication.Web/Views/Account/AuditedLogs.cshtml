@@ -4,7 +4,7 @@
     ViewData["Title"] = "AuditedLogs";
 }
 
-<h2>AuditedLogs</h2>
+<h2>Audited Logs</h2>
 
 <br />
 <h2>@ViewBag.User.Name</h2>
@@ -68,5 +68,5 @@
     <input type="hidden" asp-for="UserId" value="@ViewBag.User.UserId" />
     <input type="hidden" asp-for="Name" value="@ViewBag.User.Name" />
     <input type="hidden" asp-for="Role" value="@ViewBag.User.Role" />
-    <input type="submit" value="Resort" />
+    <input type="submit" value="Resort" class="btn btn-default" />
 </form>
