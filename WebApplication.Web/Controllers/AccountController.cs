@@ -105,6 +105,17 @@ namespace WebApplication.Web.Controllers
             return View();
         }
 
+        //---------------------FOR DEMO ONLY------------------------------
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RESETDEMO()
+        {
+
+
+            return RedirectToAction("Login", "Account");
+        }
+        //---------------------FOR DEMO ONLY------------------------------
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Login(LoginViewModel loginViewModel)
