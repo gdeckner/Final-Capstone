@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -34,9 +35,9 @@
                     <li><a asp-area="" asp-controller="Home" asp-action="About"></a></li>
                     <li><a asp-area="" asp-controller="Home" asp-action="Contact"></a></li>
                 </ul>
-                
+
                 <ul class="nav navbar-nav navbar-right">
-                    @await  Component.InvokeAsync("NavBar") @* Render the NavBar component. *@
+                    @await Component.InvokeAsync("NavBar") @* Render the NavBar component. *@
                 </ul>
             </div>
         </div>
