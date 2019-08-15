@@ -9,6 +9,7 @@ namespace WebApplication.Web.DAL
 {
     public class HoursSqlDAL : IHoursDAL
     {
+
         private readonly string connectionString;
         private readonly DateTime current = DateTime.Today;
         private readonly DateTime lastMonth = DateTime.Now.AddDays(-30);
@@ -147,10 +148,8 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                                                FROM dbo.Hours as H
                                                INNER JOIN dbo.Payroll AS P
                                                ON H.userID = P.userId
-                                               WHERE H.userID = @UserId
-                                               AND H.taskId = @TaskId
-                                               AND P.isApproved != 1 
-                                               AND H.dateWorked = @DateWorked;";
+                                               WHERE P.isApproved != 1
+                                               AND H.hoursId = @HoursId;";
 
                         beginHoursSession += updateDescription;
                     }
@@ -161,10 +160,8 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                                                FROM dbo.Hours as H
                                                INNER JOIN dbo.Payroll AS P
                                                ON H.userID = P.userId
-                                               WHERE H.userID = @UserId
-                                               AND H.taskId = @TaskId
-                                               AND P.isApproved != 1
-                                               AND H.dateWorked = @DateWorked;";
+                                               WHERE P.isApproved != 1
+                                               AND H.hoursId = @HoursId;";
 
                         beginHoursSession += updateLocation;
 
@@ -176,10 +173,8 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                                                FROM dbo.Hours as H
                                                INNER JOIN dbo.Payroll AS P
                                                ON H.userID = P.userId
-                                               WHERE H.userID = @UserId
-                                               AND H.taskId = @TaskId
-                                               AND P.isApproved != 1
-                                               AND H.dateWorked = @DateWorked;";
+                                               WHERE P.isApproved != 1
+                                               AND H.hoursId = @HoursId;";
 
                         string logUpdateHours = @"INSERT INTO Log (targetUser, dateWorked, dateLogged, modified_Date, hoursId, hoursBefore, hoursAfter, 
                                                 currentUser) VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT hoursId FROM Hours 
@@ -198,15 +193,13 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                                                FROM dbo.Hours as H
                                                INNER JOIN dbo.Payroll AS P
                                                ON H.userID = P.userId
-                                               WHERE H.userID = @UserId
-                                               AND H.taskId = @TaskId
-                                               AND P.isApproved != 1
-                                               AND H.dateWorked = @DateWorked;";
+                                               WHERE P.isApproved != 1
+                                               AND H.hoursId = @HoursId;";
 
                         beginHoursSession += updateDateWorked;
                     }
 
-                    string loggedDate = @"UPDATE Hours SET dateLogged = @DateLogged WHERE userID = @UserId AND taskId = @TaskId AND dateWorked = @DateWorked;";
+                    string loggedDate = @"UPDATE Hours SET dateLogged = @DateLogged WHERE hoursId = @HoursId;";
                     string commit = @"COMMIT;";
 
                     beginHoursSession += loggedDate;
@@ -227,6 +220,8 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                     command.Parameters.AddWithValue("@DateLogged", current);
                     command.Parameters.AddWithValue("@LoggedDateT", current);
                     command.Parameters.AddWithValue("@Before", before);
+                    command.Parameters.AddWithValue("@HoursId", hour.HoursId);
+
 
 
                     connection.Open();
