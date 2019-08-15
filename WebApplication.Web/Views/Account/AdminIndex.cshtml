@@ -110,7 +110,7 @@
                     <td>
                         @if (item.Role == "User FT" || item.Role == "User PT")
                         {
-                            <a asp-action="GetUserTimeLog" asp-route-username="@item.Username">@item.Name's Time Log</a>
+                            <a style="color:black" asp-action="GetUserTimeLog" asp-route-username="@item.Username">@item.Name's Time Log</a>
                         }
                         @if (item.Role == "Admin")
                         {
@@ -129,7 +129,7 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <a asp-action="AuditedLogs" asp-route-username="@item.Username">Log Audit</a>
+                        <a style="color:black" asp-action="AuditedLogs" asp-route-username="@item.Username">Log Audit</a>
                     </td>
                     <td></td>
                     <td></td>
@@ -147,7 +147,7 @@
                             <span></span>
                             <span>
                                 <input type="hidden" asp-for="UserId" value="@item.UserId" />
-                                <input type="submit" value="Submit" />
+                                <input type="submit" value="Submit" class="btn btn-default" />
                             </span>
                         </form>
                     </td>

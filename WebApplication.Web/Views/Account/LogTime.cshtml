@@ -6,16 +6,17 @@
 
 <h2>Log Time</h2>
 
-<form asp-controller="account" asp-action="LogTime" method="post">
+<form style="display:table" asp-controller="account" asp-action="LogTime" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="form-group">
-        <label asp-for="DateWorked"></label>
-        <input type="date" asp-for="DateWorked" />
+    <div style="display:table-row" class="form-group">
+        <label style="display:table-cell" asp-for="DateWorked"></label>
+        <input style="display:table-cell" type="date" asp-for="DateWorked" />
         <span asp-validation-for="DateWorked" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="TaskId"></label>
-        <select asp-for="TaskId">
+    <br />
+    <div style="display:table-row" class="form-group">
+        <label style="display:table-cell" asp-for="TaskId"></label>
+        <select style="display:table-cell" asp-for="TaskId">
             @foreach (Tasks tasks in ViewBag.AvailableTasks)
             {
                 <option value="@tasks.TaskId">@tasks.Title</option>
@@ -23,14 +24,16 @@
         </select>
         <span asp-validation-for="TaskId" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="Description"></label>
-        <input type="text" asp-for="Description" />
+    <br />
+    <div style="display:table-row" class="form-group">
+        <label style="display:table-cell" asp-for="Description"></label>
+        <input style="display:table-cell" type="text" asp-for="Description" />
         <span asp-validation-for="Description" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="Location"></label>
-        <select asp-for="Location">
+    <br />
+    <div style="display:table-row" class="form-group">
+        <label style="display:table-cell" asp-for="Location"></label>
+        <select style="display:table-cell" asp-for="Location">
             @foreach (Location location in ViewBag.Locations)
             {
                 <option>@location.Title</option>
@@ -38,12 +41,13 @@
         </select>
         <span asp-validation-for="Location" class="text-danger"></span>
     </div>
-    <div class="form-group">
-        <label asp-for="TimeInHours"></label>
-        <input type="text" asp-for="TimeInHours" placeholder="ex: 8.0" />
+    <br />
+    <div style="display:table-row" class="form-group">
+        <label style="display:table-cell" asp-for="TimeInHours"></label>
+        <input style="display:table-cell" type="text" asp-for="TimeInHours" placeholder="ex: 8.0" />
         <span asp-validation-for="TimeInHours" class="text-danger"></span>
     </div>
-
+    <br />
     <input type="submit" value="Submit Time" class="btn btn-default" />
 
 </form>

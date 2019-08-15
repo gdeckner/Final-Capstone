@@ -91,12 +91,12 @@
                 </td>
                 <td>
                     <form asp-action="EditLogs" asp-route-id="@hours.HoursId" method="get">
-                        <input type="submit" value="Edit" />
+                        <input type="submit" value="Edit" class="btn btn-default" />
                     </form>
                 </td>
                 <td>
                     <form asp-controller="Account" asp-action="DeleteLog" method="post" asp-route-hoursId="@hours.HoursId">
-                        <input type="submit" value="Delete" />
+                        <input type="submit" value="Delete" class="btn btn-default" />
                     </form>
                 </td>
             </tr>

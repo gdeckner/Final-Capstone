@@ -7,11 +7,11 @@
 
 @if (Model == null)
 {
-    <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+    <li><a style="color:white" asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
 }
 else
 {
-    <li><a asp-area="" asp-controller="Account" asp-action="Index">Welcome @Model.Name</a></li>
-    <li><a asp-area="" asp-controller="Account" asp-action="ChangePassword">Change Password</a></li>
-    <li><a asp-area="" asp-controller="Account" asp-action="Logoff">Logout</a></li>
+    <li><a style="color:white" asp-area="" asp-controller="Account" asp-action="Index">Welcome @Model.Name</a></li>
+    <li><a style="color:white" asp-area="" asp-controller="Account" asp-action="ChangePassword">Change Password</a></li>
+    <li><a style="color:white" asp-area="" asp-controller="Account" asp-action="Logoff">Logout</a></li>
 }
