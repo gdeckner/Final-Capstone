@@ -10,6 +10,7 @@ namespace WebApplication.Web.DAL
     public class PayrollSqlDAL : IPayrollDAL
     {
         private readonly string connectionString;
+        private readonly string InitialStart = "1753-01-01";
 
         public PayrollSqlDAL(string connectionString)
         {
@@ -90,9 +91,10 @@ namespace WebApplication.Web.DAL
         }
 
 
-        public IList<PayrollTable> CheckPayrollForDates(DateTime StartDate)
+        public bool CheckPayrollForDates(DateTime StartDate)
         {
-            IList<PayrollTable> payrollLog = new List<PayrollTable>();
+            bool result = false;
+            DateTime theDate;
 
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
@@ -100,26 +102,20 @@ namespace WebApplication.Web.DAL
 
                 SqlCommand command = new SqlCommand(@"SELECT startDate, endDate
                                                   FROM Payroll
-                                                  WHERE startDate > @StartDate AND endDate > @StartDate;", connection);
+                                                  WHERE startDate > @StartDate OR endDate > @StartDate;", connection);
 
                 command.Parameters.AddWithValue("@startDate", StartDate);
-                SqlDataReader reader = command.ExecuteReader();
+                theDate = Convert.ToDateTime(command.ExecuteScalar());
 
-                while (reader.Read())
+                if(theDate != null)
                 {
-                    PayrollTable report = new PayrollTable
-                    {
-                        UserId = Convert.ToInt32(reader["userId"]),
-                        StartDate = Convert.ToDateTime(reader["startDate"]),
-                        EndDate = Convert.ToDateTime(reader["endDate"]),
-                        IsApproved = Convert.ToBoolean(reader["isApproved"]),
-                        IsSubmitted = Convert.ToBoolean(reader["isSubmitted"]),
-                    };
-
-                    payrollLog.Add(report);
+                    result = true;
                 }
+
+                
             }
-            return payrollLog;
+
+            return result;
         }
 
 
@@ -267,7 +263,6 @@ namespace WebApplication.Web.DAL
             catch (SqlException e)
             {
                 Console.WriteLine(e.Message);
-
             }
 
             return 0;
@@ -319,7 +314,7 @@ namespace WebApplication.Web.DAL
             var payPeriod = CheckPayrollForDates(StartDate);
 
 
-            if (result == 1 && payPeriod.Count == 0 && (EndDate > StartDate))
+            if (result == 0 && payPeriod == false && (EndDate > StartDate))
             {
                 try
                 {
@@ -333,10 +328,16 @@ namespace WebApplication.Web.DAL
                                                           WHERE userRole != 'Admin'
                                                           AND userRole != 'Inactive User';", connection);
 
+                        SqlCommand commandTwo = new SqlCommand(@"DELETE FROM 
+                                                            Payroll
+                                                            WHERE startDate = @InitialStart;", connection);
+
                         command.Parameters.AddWithValue("@startdate", StartDate);
                         command.Parameters.AddWithValue("@enddate", EndDate);
+                        commandTwo.Parameters.AddWithValue("@InitialStart", InitialStart);
 
                         command.ExecuteNonQuery();
+                        commandTwo.ExecuteNonQuery();
 
                     }
                 }

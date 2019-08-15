@@ -8,6 +8,8 @@ namespace WebApplication.Web.DAL
 {
     public interface IPayrollDAL
     {
+        bool CheckPayrollForDates(DateTime StartDate);
+
         bool CreatePayReport(PayrollTable report);
 
         IList<PayrollTable> GetListOfTimeCards(DateTime startDate);

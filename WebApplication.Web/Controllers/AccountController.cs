@@ -347,6 +347,7 @@ namespace WebApplication.Web.Controllers
             {
                 payrollTable.StartDate = new DateTime(1753, 1, 1);
             }
+
             ViewBag.PayPeriods = payrollDAL.GetListOfPayPeriods();
             ViewBag.TimeCards = payrollDAL.GetListOfTimeCards(payrollTable.StartDate);
 
