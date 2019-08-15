@@ -9,6 +9,7 @@ namespace WebApplication.Web.DAL
 {
     public class HoursSqlDAL : IHoursDAL
     {
+
         private readonly string connectionString;
         private readonly DateTime current = DateTime.Today;
         private readonly DateTime lastMonth = DateTime.Now.AddDays(-30);
@@ -25,6 +26,8 @@ namespace WebApplication.Web.DAL
 
         public bool CreateNewHours(Hours hour)
         {
+            int result = AllowHoursIfPayPeriodExists(hour.DateWorked);
+
             try
             {
 
@@ -32,32 +35,39 @@ namespace WebApplication.Web.DAL
                 {
                     connection.Open();
 
-                    SqlCommand command = new SqlCommand(@"INSERT INTO Hours (userID, taskID, timeInHours, dateWorked, dateLogged, description, location) VALUES(@UserId, @TaskId, @TimeInHours, @WorkedDate, @LoggedDate, @Description, @Location);", connection);
-                    SqlCommand commandTitle = new SqlCommand(@"UPDATE Hours SET Hours.task_Title = (SELECT Tasks.project_Task_Title FROM Tasks WHERE Hours.taskId = Tasks.project_Task_ID) WHERE Hours.taskId = @TaskId;", connection);
-                    SqlCommand commandLog = new SqlCommand(@"INSERT INTO Log (targetUser, dateWorked, dateLogged, modified_Date, hoursId, hoursBefore, hoursAfter, currentUser) 
+
+                    if (result > 0)
+                    {
+                        SqlCommand command = new SqlCommand(@"INSERT INTO Hours (userID, taskID, timeInHours, dateWorked, dateLogged, description, location) VALUES(@UserId, @TaskId, @TimeInHours, @WorkedDate, @LoggedDate, @Description, @Location);", connection);
+                        SqlCommand commandTitle = new SqlCommand(@"UPDATE Hours SET Hours.task_Title = (SELECT Tasks.project_Task_Title FROM Tasks WHERE Hours.taskId = Tasks.project_Task_ID) WHERE Hours.taskId = @TaskId;", connection);
+
+
+                        command.Parameters.AddWithValue("@UserId", hour.UserId);
+                        command.Parameters.AddWithValue("@TaskId", hour.TaskId);
+                        command.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
+                        command.Parameters.AddWithValue("@Description", hour.Description);
+                        command.Parameters.AddWithValue("@Location", hour.Location);
+                        command.Parameters.AddWithValue("@WorkedDate", hour.DateWorked);
+                        command.Parameters.AddWithValue("@LoggedDate", current);
+                        commandTitle.Parameters.AddWithValue("@TaskId", hour.TaskId);
+                        command.ExecuteNonQuery();
+                        commandTitle.ExecuteNonQuery();
+                    }
+
+                    if (result <= 0)
+                    {
+                        SqlCommand commandLog = new SqlCommand(@"INSERT INTO Log (targetUser, dateWorked, dateLogged, modified_Date, hoursId, hoursBefore, hoursAfter, currentUser) 
 VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FROM Hours WHERE dateWorked = @WorkedDate AND Hours.userID = @UserId), @Before, @TimeInHours, @UserId);", connection);
-
-                    command.Parameters.AddWithValue("@UserId", hour.UserId);
-                    command.Parameters.AddWithValue("@TaskId", hour.TaskId);
-                    command.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
-                    command.Parameters.AddWithValue("@Description", hour.Description);
-                    command.Parameters.AddWithValue("@Location", hour.Location);
-                    command.Parameters.AddWithValue("@WorkedDate", hour.DateWorked);
-                    command.Parameters.AddWithValue("@LoggedDate", current);
-                    commandTitle.Parameters.AddWithValue("@TaskId", hour.TaskId);
-                    commandLog.Parameters.AddWithValue("@UserId", hour.UserId);
-                    commandLog.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
-                    commandLog.Parameters.AddWithValue("@Description", hour.Description);
-                    commandLog.Parameters.AddWithValue("@Location", hour.Location);
-                    commandLog.Parameters.AddWithValue("@WorkedDate", hour.DateWorked);
-                    commandLog.Parameters.AddWithValue("@LoggedDate", current);
-                    commandLog.Parameters.AddWithValue("@LoggedDateT", current);
-                    commandLog.Parameters.AddWithValue("@Before", before);
-
-                    command.ExecuteNonQuery();
-                    commandTitle.ExecuteNonQuery();
-                    commandLog.ExecuteNonQuery();
-
+                        commandLog.Parameters.AddWithValue("@UserId", hour.UserId);
+                        commandLog.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
+                        commandLog.Parameters.AddWithValue("@Description", hour.Description);
+                        commandLog.Parameters.AddWithValue("@Location", hour.Location);
+                        commandLog.Parameters.AddWithValue("@WorkedDate", hour.DateWorked);
+                        commandLog.Parameters.AddWithValue("@LoggedDate", current);
+                        commandLog.Parameters.AddWithValue("@LoggedDateT", current);
+                        commandLog.Parameters.AddWithValue("@Before", before);
+                        commandLog.ExecuteNonQuery();
+                    }
 
                     if (hour.UserId == null || hour.TaskId == null || hour.TimeInHours == null || hour.DateWorked == null)
                     {
@@ -77,7 +87,41 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
             }
         }
 
-       
+
+
+
+
+        public int AllowHoursIfPayPeriodExists(DateTime WorkDate)
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    SqlCommand cmd = connection.CreateCommand();
+
+                    cmd.CommandText = @"SELECT userId, startDate, endDate
+                                        FROM Payroll
+                                        WHERE startDate <= @WorkDate
+                                        AND
+                                        endDate >= @WorkDate";
+
+                    cmd.Parameters.AddWithValue("@WorkDate", WorkDate);
+
+
+                    var rowCount = cmd.ExecuteScalar();
+                    return rowCount == null ? 0 : Convert.ToInt32(rowCount);
+                }
+            }
+            catch (SqlException e)
+            {
+                Console.WriteLine(e.Message);
+            }
+
+            return 0;
+
+        }
+
         public bool UpdateHours(Hours hour)
         {
             try
@@ -104,10 +148,8 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                                                FROM dbo.Hours as H
                                                INNER JOIN dbo.Payroll AS P
                                                ON H.userID = P.userId
-                                               WHERE H.userID = @UserId
-                                               AND H.taskId = @TaskId
-                                               AND P.isApproved != 1 
-                                               AND H.dateWorked = @DateWorked;";
+                                               WHERE P.isApproved != 1
+                                               AND H.hoursId = @HoursId;";
 
                         beginHoursSession += updateDescription;
                     }
@@ -118,10 +160,8 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                                                FROM dbo.Hours as H
                                                INNER JOIN dbo.Payroll AS P
                                                ON H.userID = P.userId
-                                               WHERE H.userID = @UserId
-                                               AND H.taskId = @TaskId
-                                               AND P.isApproved != 1
-                                               AND H.dateWorked = @DateWorked;";
+                                               WHERE P.isApproved != 1
+                                               AND H.hoursId = @HoursId;";
 
                         beginHoursSession += updateLocation;
 
@@ -133,10 +173,8 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                                                FROM dbo.Hours as H
                                                INNER JOIN dbo.Payroll AS P
                                                ON H.userID = P.userId
-                                               WHERE H.userID = @UserId
-                                               AND H.taskId = @TaskId
-                                               AND P.isApproved != 1
-                                               AND H.dateWorked = @DateWorked;";
+                                               WHERE P.isApproved != 1
+                                               AND H.hoursId = @HoursId;";
 
                         string logUpdateHours = @"INSERT INTO Log (targetUser, dateWorked, dateLogged, modified_Date, hoursId, hoursBefore, hoursAfter, 
                                                 currentUser) VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT hoursId FROM Hours 
@@ -155,15 +193,13 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                                                FROM dbo.Hours as H
                                                INNER JOIN dbo.Payroll AS P
                                                ON H.userID = P.userId
-                                               WHERE H.userID = @UserId
-                                               AND H.taskId = @TaskId
-                                               AND P.isApproved != 1
-                                               AND H.dateWorked = @DateWorked;";
+                                               WHERE P.isApproved != 1
+                                               AND H.hoursId = @HoursId;";
 
                         beginHoursSession += updateDateWorked;
                     }
 
-                    string loggedDate = @"UPDATE Hours SET dateLogged = @DateLogged WHERE userID = @UserId AND taskId = @TaskId AND dateWorked = @DateWorked;";
+                    string loggedDate = @"UPDATE Hours SET dateLogged = @DateLogged WHERE hoursId = @HoursId;";
                     string commit = @"COMMIT;";
 
                     beginHoursSession += loggedDate;
@@ -184,6 +220,8 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                     command.Parameters.AddWithValue("@DateLogged", current);
                     command.Parameters.AddWithValue("@LoggedDateT", current);
                     command.Parameters.AddWithValue("@Before", before);
+                    command.Parameters.AddWithValue("@HoursId", hour.HoursId);
+
 
 
                     connection.Open();

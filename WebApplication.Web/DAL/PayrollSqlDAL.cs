@@ -270,6 +270,7 @@ namespace WebApplication.Web.DAL
 
         }
 
+
         public int SeeIfUserInPayroll(int userId, DateTime StartDate, DateTime EndDate)
         {
             try
