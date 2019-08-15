@@ -260,13 +260,8 @@ namespace WebApplication.Web.Controllers
 
                 return RedirectToAction("Index", "Account");
             }
-            else
-            {
-                var errors = ModelState.Select(x => x.Value.Errors)
-                           .Where(y => y.Count > 0)
-                           .ToList();
-            }
-            return View(hours);
+          
+            return RedirectToAction("LogTime","Account");
         }
 
         [HttpGet]
