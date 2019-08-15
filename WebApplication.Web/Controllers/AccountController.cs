@@ -474,6 +474,17 @@ namespace WebApplication.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public IActionResult DeleteLog(int hoursId)
+        {
+            bool isAlsoSuccessful = hoursDAL.DeleteHours(hoursId);
+
+            return RedirectToAction("Index", "Account");
+        }
+
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult ApproveTimeCard(PayrollTable payrollLine)
         {
             payrollLine.IsApproved = true;
