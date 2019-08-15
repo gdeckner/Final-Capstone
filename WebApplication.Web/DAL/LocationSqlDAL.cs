@@ -49,7 +49,7 @@ namespace WebApplication.Web.DAL
             catch (SqlException E)
             {
                 Console.Write(E);
-                throw;
+                return false;
             }
         }
 

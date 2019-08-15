@@ -7,40 +7,41 @@
 <h2>LogTime</h2>
 
 <form asp-controller="account" asp-action="LogTime" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="DateWorked"></label>
         <input type="date" asp-for="DateWorked" />
-        <span asp-validation-for="DateWorked"></span>
+        <span asp-validation-for="DateWorked" class="text-danger"></span>
     </div>
     <div class="form-group">
-            <label asp-for="TaskId"></label>
-            <select asp-for="TaskId">
-                @foreach (Tasks tasks in ViewBag.AvailableTasks)
-                {
-                    <option value="@tasks.TaskId">@tasks.Title</option>
-                }
-            </select>
-            <span asp-validation-for="TaskId"></span>
+        <label asp-for="TaskId"></label>
+        <select asp-for="TaskId">
+            @foreach (Tasks tasks in ViewBag.AvailableTasks)
+            {
+                <option value="@tasks.TaskId">@tasks.Title</option>
+            }
+        </select>
+        <span asp-validation-for="TaskId" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="Description"></label>
         <input type="text" asp-for="Description" />
-        <span asp-validation-for="Description"></span>
+        <span asp-validation-for="Description" class="text-danger"></span>
     </div>
     <div class="form-group">
-            <label asp-for="Location"></label>
-            <select asp-for="Location">
-                @foreach (Location location in ViewBag.Locations)
-                {
-                    <option>@location.Title</option>
-                }
-            </select>
-            <span asp-validation-for="Location"></span>
+        <label asp-for="Location"></label>
+        <select asp-for="Location">
+            @foreach (Location location in ViewBag.Locations)
+            {
+                <option>@location.Title</option>
+            }
+        </select>
+        <span asp-validation-for="Location" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="TimeInHours"></label>
-        <input type="text" asp-for="TimeInHours" placeholder="ex: 8.0"/>
-        <span asp-validation-for="TimeInHours"></span>
+        <input type="text" asp-for="TimeInHours" placeholder="ex: 8.0" />
+        <span asp-validation-for="TimeInHours" class="text-danger"></span>
     </div>
 
     <input type="submit" value="Submit Time" class="btn btn-default" />

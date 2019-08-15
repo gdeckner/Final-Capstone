@@ -63,35 +63,38 @@ namespace WebApplication.Web.Controllers
 
                 // end of alert section
                 // reminder section
+                if (payrollList.Count > 0)
+                {
+                    DateTime startPayPeriodDate = payrollList[0].StartDate;
+                    DateTime endPayPeriodDate = payrollList[0].EndDate;
+                    DateTime dateToday = DateTime.Now;
+                    int numOfWeekendDays = CalculateWeekends(startPayPeriodDate, endPayPeriodDate); // not correct
+
+                    int CalculateWeekends(DateTime DateTime1, DateTime DateTime2)
+                    {
+                        int iReturn = 0;
+                        TimeSpan xTimeSpan;
+                        if (DateTime2 > DateTime1)
+                            xTimeSpan = DateTime2.Subtract(DateTime1);
+                        else
+                            xTimeSpan = DateTime1.Subtract(DateTime2);
+                        int iDays = 5 + System.Convert.ToInt32(xTimeSpan.TotalDays);
+                        iReturn = (iDays / 7);
+                        return iReturn;
+                    }
+
+                    TimeSpan expectedDaysTimeSpan = dateToday.Subtract(startPayPeriodDate);
+                    int expectedDaysInt = (int)expectedDaysTimeSpan.TotalDays - numOfWeekendDays;
+                    int numberOfDaysLoggedWithCurrentPayPeriod = logDAL.GetUserLogWithinPayPeriod(user.UserId, startPayPeriodDate, endPayPeriodDate);
+                    bool allLogsEntered = true;
+                    if (expectedDaysInt != numberOfDaysLoggedWithCurrentPayPeriod)
+                    {
+                        allLogsEntered = false;
+                    }
+
+                    ViewBag.AllLogsEntered = allLogsEntered;
+                }
                 
-                DateTime startPayPeriodDate = payrollList[0].StartDate;
-                DateTime endPayPeriodDate = payrollList[0].EndDate;
-                DateTime dateToday = DateTime.Now;
-                int numOfWeekendDays = CalculateWeekends(startPayPeriodDate, endPayPeriodDate); // not correct
-
-                int CalculateWeekends(DateTime DateTime1, DateTime DateTime2)
-                {
-                    int iReturn = 0;
-                    TimeSpan xTimeSpan;
-                    if (DateTime2 > DateTime1)
-                        xTimeSpan = DateTime2.Subtract(DateTime1);
-                    else
-                        xTimeSpan = DateTime1.Subtract(DateTime2);
-                    int iDays = 5 + System.Convert.ToInt32(xTimeSpan.TotalDays);
-                    iReturn = (iDays / 7);
-                    return iReturn;
-                }
-
-                TimeSpan expectedDaysTimeSpan = dateToday.Subtract(startPayPeriodDate);
-                int expectedDaysInt = (int)expectedDaysTimeSpan.TotalDays - numOfWeekendDays;
-                int numberOfDaysLoggedWithCurrentPayPeriod = logDAL.GetUserLogWithinPayPeriod(user.UserId, startPayPeriodDate, endPayPeriodDate);
-                bool allLogsEntered = true;
-                if (expectedDaysInt != numberOfDaysLoggedWithCurrentPayPeriod)
-                {
-                    allLogsEntered = false;
-                }
-
-                ViewBag.AllLogsEntered = allLogsEntered;
                 // end of reminder section
 
 
@@ -219,7 +222,9 @@ namespace WebApplication.Web.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult CreateJob(Job job)
         {
-            jobDAL.CreateNewJob(job);
+            bool isSuccessful = jobDAL.CreateNewJob(job);
+
+            ViewBag.JobWasCreated = isSuccessful;
 
             return RedirectToAction("Index", "Account");
         }
@@ -271,7 +276,16 @@ namespace WebApplication.Web.Controllers
 
                 return RedirectToAction("Index", "Account");
             }
-          
+            if (!ModelState.IsValid)
+            {
+                User currentUser = authProvider.GetCurrentUser();
+                ViewBag.AvailableTasks = taskDAL.GetAllTasks(currentUser.UserId);
+
+                ViewBag.Locations = locationDAL.GetAllLocations();
+
+                return View("LogTime", hours);
+            }
+
             return RedirectToAction("LogTime","Account");
         }
 

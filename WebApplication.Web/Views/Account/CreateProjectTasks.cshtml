@@ -8,6 +8,7 @@
 <h2>CreateProjectTasks</h2>
 
 <form asp-action="CreateProjectTasks" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div>
         <label>Select Job: </label>
         <select asp-for="JobId">
@@ -20,6 +21,7 @@
     <div>
         <label>Input Task Title: </label>
         <input type="text" asp-for="Title" />
+        <span asp-validation-for="Title" class="text-danger"></span>
     </div>
     <div>
         <input type="submit" value="Create Task" />

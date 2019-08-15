@@ -23,7 +23,7 @@ namespace WebApplication.Web.Models
         /// <summary>
         /// The task's title.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "Task title is required")]
         public string Title { get; set; }
 
         /// <summary>

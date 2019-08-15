@@ -23,12 +23,12 @@ namespace WebApplication.Web.Models
         [Display(Name = "Old Task ID")]
         public int? OldTask { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Time worked is required")]
         [Range (0,99,ErrorMessage = "Hours must be between 0 and 99")]
         [Display(Name = "Hours Worked")]
         public decimal? TimeInHours { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Date worked is required")]
         [Display(Name = "Date Worked")]
         public DateTime DateWorked { get; set; }
 
