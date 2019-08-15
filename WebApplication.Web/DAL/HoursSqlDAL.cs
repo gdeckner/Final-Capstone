@@ -106,7 +106,7 @@ VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FRO
                                                ON H.userID = P.userId
                                                WHERE H.userID = @UserId
                                                AND H.taskId = @TaskId
-                                               AND P.isApproved != 1
+                                               AND P.isApproved != 1 
                                                AND H.dateWorked = @DateWorked;";
 
                         beginHoursSession += updateDescription;
