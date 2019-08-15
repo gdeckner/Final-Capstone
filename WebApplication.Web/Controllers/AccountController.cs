@@ -341,6 +341,14 @@ namespace WebApplication.Web.Controllers
         }
 
         [AuthorizationFilter("Admin")]
+        public IActionResult ApproveHoursHub()
+        {
+            ViewBag.PayPeriods = payrollDAL.GetListOfPayPeriods();
+
+            return View();
+        }
+
+        [AuthorizationFilter("Admin")]
         public IActionResult ApproveHoursHub(PayrollTable payrollTable)
         {
             if (payrollTable.StartDate < new DateTime(1753, 1, 1))
