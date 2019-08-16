@@ -4,6 +4,36 @@
     ViewData["Title"] = "Time Card";
 }
 
+<style>
+    .parent {
+        display: table;
+        width: 100%;
+    }
+
+    .form_login {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    input[type=text], input[type=password], select {
+        width: 20%;
+        height: 40px;
+        padding: 12px 20px;
+        margin: 4px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    thead {
+        font-size: large;
+    }
+
+    td {
+        font-size: medium;
+    }
+</style>
 
 <table class="table">
     <thead>
@@ -43,9 +73,14 @@
     </tbody>
 </table>
 
-<form asp-controller="account" asp-action="ApproveTimeCard" method="post">
-    <input type="hidden" asp-for="UserId" value="@ViewBag.PayrollLine.UserId" />
-    <input type="hidden" asp-for="StartDate" value="@ViewBag.PayrollLine.StartDate" />
-    <input type="hidden" asp-for="EndDate" value="@ViewBag.PayrollLine.EndDate" />
-    <input type="submit" value="Approve Timecard" class="btn btn-default" />
-</form>
+<div class="parent">
+    <form class="form_login" asp-controller="account" asp-action="ApproveTimeCard" method="post">
+        <input type="hidden" asp-for="UserId" value="@ViewBag.PayrollLine.UserId" />
+        <input type="hidden" asp-for="StartDate" value="@ViewBag.PayrollLine.StartDate" />
+        <input type="hidden" asp-for="EndDate" value="@ViewBag.PayrollLine.EndDate" />
+        <br />
+        <div>
+            <input type="submit" value="Approve Timecard" class="btn btn-success btn-lg" />
+        </div>
+    </form>
+</div>
