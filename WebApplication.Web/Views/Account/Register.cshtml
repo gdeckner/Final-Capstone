@@ -5,42 +5,75 @@
     ViewData["Title"] = "Register";
 }
 
+<style>
+    .parent {
+        display: table;
+        width: 100%;
+    }
 
-<form style="display:table" asp-controller="account" asp-action="register" method="post">
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell" asp-for="FullName"></label>
+    .form_login {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    input[type=text], input[type=password], select {
+        width: 20%;
+        height: 40px;
+        padding: 12px 20px;
+        margin: 4px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+</style>
+
+<div class="parent">
+    <form class="form_login" asp-controller="account" asp-action="register" method="post">
+        <div>
+            <label asp-for="FullName"></label>
+        </div>
         <input class="btn btn-default" style="display:table-cell" asp-for="FullName" />
         <span asp-validation-for="FullName"></span>
-    </div>
-    <br />
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell" asp-for="UserName"></label>
+
+        <br />
+        <div>
+            <label asp-for="UserName"></label>
+        </div>
         <input class="btn btn-default" style="display:table-cell" asp-for="UserName" />
         <span asp-validation-for="UserName"></span>
-    </div>
-    <br />
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell" asp-for="Password"></label>
+
+        <br />
+        <div>
+            <label asp-for="Password"></label>
+        </div>
         <input class="btn btn-default" style="display:table-cell" type="password" asp-for="Password" />
         <span asp-validation-for="Password"></span>
-    </div>
-    <br />
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell" asp-for="ConfirmPassword"></label>
+
+        <br />
+        <div>
+            <label asp-for="ConfirmPassword"></label>
+        </div>
         <input class="btn btn-default" style="display:table-cell" type="password" asp-for="ConfirmPassword" />
         <span asp-validation-for="ConfirmPassword"></span>
-    </div>
-    <br />
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell" asp-for="Role"></label>
-        <select class="btn btn-default" style="display:table-cell; width:100%;" asp-for="Role">
+
+        <br />
+        <div>
+            <label asp-for="Role"></label>
+        </div>
+        <select class="btn btn-default" asp-for="Role">
             <option value="User FT">Fulltime Employee</option>
             <option value="User PT">Parttime Employee</option>
             <option value="Admin">Admin</option>
         </select>
         <span asp-validation-for="Role"></span>
-    </div>
-    <br />
-    <input type="submit" value="Create New User" class="btn btn-default" />
+        <br />
+        <br />
+        <div>
+            <input type="submit" value="Create New User" class="btn btn-success btn-lg" />
+        </div>
+    </form>
+</div>
+<br />
 
-</form>

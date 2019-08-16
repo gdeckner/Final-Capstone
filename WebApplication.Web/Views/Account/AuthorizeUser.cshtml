@@ -4,27 +4,64 @@
     ViewData["Title"] = "Authorize User";
 }
 
+<style>
+    .parent {
+        display: table;
+        width: 100%;
+    }
 
-<form style="display:table" asp-action="AuthorizeUser" method="post">
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell">Select User To Authorize: </label>
-        <select class="btn btn-default" style="display:table-cell; width:100%;" asp-for="UserId">
+    .form_login {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    input[type=text], input[type=password], select {
+        width: 20%;
+        height: 40px;
+        padding: 12px 20px;
+        margin: 4px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    label {
+        font-size: large;
+    }
+</style>
+
+<div class="parent">
+    <form class="form_login" asp-action="AuthorizeUser" method="post">
+        <div>
+            <label>Select User To Authorize: </label>
+        </div>
+        <br />
+        <select asp-for="UserId">
             @foreach (User user in ViewBag.Users)
             {
                 <option value="@user.UserId">@user.Name</option>
             }
         </select>
-    </div>
-    <br />
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell">Select Job: </label>
+        <br />
+        <br />
+        <div>
+            <label>Select Job: </label>
+        </div>
+        <br />
         <select class="btn btn-default" style="display:table-cell" asp-for="JobId">
             @foreach (Job job in ViewBag.Jobs)
             {
                 <option value="@job.JobId">@job.Title</option>
             }
         </select>
-    </div>
-    <br />
-    <input type="submit" value="Assign User" class="btn btn-default" />
-</form>
+
+        <br />
+        <br />
+        <br />
+        <div>
+            <input type="submit" value="Assign User" class="btn btn-success btn-lg" />
+        </div>
+    </form>
+</div>

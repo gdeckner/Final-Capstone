@@ -4,15 +4,45 @@
     ViewData["Title"] = "Create Job";
 }
 
+<style>
+    .parent {
+        display: table;
+        width: 100%;
+    }
 
-<form asp-action="CreateJob" method="post">
-    <div>
-        <label>Job Title: </label>
-        <input class="btn btn-default" type="text" asp-for="Title" />
-    </div>
-    <br />
-    <div style="padding-left:100px">
-        <input type="submit" value="Create Job" class="btn btn-default" />
-    </div>
-</form>
+    .form_login {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    input[type=text], input[type=password], select {
+        width: 15%;
+        height: 1%;
+        padding: 12px 20px;
+        margin: 4px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    label {
+        font-size: large;
+    }
+</style>
+
+<div class="parent">
+    <form class="form_login" asp-action="CreateJob" method="post">
+        <div>
+            <label>Job Title: </label>
+            </div>
+            <input class="btn btn-default" type="text" asp-for="Title" />
+        <br />
+   <br />
+        <div>
+            <input type="submit" value="Create Job" class="btn btn-lg btn-success" />
+        </div>
+    </form>
+</div>
 

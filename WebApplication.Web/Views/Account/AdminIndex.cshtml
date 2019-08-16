@@ -18,6 +18,10 @@
     #welcome {
         font-weight: bold;
     }
+
+    th {
+        font-size: large;
+    }
 </style>
 @*<h2 class="id">Admin Index</h2>*@
 
@@ -41,22 +45,22 @@
 
 <br />
 <span>
-    <a asp-action="Register" class="btn btn-default">Create New User</a>
+    <a asp-action="Register" class="btn btn-primary">Create New User</a>
 </span>
 <span>
-    <a asp-action="AuthorizeUser" class="btn btn-default">Authorize User To Job</a>
+    <a asp-action="AuthorizeUser" class="btn btn-primary">Authorize User To Job</a>
 </span>
 <span>
-    <a asp-action="CreateJob" class="btn btn-default">Create New Job</a>
+    <a asp-action="CreateJob" class="btn btn-primary">Create New Job</a>
 </span>
 <span>
-    <a asp-action="CreateProjectTasks" class="btn btn-default">Create New Project Task</a>
+    <a asp-action="CreateProjectTasks" class="btn btn-primary">Create New Project Task</a>
 </span>
 <span>
-    <a asp-action="AddJobLocation" class="btn btn-default">Add Job Location</a>
+    <a asp-action="AddJobLocation" class="btn btn-primary">Add Job Location</a>
 </span>
 <span>
-    <a asp-action="ApproveHoursHub" class="btn btn-default">Approval Hub</a>
+    <a asp-action="ApproveHoursHub" class="btn btn-primary">Approval Hub</a>
 </span>
 <br />
 <br />
@@ -79,12 +83,12 @@
                 <th></th>
                 <th></th>
                 <th>
-                    Authorization Level
+                    Authorization
                 </th>
                 <th></th>
                 <th></th>
                 <th>
-                    Log Audit Trail
+                    Audit
                 </th>
                 <th></th>
                 <th></th>
@@ -127,7 +131,7 @@
                     <td></td>
                     <td></td>
                     <td>
-                        <a style="color:black" asp-action="AuditedLogs" asp-route-username="@item.Username">Log Audit</a>
+                        <a style="color:black" asp-action="AuditedLogs" asp-route-username="@item.Username">Report</a>
                     </td>
                     <td></td>
                     <td></td>
@@ -137,14 +141,14 @@
                                 <label>Select Role: </label>
                                 <select class="btn btn-default" asp-for="Role">
                                     <option value="Admin">Admin</option>
-                                    <option value="User FT">UserFT</option>
-                                    <option value="User PT">UserPT</option>
-                                    <option value="Inactive User">UserInactive</option>
+                                    <option value="User FT">Full-time</option>
+                                    <option value="User PT">Part-time</option>
+                                    <option value="Inactive User">Inactive</option>
                                 </select>
                             </span>
                             <span>
                                 <input type="hidden" asp-for="UserId" value="@item.UserId" />
-                                <input type="submit" value="Submit" class="btn btn-default" />
+                                <input type="submit" value="Submit" class="btn btn-info active" />
                             </span>
                         </form>
                     </td>

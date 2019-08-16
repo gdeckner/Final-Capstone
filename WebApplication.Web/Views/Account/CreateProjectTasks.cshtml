@@ -2,28 +2,63 @@
 
 @{
     ViewData["Title"] = "Create Tasks";
-    
+
 }
 
+<style>
+    .parent {
+        display: table;
+        width: 100%;
+    }
 
-<form style="display:table" asp-action="CreateProjectTasks" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell">Select Job: </label>
-        <select class="btn btn-default" style="display:table-cell" asp-for="JobId">
+    .form_login {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    input[type=text], input[type=password], select {
+        width: 20%;
+        height: 40px;
+        padding: 12px 20px;
+        margin: 4px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    label {
+        font-size: large;
+    }
+
+</style>
+
+<div class="parent">
+    <form class="form_login" asp-action="CreateProjectTasks" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div>
+            <label>Select Job: </label>
+        </div>
+        <br />
+        <select class="btn btn-default" asp-for="JobId">
             @foreach (Job job in ViewBag.Jobs)
             {
                 <option value="@job.JobId">@job.Title</option>
             }
         </select>
-    </div>
-    <br />
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell">Input Task Title: </label>
-        <input class="btn btn-default" style="display:table-cell; width:100%;" type="text" asp-for="Title" />
+        <br />
+        <br />
+        <div>
+            <label>Input Task Title: </label>
+        </div>
+        <input type="text" asp-for="Title" />
         <span asp-validation-for="Title" class="text-danger"></span>
-    </div>
-    <br />
-        <input type="submit" value="Create Task" class="btn btn-default" />
-</form>
+        <br />
+        <br />
+        <div>
+            <input type="submit" value="Create Task" class="btn btn-lg btn-success" />
+        </div>
+    </form>
+</div>
 

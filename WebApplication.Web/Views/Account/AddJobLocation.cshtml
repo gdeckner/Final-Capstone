@@ -4,30 +4,81 @@
     ViewData["Title"] = "Add Location";
 }
 
+<style>
+    .parent {
+        display: table;
+        width: 100%;
+    }
 
-<form style="display:table" asp-action="AddJobLocation" method="post">
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell">New Location Title: </label>
-        <input class="btn btn-default" style="display:table-cell" type="text" asp-for="Title" />
-    </div>
-    <br />
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell">Location Description: </label>
-        <input class="btn btn-default" style="display:table-cell" type="text" asp-for="Description" />
-    </div>
-    <br />
-        <input type="submit" value="Add Location" class="btn btn-default" />
-</form>
+    .form_login {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+    }
 
+    input[type=text], input[type=password], select {
+        width: 20%;
+        height: 40px;
+        padding: 12px 20px;
+        margin: 4px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    label, #locations {
+        font-size: large;
+    }
+
+    #heading {
+        font-size: x-large;
+        font-weight: bold;
+    }
+
+    .locations {
+        font-size: medium;
+    }
+</style>
+
+
+<div class="parent">
+    <form class="form_login" asp-action="AddJobLocation" method="post">
+        <div>
+            <label>New Location Title: </label>
+        </div>
+        <br />
+        <input type="text" asp-for="Title" />
+
+        <br />
+        <br />
+
+        <div>
+            <label>Description: </label>
+        </div>
+        <br />
+        <input type="text" asp-for="Description" />
+
+        <br />
+        <br />
+        <br />
+        <div>
+            <input type="submit" value="Add Location" class="btn btn-success btn-lg" />
+        </div>
+    </form>
+</div>
 <br />
 
-<h3>Current Locations</h3>
+<div id="locations" style="text-align:center;">
+    <h3 id="heading">Current Locations</h3>
+    <br />
+    
+    
+        @foreach (Location location in ViewBag.Locations)
+        {
 
-<ul>
-    @foreach (Location location in ViewBag.Locations)
-    {
+            <p class="locations">@location.Title - @location.Description</p>
 
-        <li>@location.Title - @location.Description</li>
-
-    }
-</ul>
+        }
+   
+</div>

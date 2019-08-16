@@ -120,6 +120,15 @@ namespace WebApplication.Web.DAL
                     HoursAfter = Convert.ToDecimal(reader["hoursAfter"]),
                 };
 
+                if (reader["hoursBefore"] == null)
+                {
+                    log.HoursBefore = 0.0M;
+                }
+                else
+                {
+                    log.HoursBefore = Convert.ToDecimal(reader["hoursBefore"]);
+                }
+
 
                 logs.Add(log);
             }

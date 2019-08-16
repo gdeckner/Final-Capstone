@@ -4,28 +4,72 @@
     ViewData["Title"] = "Approval Hub";
 }
 
+<style>
+    .parent {
+        display: table;
+        width: 100%;
+    }
 
+    .form_login {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+    }
 
-<form asp-controller="account" asp-action="ApproveHoursHub">
-    <div class="form-group">
-        <label>Select Pay Period: </label>
+    input[type=text], input[type=password], select {
+        width: 20%;
+        height: 40px;
+        padding: 12px 20px;
+        margin: 4px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    label {
+        font-size: large;
+    }
+
+    #theader {
+        font-size: large;
+    }
+
+    .trow {
+        font-size: medium;
+        color: black;
+    }
+</style>
+
+<div class="parent">
+    <form class="form_login" asp-controller="account" asp-action="ApproveHoursHub">
+        <div>
+            <label>Select Pay Period: </label>
+        </div>
         <select class="btn btn-default" asp-for="StartDate">
             @foreach (PayrollTable payroll in ViewBag.PayPeriods)
             {
                 <option value="@payroll.StartDate">@payroll.StartDate.ToShortDateString() - @payroll.EndDate.ToShortDateString()</option>
             }
         </select>
-        <span asp-validation-for="StartDate"></span>
-        <input type="submit" value="Select Pay Period" class="btn btn-default" />
-    </div>
-</form>
 
-<p>
-    <a asp-action="CreatePayPeriod" class="btn btn-default">Define New Pay Period</a>
-</p>
+        <span asp-validation-for="StartDate"></span>
+        <br />
+        <br />
+        <div>
+            <input type="submit" value="Select Pay Period" class="btn btn-lg btn-primary" />
+        </div>
+        <br />
+        <div>
+            <a asp-action="CreatePayPeriod" class="btn btn-lg btn-success">Define New Pay Period</a>
+        </div>
+    </form>
+</div>
+<br />
+
 
 <table class="table">
-    <thead>
+    <thead id="theader">
         <tr>
             <th>
                 Name
@@ -43,12 +87,12 @@
         {
             <tr>
                 <td>
-                    <a style="color:black" asp-action="PeriodTimeCard" asp-route-userId="@item.UserId" asp-route-StartDate="@item.StartDate" asp-route-EndDate="@item.EndDate">@item.Name</a>
+                    <a class="trow" asp-action="PeriodTimeCard" asp-route-userId="@item.UserId" asp-route-StartDate="@item.StartDate" asp-route-EndDate="@item.EndDate">@item.Name</a>
                 </td>
-                <td>
+                <td class="trow">
                     @item.IsSubmitted
                 </td>
-                <td>
+                <td class="trow">
                     @item.IsApproved
                 </td>
             </tr>

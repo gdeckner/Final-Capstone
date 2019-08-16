@@ -4,20 +4,59 @@
     ViewData["Title"] = "Create Pay Period";
 }
 
+<style>
+    .parent {
+        display: table;
+        width: 100%;
+    }
 
-<form style="display:table" asp-controller="account" asp-action="CreatePayPeriod" method="post">
-    <div style="display:table-row" class="form-group">
-        <label asp-for="StartDate"></label>
+    .form_login {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    input[type=text], input[type=password], select {
+        width: 20%;
+        height: 40px;
+        padding: 12px 20px;
+        margin: 4px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    label {
+        font-size: large;
+    }
+</style>
+
+<div class="parent">
+    <form class="form_login" asp-controller="account" asp-action="CreatePayPeriod" method="post">
+        <div>
+            <label asp-for="StartDate">Start Date</label>
+        </div>
+        <br />
         <input class="btn btn-default" type="date" asp-for="StartDate" />
         <span asp-validation-for="StartDate"></span>
-    </div>
-    <br />
-    <div style="display:table-row" class="form-group">
-        <label asp-for="EndDate"></label>
+
+        <br />
+        <br />
+
+        <div>
+            <label asp-for="EndDate">End Date</label>
+        </div>
+        <br />
+
         <input class="btn btn-default" type="date" asp-for="EndDate" />
         <span asp-validation-for="EndDate"></span>
-    </div>
-    <br />
-    <input type="submit" value="Create New Pay Period" class="btn btn-default" />
 
-</form>
+        <br />
+        <br />
+        <br />
+
+        <input type="submit" value="Create New Pay Period" class="btn btn-success btn-lg" />
+
+    </form>
+</div>

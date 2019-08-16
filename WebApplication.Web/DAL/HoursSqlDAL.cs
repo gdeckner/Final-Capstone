@@ -40,7 +40,16 @@ namespace WebApplication.Web.DAL
                     {
                         SqlCommand command = new SqlCommand(@"INSERT INTO Hours (userID, taskID, timeInHours, dateWorked, dateLogged, description, location) VALUES(@UserId, @TaskId, @TimeInHours, @WorkedDate, @LoggedDate, @Description, @Location);", connection);
                         SqlCommand commandTitle = new SqlCommand(@"UPDATE Hours SET Hours.task_Title = (SELECT Tasks.project_Task_Title FROM Tasks WHERE Hours.taskId = Tasks.project_Task_ID) WHERE Hours.taskId = @TaskId;", connection);
-
+                        SqlCommand commandLog = new SqlCommand(@"INSERT INTO Log (targetUser, dateWorked, dateLogged, modified_Date, hoursId, hoursBefore, hoursAfter, currentUser) 
+VALUES(@UserId, @WorkedDate, @LoggedDate, @LoggedDate, (SELECT Hours.hoursId FROM Hours WHERE dateWorked = @WorkedDate AND Hours.userID = @UserId), @Before, @TimeInHours, @UserId);", connection);
+                        commandLog.Parameters.AddWithValue("@UserId", hour.UserId);
+                        commandLog.Parameters.AddWithValue("@TimeInHours", hour.TimeInHours);
+                        commandLog.Parameters.AddWithValue("@Description", hour.Description);
+                        commandLog.Parameters.AddWithValue("@Location", hour.Location);
+                        commandLog.Parameters.AddWithValue("@WorkedDate", hour.DateWorked);
+                        commandLog.Parameters.AddWithValue("@LoggedDate", current);
+                        commandLog.Parameters.AddWithValue("@LoggedDateT", current);
+                        commandLog.Parameters.AddWithValue("@Before", before);
 
                         command.Parameters.AddWithValue("@UserId", hour.UserId);
                         command.Parameters.AddWithValue("@TaskId", hour.TaskId);
@@ -52,6 +61,7 @@ namespace WebApplication.Web.DAL
                         commandTitle.Parameters.AddWithValue("@TaskId", hour.TaskId);
                         command.ExecuteNonQuery();
                         commandTitle.ExecuteNonQuery();
+                        commandLog.ExecuteNonQuery();
                     }
 
                     if (result <= 0)

@@ -4,26 +4,59 @@
     ViewData["Title"] = "Login";
 }
 
+<style>
+    .parent {
+        display: table;
+        width: 100%;
+    }
 
-<form style="display:table" asp-controller="account" asp-action="login" method="post">
+    .form_login {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+    }
 
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell" asp-for="UserName"></label>
-        <input class="btn btn-default" style="display:table-cell" asp-for="UserName" />
+    input[type=text], input[type=password], select {
+        width: 20%;
+        height: 40px;
+        padding: 12px 20px;
+        margin: 4px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    label {
+        font-size: large;
+    }
+</style>
+
+<div class="parent">
+    <form class="form_login" asp-controller="account" asp-action="login" method="post">
+
+        <div>
+            <label asp-for="UserName"></label>
+        </div>
+        <input class="btn btn-default" asp-for="UserName" />
         <span asp-validation-for="UserName"></span>
-    </div>
-    <br />
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell" asp-for="Password"></label>
-        <input class="btn btn-default" style="display:table-cell" type="password" asp-for="Password" />
+
+        <br />
+        <div>
+            <label asp-for="Password"></label>
+        </div>
+        <input class="btn btn-default" type="password" asp-for="Password" />
         <span asp-validation-for="Password"></span>
-    </div>
-    <br />
-    <input type="submit" value="Login" class="btn btn-default" />
-</form>
+
+        <br />
+        <br />
+        <input class="form_login btn btn-success btn-lg" type="submit" value="Login" />
+    </form>
+</div>
 <br />
-@*---------------------FOR DEMO ONLY------------------------------*@
-<form asp-controller="account" asp-action="DEMORESET" method="post">
-    <input type="submit" value="Reset Demo" class="btn btn-default" />
-</form>
-@*---------------------FOR DEMO ONLY------------------------------*@
+<div class="parent">
+    @*---------------------FOR DEMO ONLY------------------------------*@
+    <form class="form_login" asp-controller="account" asp-action="DEMORESET" method="post">
+        <input type="submit" value="Reset Demo" class="btn btn-default" />
+    </form>
+    @*---------------------FOR DEMO ONLY------------------------------*@
+</div>
