@@ -4,49 +4,83 @@
     ViewData["Title"] = "Log Time";
 }
 
+<style>
+    .parent {
+        display: table;
+        width: 100%;
+    }
 
-<form style="display:table" asp-controller="account" asp-action="LogTime" method="post">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell" asp-for="DateWorked"></label>
-        <input class="btn btn-default" style="display:table-cell" type="date" asp-for="DateWorked" />
+    .form_login {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+    }
+
+    input[type=text], input[type=password], input[type=date], select {
+        width: 20%;
+        height: 40px;
+        padding: 12px 20px;
+        margin: 4px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    label {
+        font-size: large;
+    }
+</style>
+
+<div class="parent">
+    <form class="form_login" asp-controller="account" asp-action="LogTime" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div>
+            <label asp-for="DateWorked"></label>
+        </div>
+        <input type="date" asp-for="DateWorked" />
         <span asp-validation-for="DateWorked" class="text-danger"></span>
-    </div>
-    <br />
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell" asp-for="TaskId"></label>
-        <select class="btn btn-default" style="display:table-cell" asp-for="TaskId">
+        
+        <br />
+        <div>
+            <label asp-for="TaskId"></label>
+        </div>
+        <select asp-for="TaskId">
             @foreach (Tasks tasks in ViewBag.AvailableTasks)
             {
                 <option value="@tasks.TaskId">@tasks.Title</option>
             }
         </select>
         <span asp-validation-for="TaskId" class="text-danger"></span>
-    </div>
-    <br />
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell" asp-for="Description"></label>
-        <input class="btn btn-default" style="display:table-cell" type="text" asp-for="Description" />
+
+        <br />
+        <div>
+            <label asp-for="Description"></label>
+        </div>
+        <input type="text" asp-for="Description" />
         <span asp-validation-for="Description" class="text-danger"></span>
-    </div>
-    <br />
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell" asp-for="Location"></label>
-        <select class="btn btn-default" style="display:table-cell" asp-for="Location">
+
+        <br />
+        <div>
+            <label  asp-for="Location"></label>
+        </div>
+        <select asp-for="Location">
             @foreach (Location location in ViewBag.Locations)
             {
                 <option>@location.Title</option>
             }
         </select>
         <span asp-validation-for="Location" class="text-danger"></span>
-    </div>
-    <br />
-    <div style="display:table-row" class="form-group">
-        <label style="display:table-cell" asp-for="TimeInHours"></label>
-        <input class="btn btn-default" style="display:table-cell" type="text" asp-for="TimeInHours" placeholder="ex: 8.0" />
-        <span asp-validation-for="TimeInHours" class="text-danger"></span>
-    </div>
-    <br />
-    <input type="submit" value="Submit Time" class="btn btn-default" />
 
-</form>
+        <br />
+        <div>
+            <label asp-for="TimeInHours"></label>
+        </div>
+        <input type="text" asp-for="TimeInHours" placeholder="ex: 8.0" />
+        <span asp-validation-for="TimeInHours" class="text-danger"></span>
+        <br />
+        <br />
+        <input type="submit" value="Submit Time" class="btn btn-success btn-lg" />
+
+    </form>
+</div>
